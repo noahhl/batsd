@@ -1,0 +1,67 @@
+#!/usr/bin/env ruby
+$LOAD_PATH.unshift File.expand_path(File.dirname(__FILE__) + '/../lib')
+require 'rubygems'
+require 'yaml'
+require 'optparse'
+require 'batsd'
+
+begin
+  ORIGINAL_ARGV = ARGV.dup
+  options = { config: "config.yml" }
+  
+  parser = OptionParser.new do |opts|
+    opts.banner = "Usage: batsd [options] (*server|truncate) args"
+
+    opts.separator ""
+    opts.separator "options:"
+
+    opts.on("-cCONFIG", "--config-file CONFIG", "Configuration file") do |x|
+     options[:config] = x 
+    end
+    
+    opts.on("-h", "--help", "Show this message") do
+      puts opts
+      exit
+    end
+  end
+  parser.parse!
+  unless File.exists? options[:config]
+    puts parser.help
+    exit
+  end
+  config = YAML.load_file(options[:config]).inject({}){|memo,(k,v)| memo[k.to_sym] = v; memo}
+  
+  command = (ARGV[0] || :server).downcase.to_sym
+  case command
+  when :truncate
+    @truncator = Batsd::Truncator.new(config)
+    if ARGV[1].to_i.to_s == ARGV[1]
+      @truncator.run(ARGV[1].to_i)
+    else
+      puts "Need to specify a truncation level (#{config[:retentions].keys.join(",")} are configured)."
+      exit 1
+    end
+  when :server
+    # Define the handlers that will handle each data type
+    # The key that they are assigned to should correspond to
+    # the data type appended to the message (e.g., since
+    # counters append |c, the counters handler is at handlers[:c])
+    handlers = { c: Batsd::Handler::Counter.new(config), 
+                 g: Batsd::Handler::Gauge.new(config), 
+                 ms: Batsd::Handler.new(config)
+               }
+    Batsd::Receiver::Daemon.new(handlers, config).run
+  else
+    puts "I don't know how to #{command}."
+    exit 1
+  end
+
+rescue Exception => e
+  if e.instance_of?(SystemExit)
+    raise
+  else
+    puts 'Uncaught exception'
+    puts e.message
+    puts e.backtrace.join("\n")
+  end
+end

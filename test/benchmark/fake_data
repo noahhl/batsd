@@ -1,0 +1,66 @@
+#!/usr/bin/env ruby
+require 'rubygems'
+require 'optparse'
+require 'socket'
+require 'benchmark'
+
+options = {:host => "127.0.0.1", :port => 8125, :types => []}
+parser = OptionParser.new do |opts|
+  opts.banner = "Usage: fake_data [options] <number of unique datapoints> <datapoints per second>"
+
+  opts.separator ""
+  opts.separator "options:"
+
+  opts.on("-sSERVER", "--server SERVER", "Statsd server host:port") do |x|
+    options[:host] = x.split(":")[0]
+    options[:port] = x.split(":")[1].to_i
+  end
+
+  opts.on("-c", "--counters", "Include counters") do
+    options[:types] << :counters
+  end
+  
+  opts.on("-t", "--timers", "Include timers") do
+    options[:types] << :timers
+  end
+  
+  opts.on("-g", "--gauges", "Include gauges") do
+    options[:types] << :gauges
+  end
+
+  opts.on("-h", "--help", "Show this message") do
+    puts opts
+    exit
+  end
+
+end
+
+parser.parse!
+
+datapoints = ARGV[0].to_i || 100
+per_second = ARGV[1].to_i || 10
+@socket = UDPSocket.new
+@socket.connect options[:host], options[:port]
+
+puts "Starting to send fake data to #{options[:host]}:#{options[:port]}. Sending #{datapoints} unique datapoints at a rate of #{per_second} per second split across #{options[:types].join(",")}"
+loop do
+  t = Benchmark.measure do 
+     per_second.times do |i|
+       key = "random_#{(rand*datapoints).round}"
+       value = rand * 1000
+       type = options[:types][(rand*options[:types].size).floor]
+       case type
+       when :counters 
+         @socket.send "#{key}:1|c", 0 
+       when :timers 
+         @socket.send "#{key}:#{value}|ms", 0
+       when :gauges 
+         @socket.send "#{key}:#{value}|g", 0
+       end
+     end
+   end
+   puts "Sent datapoints in #{t.real} seconds" if ENV["VERBOSE"]
+   if t.real < 1
+     sleep 1.0 - t.real
+   end
+end
