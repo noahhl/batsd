@@ -37,17 +37,39 @@ module Batsd
           @redis.zadd key, timestamp, "#{timestamp}<X>#{value}"
         else index.zero?
           @redis.incrby "#{key}:#{t}", value
+          @redis.expire "#{key}:#{t}", t.to_i * 2
         end
       end
     end
 
+    # Store a timer to a zset
+    #
+    def store_timer(timestamp, key, value)
+      @redis.zadd key, timestamp, "#{timestamp}<X>#{value}"
+    end
+
+    # Store unaggregated, raw timer values in bucketed keys
+    # so that they can actually be aggregated "raw"
+    #
+    # The set of tiemrs are stored as a single string key delimited by 
+    # \x0. In benchmarks, this is more efficient in memory by 2-3x, and
+    # less efficient in time by ~10%
+    #
+    # TODO: can this be done more efficiently with redis scripting?
+    def store_raw_timers_for_aggregations(key, values)
+      @retentions.each_with_index do |t, index|
+        next if index.zero?
+        @redis.append "#{key}:#{t}", "<X>#{values.join("<X>")}"
+        @redis.expire "#{key}:#{t}", t.to_i * 2
+      end
+    end
     
     # Returns the value of a key and then deletes it.
     #
     # TODO: This can be done in a single network request by rewriting
     # it as a redis script in Lua
     #
-    def get_and_clear_counter(key)
+    def get_and_clear_key(key)
       val = @redis.get key
       @redis.del key
       val
@@ -73,11 +95,7 @@ module Batsd
     # the 'datapoints' set
     #
     def add_datapoint(key)
-      if key.is_a? Array
-        @redis.sadd "datapoints", *key
-      else
-        @redis.sadd "datapoints", key
-      end
+      @redis.sadd "datapoints", key
     end
 
   end

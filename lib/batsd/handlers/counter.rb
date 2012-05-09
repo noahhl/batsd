@@ -76,7 +76,7 @@ module Batsd
           end
         end
       end
-      puts "Flushed #{n} counters in #{t.real} seconds" if ENV["VVERBOSE"] || ENV["VERBOSE"]
+      puts "Flushed #{n} counters in #{t.real} seconds" if ENV["VERBOSE"]
 
       
       # If it's time for the latter aggregation to be written to disk, queue
@@ -89,10 +89,10 @@ module Batsd
         # past the threshold
         if (flush_start + @flush_interval) > @last_flushes[retention] + retention.to_i
           ts = (flush_start - flush_start % retention.to_i)
-          @counters.each do |key, null|
+          @counters.dup.keys.each do |key|
             @threadpool.queue ts, key, retention do |timestamp, key, retention|
               key = "#{key}:#{retention}"
-              value = @redis.get_and_clear_counter(key)
+              value = @redis.get_and_clear_key(key)
               if value
                 value = "#{ts} #{value}"
                 @diskstore.append_value_to_file(@diskstore.build_filename(key), value)
@@ -106,7 +106,7 @@ module Batsd
           if retention == @retentions.last
             puts "Clearing the counters list. Current state is: #{@counters}" if ENV["VVERBOSE"]
             @threadpool.queue @counters do |counters|
-              @redis.add_datapoint counters.collect{|k,v| k }
+              @redis.add_datapoint counters.keys
             end
             @counters = {}
           end

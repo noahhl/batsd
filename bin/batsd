@@ -4,7 +4,7 @@ require 'rubygems'
 require 'yaml'
 require 'optparse'
 require 'batsd'
-
+ENV["VERBOSE"]="1" if ENV["VVERBOSE"]
 begin
   ORIGINAL_ARGV = ARGV.dup
   options = { config: "config.yml" }
@@ -48,7 +48,7 @@ begin
     # counters append |c, the counters handler is at handlers[:c])
     handlers = { c: Batsd::Handler::Counter.new(config), 
                  g: Batsd::Handler::Gauge.new(config), 
-                 ms: Batsd::Handler.new(config)
+                 ms: Batsd::Handler::Timer.new(config)
                }
     Batsd::Receiver::Daemon.new(handlers, config).run
   else
