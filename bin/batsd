@@ -1,4 +1,4 @@
-#!/usr/bin/env ruby
+#!/usr/bin/env ruby 
 $LOAD_PATH.unshift File.expand_path(File.dirname(__FILE__) + '/../lib')
 require 'rubygems'
 require 'yaml'
@@ -40,6 +40,12 @@ begin
     else
       puts "Need to specify a truncation level (#{config[:retentions].keys.join(",")} are configured)."
       exit 1
+    end
+  when :stats
+    require 'socket'
+    TCPSocket.new('localhost', (config[:port] || 8125).to_i + 1).tap do |socket|
+      socket.puts "stats\n"
+      puts socket.gets
     end
   when :server
     # Define the handlers that will handle each data type

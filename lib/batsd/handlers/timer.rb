@@ -27,9 +27,11 @@ module Batsd
 
     def handle(key, value, sample_rate)
       key = "timers:#{key}"
-      @active_timers[key] ||= []
-      @active_timers[key].push value.to_f
-      @timers[key] = nil
+      if value
+        @active_timers[key] ||= []
+        @active_timers[key].push value.to_f
+        @timers[key] = nil
+      end
     end
 
     def flush
@@ -71,9 +73,9 @@ module Batsd
         # Only if we're in need of a write to disk - if the next flush will be
         # past the threshold
         if (flush_start + @flush_interval) > @last_flushes[retention] + retention.to_i
-          
+          puts "Starting disk writing for counters@#{retention}" if ENV["VERBOSE"]
           ts = (flush_start - flush_start % retention.to_i)
-          @timers.dup.keys.each do |key|
+          @timers.keys.each do |key|
             @threadpool.queue ts, key, retention do |timestamp, key, retention|
               values = @redis.get_and_clear_key("#{key}:#{retention}").split("<X>").reject(&:empty?).collect(&:to_f)
               if values

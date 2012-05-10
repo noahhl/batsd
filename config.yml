@@ -5,7 +5,7 @@ redis:
   host: 127.0.0.1
   port: 6379
 retentions:
-  10:  2160   #6 hours
+  10:  360 #1 hour
   60:  10080  #1 week
   600: 52594 #1 year
 redis_cleanup: 30 

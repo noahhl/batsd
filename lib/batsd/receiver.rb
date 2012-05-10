@@ -72,6 +72,7 @@ module Batsd
           port = @options[:port] || 8125
           puts "Starting receiver on batsd://#{bind}:#{port}"
           EventMachine::open_datagram_socket(bind, port, Batsd::Receiver)
+          EventMachine::start_server(bind, port + 1, Batsd::Statistics)
 
           @handlers.each do |type, handler|
             if handler.respond_to? :flush

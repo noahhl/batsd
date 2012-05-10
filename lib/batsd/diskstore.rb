@@ -35,7 +35,7 @@ module Batsd
         file.close
       end
     rescue Exception => e
-      puts "Encountered an error trying to store to #{filename}: #{e}"
+      puts "Encountered an error trying to store to #{filename}: #{e} #{e.message} #{e.backtrace if ENV["VERBOSE"]}"
     end
 
     # Reads the set of values in the range desired from file

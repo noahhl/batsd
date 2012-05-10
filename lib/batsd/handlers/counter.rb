@@ -88,8 +88,9 @@ module Batsd
         # Only if we're in need of a write to disk - if the next flush will be
         # past the threshold
         if (flush_start + @flush_interval) > @last_flushes[retention] + retention.to_i
+          puts "Starting disk writing for timers@#{retention}" if ENV["VERBOSE"]
           ts = (flush_start - flush_start % retention.to_i)
-          @counters.dup.keys.each do |key|
+          @counters.keys.each do |key|
             @threadpool.queue ts, key, retention do |timestamp, key, retention|
               key = "#{key}:#{retention}"
               value = @redis.get_and_clear_key(key)
