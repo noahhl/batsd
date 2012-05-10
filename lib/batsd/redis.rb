@@ -81,6 +81,12 @@ module Batsd
       @redis.zremrangebyscore key, 0, since
     end
 
+    # Return properly formatted values from the zset
+    def values_from_zset(metric, begin_ts, end_ts)
+      values = @redis.zrangebyscore(metric, begin_ts, end_ts)
+      values.collect{|val| ts, val = val.split("<X>"); {timestamp: ts, value: val } }
+    end
+
     # Convenience accessor to members of datapoints set
     #
     def datapoints(with_gauges=true)

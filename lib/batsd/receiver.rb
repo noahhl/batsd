@@ -7,19 +7,16 @@ module Batsd
   module Receiver
     
     # Exposes registered handlers 
-    #
     def self.handlers
       @handlers
     end
 
     # Register an array of handlers
-    #
     def self.handlers=(handlers)
       @handlers = handlers
     end
     
     # Startup message after server is launched
-    #
     def post_init
       puts "batsd receiver is running and knows how to handle " + 
             Batsd::Receiver.handlers.collect{|k, v| k }.join(", ")
@@ -72,6 +69,9 @@ module Batsd
           port = @options[:port] || 8125
           puts "Starting receiver on batsd://#{bind}:#{port}"
           EventMachine::open_datagram_socket(bind, port, Batsd::Receiver)
+          # Have to run the statistics service as part of this process so that
+          # it has access to the handler objects, which contain their own
+          # statistics
           EventMachine::start_server(bind, port + 1, Batsd::Statistics)
 
           @handlers.each do |type, handler|

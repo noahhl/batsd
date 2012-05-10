@@ -79,7 +79,7 @@ module Batsd
             @threadpool.queue ts, key, retention do |timestamp, key, retention|
               values = @redis.get_and_clear_key("#{key}:#{retention}").split("<X>").reject(&:empty?).collect(&:to_f)
               if values
-                puts "Writing the aggregates for #{values.count} values for #{key} at the #{retention} level to disk." if ENV["VVERBOSE"]
+                puts "Writing the aggregates for #{values.count} values for #{key} at the #{retention} level to disk." #if ENV["VVERBOSE"]
                 count = values.count
                 @diskstore.append_value_to_file(@diskstore.build_filename("#{key}:mean:#{retention}"), "#{timestamp} #{values.mean}")
                 @diskstore.append_value_to_file(@diskstore.build_filename("#{key}:count:#{retention}"), "#{timestamp} #{count}")
@@ -96,7 +96,7 @@ module Batsd
 
           # If this is the last retention we're handling, flush the
           # times list to redis and reset it
-          if index == 1 #retention == @retentions.last
+          if retention == @retentions.last
             puts "Clearing the timers list. Current state is: #{@timers}" if ENV["VVERBOSE"]
             @threadpool.queue @timers do |timers|
               @redis.add_datapoint timers.keys

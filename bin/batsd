@@ -31,7 +31,7 @@ begin
   end
   config = YAML.load_file(options[:config]).inject({}){|memo,(k,v)| memo[k.to_sym] = v; memo}
   
-  command = (ARGV[0] || :server).downcase.to_sym
+  command = (ARGV[0] || :receiver).downcase.to_sym
   case command
   when :truncate
     @truncator = Batsd::Truncator.new(config)
@@ -48,6 +48,8 @@ begin
       puts socket.gets
     end
   when :server
+    Batsd::Server::Daemon.new(config).run
+  when :receiver
     # Define the handlers that will handle each data type
     # The key that they are assigned to should correspond to
     # the data type appended to the message (e.g., since

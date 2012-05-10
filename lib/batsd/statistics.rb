@@ -3,7 +3,7 @@ module Batsd
   module Statistics
     
     def post_init
-      puts "batsd statistics are available from /tmp/statsd.sock"
+      puts "batsd statistics are available"
     end
 
     def receive_data(msg)
