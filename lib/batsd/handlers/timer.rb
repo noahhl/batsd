@@ -73,13 +73,13 @@ module Batsd
         # Only if we're in need of a write to disk - if the next flush will be
         # past the threshold
         if (flush_start + @flush_interval) > @last_flushes[retention] + retention.to_i
-          puts "Starting disk writing for counters@#{retention}" if ENV["VERBOSE"]
+          puts "Starting disk writing for timers@#{retention}" if ENV["VERBOSE"]
           ts = (flush_start - flush_start % retention.to_i)
           @timers.keys.each do |key|
             @threadpool.queue ts, key, retention do |timestamp, key, retention|
               values = @redis.get_and_clear_key("#{key}:#{retention}").split("<X>").reject(&:empty?).collect(&:to_f)
               if values
-                puts "Writing the aggregates for #{values.count} values for #{key} at the #{retention} level to disk." #if ENV["VVERBOSE"]
+                puts "Writing the aggregates for #{values.count} values for #{key} at the #{retention} level to disk." if ENV["VVERBOSE"]
                 count = values.count
                 @diskstore.append_value_to_file(@diskstore.build_filename("#{key}:mean:#{retention}"), "#{timestamp} #{values.mean}")
                 @diskstore.append_value_to_file(@diskstore.build_filename("#{key}:count:#{retention}"), "#{timestamp} #{count}")
