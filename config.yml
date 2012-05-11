@@ -8,4 +8,3 @@ retentions:
   10:  360 #1 hour
   60:  10080  #1 week
   600: 52594 #1 year
-redis_cleanup: 30 

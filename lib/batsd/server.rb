@@ -1,6 +1,7 @@
 require 'json'
-module Batsd 
-  module Server 
+module Batsd
+  # Makes data from statsd available over a TCP socket
+  module Server
     def self.config
       @config
     end
