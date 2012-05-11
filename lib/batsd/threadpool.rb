@@ -13,7 +13,11 @@ class Threadpool
       @pool << Thread.new do
         loop do
           job, args = @queue.pop
-          job.call(*args)
+          begin
+            job.call(*args)
+          rescue Exception => e
+            puts "Thread #{Thread.current} error: #{e} #{e.message} #{e.backtrace.join("\n")}"
+          end
         end
       end
     end
