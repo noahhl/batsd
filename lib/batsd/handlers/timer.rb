@@ -77,8 +77,9 @@ module Batsd
           ts = (flush_start - flush_start % retention.to_i)
           @timers.keys.each do |key|
             @threadpool.queue ts, key, retention do |timestamp, key, retention|
-              values = @redis.get_and_clear_key("#{key}:#{retention}").split("<X>").reject(&:empty?).collect(&:to_f)
+              values = @redis.get_and_clear_key("#{key}:#{retention}")
               if values
+                values = values.split("<X>").reject(&:empty?).collect(&:to_f)
                 puts "Writing the aggregates for #{values.count} values for #{key} at the #{retention} level to disk." if ENV["VVERBOSE"]
                 count = values.count
                 @diskstore.append_value_to_file(@diskstore.build_filename("#{key}:mean:#{retention}"), "#{timestamp} #{values.mean}")
