@@ -18,7 +18,7 @@ module Batsd
     
     # Startup message after server is launched
     def post_init
-      puts "batsd receiver is running and knows how to handle " + 
+      puts "#{Time.now}: batsd receiver is running and knows how to handle " + 
             Batsd::Receiver.handlers.collect{|k, v| k }.join(", ")
     end
 
@@ -39,7 +39,7 @@ module Batsd
         end
       end
     rescue Exception => e
-      puts "Uncaught error #{e.message}"
+      puts "#{Time.now}: Uncaught error #{e.message}"
     end
 
     #
@@ -67,7 +67,7 @@ module Batsd
         EventMachine::run do
           bind = @options[:bind] || '0.0.0.0'
           port = @options[:port] || 8125
-          puts "Starting receiver on batsd://#{bind}:#{port}"
+          puts "#{Time.now}: Starting receiver on batsd://#{bind}:#{port}"
           EventMachine::open_datagram_socket(bind, port, Batsd::Receiver)
           # Have to run the statistics service as part of this process so that
           # it has access to the handler objects, which contain their own
@@ -76,7 +76,7 @@ module Batsd
 
           @handlers.each do |type, handler|
             if handler.respond_to? :flush
-              puts "Adding flush timer to #{handler}" if ENV["VERBOSE"] || ENV["VVERBOSE"]
+              puts "#{Time.now}: Adding flush timer to #{handler}"
               EventMachine.add_periodic_timer(@options[:retentions].keys[0].to_i) do
                 EventMachine.defer { handler.flush }
               end
