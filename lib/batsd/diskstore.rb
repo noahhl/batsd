@@ -28,7 +28,7 @@ module Batsd
     # Open the file in append mode (creating directories needed along
     # the way), write the value and a newline, and close the file again.
     #
-    def append_value_to_file(filename, value)
+    def append_value_to_file(filename, value, attempts=0)
       FileUtils.mkdir_p filename.split("/")[0..-2].join("/")
       File.open(filename, 'a+') do |file|
         file.write("#{value}\n")
@@ -36,6 +36,10 @@ module Batsd
       end
     rescue Exception => e
       puts "Encountered an error trying to store to #{filename}: #{e} #{e.message} #{e.backtrace if ENV["VERBOSE"]}"
+      if attempts < 2
+        puts "Retrying #{filename} for the #{attempts+1} time"
+        append_value_to_file(filename, value, attempts+1)
+      end
     end
 
     # Reads the set of values in the range desired from file
