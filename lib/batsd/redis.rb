@@ -92,7 +92,7 @@ module Batsd
     def datapoints(with_gauges=true)
       datapoints = @redis.smembers "datapoints"
       unless with_gauges
-        datapoints.reject!{|d| d.match /^gauge/ }
+        datapoints.reject!{|d| (d.match(/^gauge/) rescue false) }
       end
       datapoints
     end
