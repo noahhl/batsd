@@ -81,7 +81,7 @@ module Batsd
             if handler.respond_to? :flush
               puts "#{Time.now}: Adding flush timer to #{handler}"
               EventMachine.add_periodic_timer(@options[:retentions].keys[0].to_i) do
-                EventMachine.defer { handler.flush }
+                 Thread.new { handler.flush }
               end
             end
           end
