@@ -89,27 +89,31 @@ module Batsd
         # past the threshold
         if (flush_start + @flush_interval) > @last_flushes[retention] + retention.to_i
           puts "Starting disk writing for timers@#{retention}" if ENV["VERBOSE"]
-          ts = (flush_start - flush_start % retention.to_i)
-          @counters.keys.each do |key|
-            @threadpool.queue ts, key, retention do |timestamp, key, retention|
-              key = "#{key}:#{retention}"
-              value = @redis.get_and_clear_key(key)
-              if value
-                value = "#{ts} #{value}"
-                @diskstore.append_value_to_file(@diskstore.build_filename(key), value)
+          t = Benchmark.measure do 
+            ts = (flush_start - flush_start % retention.to_i)
+            @counters.keys.each do |key|
+              @threadpool.queue ts, key, retention do |timestamp, key, retention|
+                key = "#{key}:#{retention}"
+                value = @redis.get_and_clear_key(key)
+                if value
+                  value = "#{ts} #{value}"
+                  @diskstore.append_value_to_file(@diskstore.build_filename(key), value)
+                end
               end
             end
+            @last_flushes[retention] = flush_start
           end
-          @last_flushes[retention] = flush_start
+          puts "#{Time.now}: Handled disk writing for counters@#{retention} in #{t.real}" if ENV["VERBOSE"]
 
           # If this is the last retention we're handling, flush the
           # counters list to redis and reset it
           if retention == @retentions.last
             puts "Clearing the counters list. Current state is: #{@counters}" if ENV["VVERBOSE"]
-            @threadpool.queue @counters do |counters|
-              @redis.add_datapoint counters.keys
+            t = Benchmark.measure do 
+              @redis.add_datapoint @counters.keys
+              @counters = {}
             end
-            @counters = {}
+            puts "#{Time.now}: Flushed datapoints for counters in #{t.real}" if ENV["VERBOSE"]
           end
         end
 
