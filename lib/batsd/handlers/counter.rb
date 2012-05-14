@@ -91,13 +91,15 @@ module Batsd
           puts "Starting disk writing for timers@#{retention}" if ENV["VERBOSE"]
           t = Benchmark.measure do 
             ts = (flush_start - flush_start % retention.to_i)
-            @counters.keys.each do |key|
-              @threadpool.queue ts, key, retention do |timestamp, key, retention|
-                key = "#{key}:#{retention}"
-                value = @redis.get_and_clear_key(key)
-                if value
-                  value = "#{ts} #{value}"
-                  @diskstore.append_value_to_file(@diskstore.build_filename(key), value)
+            @counters.keys.each_slice(50) do |keys|
+              @threadpool.queue ts, keys, retention do |timestamp, keys, retention|
+                keys.each do |key|
+                  key = "#{key}:#{retention}"
+                  value = @redis.get_and_clear_key(key)
+                  if value
+                    value = "#{ts} #{value}"
+                    @diskstore.append_value_to_file(@diskstore.build_filename(key), value)
+                  end
                 end
               end
             end

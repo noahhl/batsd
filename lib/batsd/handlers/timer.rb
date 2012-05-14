@@ -76,20 +76,22 @@ module Batsd
           puts "Starting disk writing for timers@#{retention}" if ENV["VERBOSE"]
           t = Benchmark.measure do 
             ts = (flush_start - flush_start % retention.to_i)
-            @timers.keys.each do |key|
-              @threadpool.queue ts, key, retention do |timestamp, key, retention|
-                values = @redis.get_and_clear_key("#{key}:#{retention}")
-                if values
-                  values = values.split("<X>").reject(&:empty?).collect(&:to_f)
-                  puts "Writing the aggregates for #{values.count} values for #{key} at the #{retention} level to disk." if ENV["VVERBOSE"]
-                  count = values.count
-                  @diskstore.append_value_to_file(@diskstore.build_filename("#{key}:mean:#{retention}"), "#{timestamp} #{values.mean}")
-                  @diskstore.append_value_to_file(@diskstore.build_filename("#{key}:count:#{retention}"), "#{timestamp} #{count}")
-                  @diskstore.append_value_to_file(@diskstore.build_filename("#{key}:min:#{retention}"), "#{timestamp} #{values.min}")
-                  @diskstore.append_value_to_file(@diskstore.build_filename("#{key}:max:#{retention}"), "#{timestamp} #{values.max}")
-                  @diskstore.append_value_to_file(@diskstore.build_filename("#{key}:upper_90:#{retention}"), "#{timestamp} #{values.percentile_90}")
-                  if count > 1
-                    @diskstore.append_value_to_file(@diskstore.build_filename("#{key}:stddev:#{retention}"), "#{timestamp} #{values.standard_dev}")
+            @timers.keys.each_slice(50) do |keys|
+              @threadpool.queue ts, keys, retention do |timestamp, keys, retention|
+                keys.each do |key|
+                  values = @redis.get_and_clear_key("#{key}:#{retention}")
+                  if values
+                    values = values.split("<X>").reject(&:empty?).collect(&:to_f)
+                    puts "Writing the aggregates for #{values.count} values for #{key} at the #{retention} level to disk." if ENV["VVERBOSE"]
+                    count = values.count
+                    @diskstore.append_value_to_file(@diskstore.build_filename("#{key}:mean:#{retention}"), "#{timestamp} #{values.mean}")
+                    @diskstore.append_value_to_file(@diskstore.build_filename("#{key}:count:#{retention}"), "#{timestamp} #{count}")
+                    @diskstore.append_value_to_file(@diskstore.build_filename("#{key}:min:#{retention}"), "#{timestamp} #{values.min}")
+                    @diskstore.append_value_to_file(@diskstore.build_filename("#{key}:max:#{retention}"), "#{timestamp} #{values.max}")
+                    @diskstore.append_value_to_file(@diskstore.build_filename("#{key}:upper_90:#{retention}"), "#{timestamp} #{values.percentile_90}")
+                    if count > 1
+                      @diskstore.append_value_to_file(@diskstore.build_filename("#{key}:stddev:#{retention}"), "#{timestamp} #{values.standard_dev}")
+                    end
                   end
                 end
               end
@@ -106,7 +108,7 @@ module Batsd
               @redis.add_datapoint @timers.keys
               @timers = {}
             end
-            puts "#{Time.now}: Flushed datapoints for counters in #{t.real}" if ENV["VERBOSE"]
+            puts "#{Time.now}: Flushed datapoints for timers in #{t.real}" if ENV["VERBOSE"]
           end
 
         end
