@@ -37,8 +37,8 @@ end
 
 parser.parse!
 
-datapoints = ARGV[0].to_i || 100
-per_second = ARGV[1].to_i || 10
+datapoints = ARGV[0].to_i - 1
+per_second = ARGV[1].to_i
 @socket = UDPSocket.new
 @socket.connect options[:host], options[:port]
 
