@@ -42,7 +42,7 @@ module Batsd
                      end
                    end
                  end
-                 send_data "#{JSON(datapoints)}\n"
+                 send_data "#{JSON({"#{metric}" => datapoints})}\n"
               end
             when command.match(/ping/i)
               send_data "PONG\n"
