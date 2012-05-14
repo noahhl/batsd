@@ -65,6 +65,9 @@ module Batsd
       #
       def run
         EventMachine::run do
+          if RUBY_PLATFORM == "java"
+            Thread.current.priority = 10
+          end
           bind = @options[:bind] || '0.0.0.0'
           port = @options[:port] || 8125
           puts "#{Time.now}: Starting receiver on batsd://#{bind}:#{port}"

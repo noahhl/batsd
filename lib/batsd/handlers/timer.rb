@@ -99,9 +99,7 @@ module Batsd
           # times list to redis and reset it
           if retention == @retentions.last
             puts "Clearing the timers list. Current state is: #{@timers}" if ENV["VVERBOSE"]
-            @threadpool.queue @timers do |timers|
-              @redis.add_datapoint timers.keys
-            end
+            @redis.add_datapoint timers.keys
             @timers = {}
           end
 

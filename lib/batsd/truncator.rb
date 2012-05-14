@@ -31,7 +31,7 @@ module Batsd
       min_ts = Time.now.to_i - (@options[:retentions][retention] * retention)
       keys = @redis.datapoints(with_gauges=false)
       keys = keys.collect do |k|
-        if k.match /^timer/
+        if (k.match(/^timer/) rescue false)
           ["mean", "min", "max", "upper_90", "stddev", "count"].collect{|a| "#{k}:#{a}"}
         else
           k
