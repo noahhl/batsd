@@ -12,14 +12,8 @@ module Batsd
     
     def post_init
       puts "batsd server ready and waiting on #{Batsd::Server.config[:port]} to ship data upon request\n"
-    end
-
-    def redis
-      @redis ||= Batsd::Redis.new(Batsd::Server.config)
-    end
-
-    def diskstore
-      @diskstore ||= Batsd::Diskstore.new(Batsd::Server.config[:root])
+      @redis = Batsd::Redis.new(Batsd::Server.config)
+      @diskstore = Batsd::Diskstore.new(Batsd::Server.config[:root])
     end
 
     def receive_data(msg)  
@@ -29,21 +23,21 @@ module Batsd
           return unless command 
           case
             when command.match(/available/i)
-              EM.defer { send_data "#{JSON(redis.datapoints)}\n" }
+              EM.defer { send_data "#{JSON(@redis.datapoints)}\n" }
             when command.match(/values/i)
               EM.defer do
                  command, metric, begin_time, end_time = row.split(" ")
                  datapoints = []
                  if metric.match(/^gauge/)
-                   datapoints = diskstore.read(metric, begin_time, end_time)
+                   datapoints = @diskstore.read(metric, begin_time, end_time)
                  else
                    Batsd::Server.config[:retentions].each_with_index do |retention, index|
                      next if (Time.now.to_i - (retention[0] * retention[1]) > begin_time.to_i)
                      if index.zero?
-                       datapoints = redis.values_from_zset(metric, begin_time, end_time)
+                       datapoints = @redis.values_from_zset(metric, begin_time, end_time)
                        break
                      else
-                       datapoints = diskstore.read("#{metric}:#{retention[0]}", begin_time, end_time)
+                       datapoints = @diskstore.read("#{metric}:#{retention[0]}", begin_time, end_time)
                        break
                      end
                    end
