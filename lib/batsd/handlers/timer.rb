@@ -46,20 +46,22 @@ module Batsd
         ts = (flush_start - flush_start % @flush_interval)
         timers = @active_timers.dup
         @active_timers = {}
-        timers.each do |key, values|
-          @threadpool.queue ts, key, values do |timestamp, key, values|
-            puts "Storing #{values.size} values to redis for #{key} at #{timestamp}" if ENV["VVERBOSE"]
-            # Store all the aggregates for the flush interval level
-            count = values.count
-            @redis.store_timer timestamp, "#{key}:mean", values.mean
-            @redis.store_timer timestamp, "#{key}:count", count 
-            @redis.store_timer timestamp, "#{key}:min", values.min
-            @redis.store_timer timestamp, "#{key}:max", values.max
-            @redis.store_timer timestamp, "#{key}:upper_90", values.percentile_90
-            if count > 1
-              @redis.store_timer timestamp, "#{key}:stddev", values.standard_dev
+        timers.each_slice(50) do |keys|
+          @threadpool.queue ts, keys do |timestamp, keys|
+            keys.each do |key, values|
+              puts "Storing #{values.size} values to redis for #{key} at #{timestamp}" if ENV["VVERBOSE"]
+              # Store all the aggregates for the flush interval level
+              count = values.count
+              @redis.store_timer timestamp, "#{key}:mean", values.mean
+              @redis.store_timer timestamp, "#{key}:count", count 
+              @redis.store_timer timestamp, "#{key}:min", values.min
+              @redis.store_timer timestamp, "#{key}:max", values.max
+              @redis.store_timer timestamp, "#{key}:upper_90", values.percentile_90
+              if count > 1
+                @redis.store_timer timestamp, "#{key}:stddev", values.standard_dev
+              end
+              @redis.store_raw_timers_for_aggregations key, values
             end
-            @redis.store_raw_timers_for_aggregations key, values
           end
         end
       end
@@ -76,7 +78,7 @@ module Batsd
           puts "Starting disk writing for timers@#{retention}" if ENV["VERBOSE"]
           t = Benchmark.measure do 
             ts = (flush_start - flush_start % retention.to_i)
-            @timers.keys.each_slice(100) do |keys|
+            @timers.keys.each_slice(200) do |keys|
               @threadpool.queue ts, keys, retention do |timestamp, keys, retention|
                 keys.each do |key|
                   values = @redis.get_and_clear_key("#{key}:#{retention}")

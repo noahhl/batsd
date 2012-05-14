@@ -70,9 +70,11 @@ module Batsd
         ts = (flush_start - flush_start % @flush_interval)
         counters = @active_counters.dup
         @active_counters = {}
-        counters.each do |key, value|
-          @threadpool.queue ts, key, value do |timestamp, key, value|
-            @redis.store_and_update_all_counters(timestamp, key, value)
+        counters.each_slice(50) do |keys|
+          @threadpool.queue ts, keys do |timestamp, keys|
+            keys.each do |key, value|
+              @redis.store_and_update_all_counters(timestamp, key, value)
+            end
           end
         end
       end
@@ -91,7 +93,7 @@ module Batsd
           puts "Starting disk writing for timers@#{retention}" if ENV["VERBOSE"]
           t = Benchmark.measure do 
             ts = (flush_start - flush_start % retention.to_i)
-            @counters.keys.each_slice(100) do |keys|
+            @counters.keys.each_slice(200) do |keys|
               @threadpool.queue ts, keys, retention do |timestamp, keys, retention|
                 keys.each do |key|
                   key = "#{key}:#{retention}"
