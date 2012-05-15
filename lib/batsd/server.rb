@@ -54,6 +54,8 @@ module Batsd
           end
         rescue Exception => e
           puts e if ENV["VERBOSE"]
+        rescue
+          puts "Uncaught Error"
         end
       end
     end

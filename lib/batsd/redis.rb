@@ -99,8 +99,12 @@ module Batsd
 
     # Return properly formatted values from the zset
     def values_from_zset(metric, begin_ts, end_ts)
-      values = @redis.zrangebyscore(metric, begin_ts, end_ts)
-      values.collect{|val| ts, val = val.split("<X>"); {timestamp: ts, value: val } }
+      begin
+        values = @redis.zrangebyscore(metric, begin_ts, end_ts)
+        values.collect{|val| ts, val = val.split("<X>"); {timestamp: ts, value: val } }
+      rescue
+        []
+      end
     end
 
     # Convenience accessor to members of datapoints set
