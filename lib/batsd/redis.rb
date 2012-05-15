@@ -75,6 +75,20 @@ module Batsd
       val
     end
 
+    def parse_time_string_key(key)
+      cmd = <<-EOF
+        local str = redis.call('get', KEYS[1])
+        local t={} ; local i=1
+        for s in string.gmatch(str, "([^".."<X>".."]+)") do
+          t[i] = s 
+          i = i + 1
+        end
+        redis.call('del', KEYS[1])
+        return t
+      EOF
+      val = @redis.eval(cmd, 1, key.to_sym)
+    end
+
     # Truncate a zset since a treshold time
     #
     def truncate_zset(key, since)

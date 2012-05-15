@@ -81,18 +81,21 @@ module Batsd
             @timers.keys.each_slice(400) do |keys|
               @threadpool.queue ts, keys, retention do |timestamp, keys, retention|
                 keys.each do |key|
-                  values = @redis.get_and_clear_key("#{key}:#{retention}")
+                  #values = @redis.get_and_clear_key("#{key}:#{retention}")
+                  values = @redis.parse_time_string_key("#{key}:#{retention}")
                   if values
-                    values = values.split("<X>").reject(&:empty?).collect(&:to_f)
+                    values = values.reject(&:empty?).collect(&:to_f)
                     puts "Writing the aggregates for #{values.count} values for #{key} at the #{retention} level to disk." if ENV["VVERBOSE"]
                     count = values.count
-                    @diskstore.append_value_to_file(@diskstore.build_filename("#{key}:mean:#{retention}"), "#{timestamp} #{values.mean}")
-                    @diskstore.append_value_to_file(@diskstore.build_filename("#{key}:count:#{retention}"), "#{timestamp} #{count}")
-                    @diskstore.append_value_to_file(@diskstore.build_filename("#{key}:min:#{retention}"), "#{timestamp} #{values.min}")
-                    @diskstore.append_value_to_file(@diskstore.build_filename("#{key}:max:#{retention}"), "#{timestamp} #{values.max}")
-                    @diskstore.append_value_to_file(@diskstore.build_filename("#{key}:upper_90:#{retention}"), "#{timestamp} #{values.percentile_90}")
-                    if count > 1
-                      @diskstore.append_value_to_file(@diskstore.build_filename("#{key}:stddev:#{retention}"), "#{timestamp} #{values.standard_dev}")
+                    ["mean", "count", "min", "max", ["upper_90", "percentile_90"], ["stddev", "standard_dev"]].each do |aggregation|
+                      if aggregation.is_a? Array
+                        name = aggregation[1]
+                        aggregation = aggregation[0]
+                      else
+                        name = aggregation
+                      end
+                      val = (count > 1 ? values.send(aggregation.to_sym) : values.first)
+                      @diskstore.append_value_to_file(@diskstore.build_filename("#{key}:#{name}:#{retention}"), "#{timestamp} #{val}")
                     end
                   end
                 end
