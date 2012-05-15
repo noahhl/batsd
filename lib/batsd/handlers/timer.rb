@@ -81,16 +81,17 @@ module Batsd
             @timers.keys.each_slice(400) do |keys|
               @threadpool.queue ts, keys, retention do |timestamp, keys, retention|
                 keys.each do |key|
-                  #values = @redis.get_and_clear_key("#{key}:#{retention}")
-                  values = @redis.parse_time_string_key("#{key}:#{retention}")
+                  values = @redis.get_and_clear_key("#{key}:#{retention}")
+                  #values = @redis.extract_values_from_string("#{key}:#{retention}")
                   if values
+                    values = values.split("<X>")
                     values = values.reject(&:empty?).collect(&:to_f)
                     puts "Writing the aggregates for #{values.count} values for #{key} at the #{retention} level to disk." if ENV["VVERBOSE"]
                     count = values.count
                     ["mean", "count", "min", "max", ["upper_90", "percentile_90"], ["stddev", "standard_dev"]].each do |aggregation|
                       if aggregation.is_a? Array
-                        name = aggregation[1]
-                        aggregation = aggregation[0]
+                        name = aggregation[0]
+                        aggregation = aggregation[1]
                       else
                         name = aggregation
                       end

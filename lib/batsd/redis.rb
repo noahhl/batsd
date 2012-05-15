@@ -65,28 +65,30 @@ module Batsd
     end
     
     # Returns the value of a key and then deletes it.
-    #
-    # TODO: This can be done in a single network request by rewriting
-    # it as a redis script in Lua
-    #
     def get_and_clear_key(key)
-      val = @redis.get key
-      @redis.del key
-      val
-    end
-
-    def parse_time_string_key(key)
       cmd = <<-EOF
         local str = redis.call('get', KEYS[1])
-        local t={} ; local i=1
-        for s in string.gmatch(str, "([^".."<X>".."]+)") do
-          t[i] = s 
-          i = i + 1
-        end
         redis.call('del', KEYS[1])
+        return str
+      EOF
+      @redis.eval(cmd, 1, key.to_sym)
+    end
+    
+    # Create an array out of a string of values delimited by <X>
+    def extract_values_from_string(key)
+      cmd = <<-EOF
+        local t={} ; local i=1
+        local str = redis.call('get', KEYS[1])
+        if (str) then
+          for s in string.gmatch(str, "([^".."<X>".."]+)") do
+            t[i] = s 
+            i = i + 1
+          end
+          redis.call('del', KEYS[1])
+        end
         return t
       EOF
-      val = @redis.eval(cmd, 1, key.to_sym)
+      @redis.eval(cmd, 1, key.to_sym)
     end
 
     # Truncate a zset since a treshold time
