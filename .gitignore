@@ -17,8 +17,9 @@ tmp
 _yardoc
 doc/*.html
 doc/Batsd/*.html
-doc/Batsd/Handler/*.html
-doc/Batsd/Receiver/*.html
-doc/Batsd/Server/*.html
+doc/Batsd/Handler/*
+doc/Batsd/Receiver/*
+doc/Batsd/Server/*
+doc/Examples/*
 doc/js/*.js
 doc/css/*.css
