@@ -19,6 +19,11 @@ begin
     opts.on("-cCONFIG", "--config-file CONFIG", "Configuration file") do |x|
      options[:config] = x 
     end
+
+    opts.on("-v", "--version", "Print the version") do
+      puts "batsd version #{Batsd::VERSION}"
+      exit
+    end
     
     opts.on("-h", "--help", "Show this message") do
       puts opts
