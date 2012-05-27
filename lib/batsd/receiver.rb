@@ -6,6 +6,7 @@ module Batsd
   #
   module Receiver
     
+    
     # Exposes registered handlers 
     def self.handlers
       @handlers
@@ -47,6 +48,12 @@ module Batsd
     #
     class Daemon
 
+      # Force a truncation at all intervals at least every
+      # MAX_TRUNCATION_INTERVAL seconds. This prevents overflow issues in
+      # EventMachine, but is largely theoretical; it's unlikely any instance of
+      # the daemon would run this long.
+      MAX_TRUNCATION_INTERVAL = 2000000
+
       # Create a new daemon and set up it's options and 
       # register the handlers provided
       #
@@ -83,6 +90,17 @@ module Batsd
               EventMachine.add_periodic_timer(@options[:retentions].keys[0].to_i) do
                  Thread.new { handler.flush }
               end
+            end
+          end
+
+          if @options[:autotruncate]
+            puts "Enabling autotruncation"
+            @options[:retentions].each do |interval, n|
+              frequency = [interval.to_i * n.to_i, MAX_TRUNCATION_INTERVAL].min 
+              EventMachine.add_periodic_timer(frequency) do
+                Thread.new { Batsd::Truncator.new(@options).run(interval) }
+              end
+              puts "Truncator added for #{interval} second aggregations every #{frequency} seconds"
             end
           end
 
