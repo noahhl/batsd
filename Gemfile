@@ -6,4 +6,6 @@ gem 'redis', "~> 3.0.0.rc1"
 group :development, :test do
   gem 'mocha'
   gem 'rake'
+  gem "yard"
+  gem "jekyll"
 end
