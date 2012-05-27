@@ -25,6 +25,10 @@ module Batsd
       super
     end
 
+    # Handle the key, value, and sample rate for a timer
+    #
+    # Store timers in a hashed array (<code>{a: [], b:[]}</code>) and
+    # the set of timers we know about in a hash of nil values
     def handle(key, value, sample_rate)
       key = "timers:#{key}"
       if value
@@ -34,6 +38,14 @@ module Batsd
       end
     end
 
+    # Flush timers to redis and disk.
+    #
+    # 1) At every flush interval, flush to redis and clear active timers. Also
+    #    store raw values for usage later.
+    # 2) If time since last disk write for a given aggregation, flush to disk.
+    # 3) If flushing the terminal aggregation, flush the set of datapoints to
+    #    Redis and reset that tracking in process.
+    #
     def flush
       puts "Current threadpool queue for timers: #{@threadpool.size}" if ENV["VVERBOSE"]
       # Flushing is usually very fast, but always fix it so that the

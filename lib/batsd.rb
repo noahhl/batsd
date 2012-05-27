@@ -20,5 +20,6 @@ require 'batsd/handlers/timer'
 # A ruby statsd protocol compatible server. Data is stored to redis and written
 # to disk at different levels of aggregation.
 module Batsd
+  # Current version of the daemon
   VERSION = "0.1.0"
 end

@@ -15,4 +15,10 @@ tmp
 # YARD artifacts
 .yardoc
 _yardoc
-doc/
+doc/*.html
+doc/Batsd/*.html
+doc/Batsd/Handler/*.html
+doc/Batsd/Receiver/*.html
+doc/Batsd/Server/*.html
+doc/js/*.js
+doc/css/*.css
