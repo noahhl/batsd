@@ -16,14 +16,14 @@ inspired by [quasor](https://github.com/quasor/statsd).
 
 ### Documentation:
 
-  * [Getting started](#Getting_started)
-  * [Getting help](#Getting_help_and_contributing)
+  * [Getting started](http://noahhl.github.com/batsd/doc/index.html#Getting_started)
+  * [Getting help](http://noahhl.github.com/batsd/doc/index.html#Getting_help_and_contributing)
   * [About: Datatypes](http://noahhl.github.com/batsd/doc/file.datatypes.html)
   * [About: Persistence](http://noahhl.github.com/batsd/doc/file.persistence.html)
   * [About: Performance](http://noahhl.github.com/batsd/doc/file.performance.html)
   * [Annotated source code](http://noahhl.github.com/batsd/doc/main.html)
   * [Future plans](http://noahhl.github.com/batsd/doc/file.future.html)
-  * [License](#License)
+  * [License](http://noahhl.github.com/batsd/doc/index.html#License)
 
 
 # Getting started
@@ -130,7 +130,7 @@ Pull requests with passing tests are welcomed and appreciated.
 
 # License
 
- Copyright (c) 2012 37signals, LLC
+ Copyright (c) 2012 
 
  Permission is hereby granted, free of charge, to any person obtaining
  a copy of this software and associated documentation files (the
