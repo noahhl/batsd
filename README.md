@@ -6,7 +6,8 @@ Batsd is a ruby-based daemon for aggregating and storing statistics. It targets
 
 Batsd differs from etsy's statsd implementation primarily in how it stores data
 -- data is stored to a combination of Redis and flat files on disk. You can
-read more about persistence in [About: Persistence](file.persistence.html).
+read more about persistence in [About:
+Persistence](http://noahhl.github.com/batsd/doc/file.persistence.html).
 
 Batsd grew out of usage at [37signals](http://37signals.com), where it has been
 used in some form for the last year, recording upwards of one gigabyte worth of
@@ -20,7 +21,7 @@ inspired by [quasor](https://github.com/quasor/statsd).
   * [About: Datatypes](http://noahhl.github.com/batsd/doc/file.datatypes.html)
   * [About: Persistence](http://noahhl.github.com/batsd/doc/file.persistence.html)
   * [About: Performance](http://noahhl.github.com/batsd/doc/file.performance.html)
-  * [Annotated source code](http://noahhl.github.com/batsd/doc/_index.html)
+  * [Annotated source code](http://noahhl.github.com/batsd/doc/main.html)
   * [Future plans](http://noahhl.github.com/batsd/doc/file.future.html)
   * [License](#License)
 
