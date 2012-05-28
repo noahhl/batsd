@@ -1,0 +1,169 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>
+  File: Example client
+  
+    &mdash; Documentation by YARD 0.8.1
+  
+</title>
+
+  <link rel="stylesheet" href="css/style.css" type="text/css" media="screen" charset="utf-8" />
+
+  <link rel="stylesheet" href="css/common.css" type="text/css" media="screen" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  hasFrames = window.top.frames.main ? true : false;
+  relpath = '';
+  framesUrl = "frames.html#!" + escape(window.location.href);
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div id="header">
+      <div id="menu">
+  
+    <a href="_index.html">Index</a> &raquo; 
+    <span class="title">File: Example client</span>
+  
+
+  <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
+</div>
+
+      <div id="search">
+  
+    <a class="full_list_link" id="class_list_link"
+        href="class_list.html">
+      Class List
+    </a>
+  
+    <a class="full_list_link" id="method_list_link"
+        href="method_list.html">
+      Method List
+    </a>
+  
+    <a class="full_list_link" id="file_list_link"
+        href="file_list.html">
+      File List
+    </a>
+  
+</div>
+      <div class="clear"></div>
+    </div>
+
+    <iframe id="search_frame"></iframe>
+
+    <div id="content"><div id='filecontents'><pre class="code ruby"><span class='rubyid_require identifier id'>require</span> <span class='string val'>'timeout'</span>
+<span class='rubyid_require identifier id'>require</span> <span class='string val'>'json'</span>
+
+<span class='comment val'># Example client to access data exposed via batsd server</span>
+<span class='rubyid_class class kw'>class</span> <span class='rubyid_Client constant id'>Client</span>
+
+  <span class='rubyid_attr_accessor identifier id'>attr_accessor</span> <span class='symbol val'>:ipaddr</span><span class='comma token'>,</span> <span class='symbol val'>:port</span><span class='comma token'>,</span> <span class='symbol val'>:remote</span><span class='comma token'>,</span> <span class='symbol val'>:timeout</span><span class='comma token'>,</span> <span class='symbol val'>:redis</span>
+  
+  <span class='comment val'># Maximum attempts to execute a remote command before giving up</span>
+  <span class='rubyid_MAX_ATTEMPTS constant id'>MAX_ATTEMPTS</span> <span class='assign token'>=</span> <span class='integer val'>2</span>
+
+  <span class='comment val'># Create a new client. Optionally, specify a host, port, and timeout in</span>
+  <span class='comment val'># milliseconds</span>
+  <span class='rubyid_def def kw'>def</span> <span class='rubyid_initialize identifier id'>initialize</span><span class='lparen token'>(</span><span class='rubyid_options identifier id'>options</span><span class='assign token'>=</span><span class='lbrace token'>{</span><span class='rbrace token'>}</span><span class='rparen token'>)</span>
+    <span class='rubyid_self self kw'>self</span><span class='dot token'>.</span><span class='rubyid_ipaddr identifier id'>ipaddr</span> <span class='assign token'>=</span> <span class='rubyid_options identifier id'>options</span><span class='lbrack token'>[</span><span class='symbol val'>:host</span><span class='rbrack token'>]</span> <span class='orop op'>||</span> <span class='string val'>&quot;127.0.0.1&quot;</span>
+    <span class='rubyid_self self kw'>self</span><span class='dot token'>.</span><span class='rubyid_port identifier id'>port</span> <span class='assign token'>=</span> <span class='rubyid_options identifier id'>options</span><span class='lbrack token'>[</span><span class='symbol val'>:port</span><span class='rbrack token'>]</span> <span class='orop op'>||</span> <span class='integer val'>8127</span>
+    <span class='rubyid_self self kw'>self</span><span class='dot token'>.</span><span class='rubyid_timeout identifier id'>timeout</span> <span class='assign token'>=</span> <span class='rubyid_options identifier id'>options</span><span class='lbrack token'>[</span><span class='symbol val'>:timeout</span><span class='rbrack token'>]</span> <span class='orop op'>||</span> <span class='integer val'>2000</span>
+    <span class='rubyid_connect! fid id'>connect!</span>
+  <span class='rubyid_end end kw'>end</span>
+
+  <span class='comment val'># Get the set of datapoints batsd knows about. Will return an array of</span>
+  <span class='comment val'># strings</span>
+  <span class='rubyid_def def kw'>def</span> <span class='rubyid_available identifier id'>available</span>
+    <span class='rubyid_keys identifier id'>keys</span> <span class='assign token'>=</span> <span class='rubyid_query_remote identifier id'>query_remote</span><span class='lparen token'>(</span><span class='string val'>&quot;available&quot;</span><span class='rparen token'>)</span>
+    <span class='rubyid_keys identifier id'>keys</span><span class='dot token'>.</span><span class='rubyid_collect identifier id'>collect</span> <span class='rubyid_do do kw'>do</span> <span class='bitor op'>|</span><span class='rubyid_k identifier id'>k</span><span class='bitor op'>|</span>
+      <span class='rubyid_if if kw'>if</span> <span class='rubyid_k identifier id'>k</span><span class='dot token'>.</span><span class='rubyid_match identifier id'>match</span> <span class='regexp val'>/^timer/</span>
+        <span class='lbrack token'>[</span><span class='string val'>&quot;mean&quot;</span><span class='comma token'>,</span> <span class='string val'>&quot;min&quot;</span><span class='comma token'>,</span> <span class='string val'>&quot;max&quot;</span><span class='comma token'>,</span> <span class='string val'>&quot;upper_90&quot;</span><span class='comma token'>,</span> <span class='string val'>&quot;stddev&quot;</span><span class='comma token'>,</span> <span class='string val'>&quot;count&quot;</span><span class='rbrack token'>]</span><span class='dot token'>.</span><span class='rubyid_collect identifier id'>collect</span><span class='lbrace token'>{</span><span class='bitor op'>|</span><span class='rubyid_a identifier id'>a</span><span class='bitor op'>|</span> <span class='dstring node'>&quot;#{k}:#{a}&quot;</span><span class='rbrace token'>}</span>
+      <span class='rubyid_else else kw'>else</span>
+        <span class='rubyid_k identifier id'>k</span>
+      <span class='rubyid_end end kw'>end</span>
+    <span class='rubyid_end end kw'>end</span><span class='dot token'>.</span><span class='rubyid_flatten identifier id'>flatten</span>
+  <span class='rubyid_end end kw'>end</span>
+
+
+  <span class='comment val'># Get the values for a given &lt;code&gt;metric_name&lt;/code&gt; that's contained in the available</span>
+  <span class='comment val'># set of datapoints within the range of &lt;code&gt;start_timestamp&lt;/code&gt; to</span>
+  <span class='comment val'># &lt;code&gt;end_timestamp&lt;/code&gt;</span>
+  <span class='rubyid_def def kw'>def</span> <span class='rubyid_values identifier id'>values</span><span class='lparen token'>(</span><span class='rubyid_metric_name identifier id'>metric_name</span><span class='comma token'>,</span> <span class='rubyid_start_timestamp identifier id'>start_timestamp</span><span class='comma token'>,</span> <span class='rubyid_end_timestamp identifier id'>end_timestamp</span><span class='assign token'>=</span><span class='rubyid_Time constant id'>Time</span><span class='dot token'>.</span><span class='rubyid_now identifier id'>now</span><span class='comma token'>,</span> <span class='rubyid_attempt identifier id'>attempt</span><span class='assign token'>=</span><span class='integer val'>0</span><span class='rparen token'>)</span>
+    <span class='rubyid_results identifier id'>results</span> <span class='assign token'>=</span> <span class='lbrack token'>[</span><span class='rbrack token'>]</span>
+    <span class='rubyid_values identifier id'>values</span> <span class='assign token'>=</span> <span class='rubyid_query_remote identifier id'>query_remote</span><span class='lparen token'>(</span><span class='dstring node'>&quot;values #{metric_name} #{start_timestamp.to_i} #{end_timestamp.to_i}&quot;</span><span class='rparen token'>)</span>
+    <span class='rubyid_if if kw'>if</span> <span class='rubyid_values identifier id'>values</span><span class='lbrack token'>[</span><span class='rubyid_metric_name identifier id'>metric_name</span><span class='rbrack token'>]</span><span class='dot token'>.</span><span class='rubyid_nil? fid id'>nil?</span>
+      <span class='rubyid_puts identifier id'>puts</span> <span class='dstring node'>&quot;BatsdClient: #{Thread.current} #{self.remote.addr} Values returned weren't the same as what was asked for (expecting #{metric_name}, got #{values.keys.join(&quot;;&quot;)}).&quot;</span>
+      <span class='rubyid_if if kw'>if</span> <span class='rubyid_attempt identifier id'>attempt</span> <span class='lt op'>&lt;</span> <span class='rubyid_MAX_ATTEMPTS constant id'>MAX_ATTEMPTS</span>
+        <span class='rubyid_return return kw'>return</span> <span class='rubyid_values identifier id'>values</span><span class='lparen token'>(</span><span class='rubyid_metric_name identifier id'>metric_name</span><span class='comma token'>,</span> <span class='rubyid_start_timestamp identifier id'>start_timestamp</span><span class='comma token'>,</span> <span class='rubyid_end_timestamp identifier id'>end_timestamp</span><span class='comma token'>,</span> <span class='rubyid_attempt identifier id'>attempt</span><span class='plus op'>+</span><span class='integer val'>1</span><span class='rparen token'>)</span>
+      <span class='rubyid_else else kw'>else</span>
+        <span class='rubyid_return return kw'>return</span> <span class='lbrack token'>[</span><span class='rbrack token'>]</span>
+      <span class='rubyid_end end kw'>end</span>
+    <span class='rubyid_end end kw'>end</span>
+    <span class='rubyid_results identifier id'>results</span> <span class='assign token'>=</span> <span class='rubyid_values identifier id'>values</span><span class='lbrack token'>[</span><span class='rubyid_metric_name identifier id'>metric_name</span><span class='rbrack token'>]</span><span class='dot token'>.</span><span class='rubyid_collect identifier id'>collect</span><span class='lbrace token'>{</span><span class='bitor op'>|</span><span class='rubyid_v identifier id'>v</span><span class='bitor op'>|</span> <span class='lbrace token'>{</span> <span class='rubyid_timestamp identifier id'>timestamp</span><span class='colon op'>:</span> <span class='rubyid_Time constant id'>Time</span><span class='dot token'>.</span><span class='rubyid_at identifier id'>at</span><span class='lparen token'>(</span><span class='rubyid_v identifier id'>v</span><span class='lbrack token'>[</span><span class='string val'>&quot;timestamp&quot;</span><span class='rbrack token'>]</span><span class='dot token'>.</span><span class='rubyid_to_i identifier id'>to_i</span><span class='rparen token'>)</span><span class='comma token'>,</span> <span class='rubyid_value identifier id'>value</span><span class='colon op'>:</span> <span class='rubyid_v identifier id'>v</span><span class='lbrack token'>[</span><span class='string val'>&quot;value&quot;</span><span class='rbrack token'>]</span><span class='dot token'>.</span><span class='rubyid_to_f identifier id'>to_f</span> <span class='rbrace token'>}</span>  <span class='rbrace token'>}</span>
+    <span class='rubyid_results identifier id'>results</span>
+  <span class='rubyid_end end kw'>end</span>
+
+  <span class='comment val'># Clear and reconnect to the remote socket</span>
+  <span class='rubyid_def def kw'>def</span> <span class='rubyid_reconnect! fid id'>reconnect!</span>
+    <span class='rubyid_self self kw'>self</span><span class='dot token'>.</span><span class='rubyid_remote identifier id'>remote</span> <span class='assign token'>=</span> <span class='rubyid_nil nil kw'>nil</span>
+    <span class='rubyid_connect! fid id'>connect!</span>
+  <span class='rubyid_end end kw'>end</span>
+
+  <span class='rubyid_private identifier id'>private</span>
+    
+   <span class='comment val'># Connect to the remote batsd server over TCP</span>
+    <span class='rubyid_def def kw'>def</span> <span class='rubyid_connect! fid id'>connect!</span>
+      <span class='rubyid_Timeout constant id'>Timeout</span><span class='colon2 op'>::</span><span class='rubyid_timeout identifier id'>timeout</span><span class='lparen token'>(</span><span class='integer val'>5</span><span class='rparen token'>)</span> <span class='rubyid_do do kw'>do</span>
+        <span class='rubyid_self self kw'>self</span><span class='dot token'>.</span><span class='rubyid_remote identifier id'>remote</span> <span class='assign token'>=</span> <span class='rubyid_TCPSocket constant id'>TCPSocket</span><span class='dot token'>.</span><span class='rubyid_new identifier id'>new</span><span class='lparen token'>(</span><span class='rubyid_self self kw'>self</span><span class='dot token'>.</span><span class='rubyid_ipaddr identifier id'>ipaddr</span><span class='comma token'>,</span> <span class='rubyid_self self kw'>self</span><span class='dot token'>.</span><span class='rubyid_port identifier id'>port</span><span class='rparen token'>)</span> <span class='rubyid_rescue rescue kw'>rescue</span> <span class='rubyid_nil nil kw'>nil</span>
+      <span class='rubyid_end end kw'>end</span>
+    <span class='rubyid_rescue rescue kw'>rescue</span> <span class='rubyid_Timeout constant id'>Timeout</span><span class='colon2 op'>::</span><span class='rubyid_Error constant id'>Error</span> <span class='assign token'>=</span><span class='gt op'>&gt;</span> <span class='rubyid_e identifier id'>e</span>
+      <span class='rubyid_puts identifier id'>puts</span> <span class='string val'>&quot;BatsdClient: Couldn't connect to the remote statsd server in the time alloted&quot;</span>
+    <span class='rubyid_end end kw'>end</span>
+
+    <span class='comment val'># Send a command to the remote and attempt to parse the response as JSON</span>
+    <span class='rubyid_def def kw'>def</span> <span class='rubyid_query_remote identifier id'>query_remote</span><span class='lparen token'>(</span><span class='rubyid_command identifier id'>command</span><span class='comma token'>,</span> <span class='rubyid_attempt identifier id'>attempt</span><span class='assign token'>=</span><span class='integer val'>0</span><span class='rparen token'>)</span>
+      <span class='rubyid_Timeout constant id'>Timeout</span><span class='colon2 op'>::</span><span class='rubyid_timeout identifier id'>timeout</span><span class='lparen token'>(</span><span class='rubyid_self self kw'>self</span><span class='dot token'>.</span><span class='rubyid_timeout identifier id'>timeout</span><span class='dot token'>.</span><span class='rubyid_to_f identifier id'>to_f</span> <span class='div op'>/</span> <span class='float val'>1000.0</span><span class='rparen token'>)</span> <span class='rubyid_do do kw'>do</span>
+        <span class='rubyid_connect! fid id'>connect!</span> <span class='rubyid_unless unless_mod kw'>unless</span> <span class='rubyid_self self kw'>self</span><span class='dot token'>.</span><span class='rubyid_remote identifier id'>remote</span>
+        <span class='rubyid_self self kw'>self</span><span class='dot token'>.</span><span class='rubyid_remote identifier id'>remote</span><span class='dot token'>.</span><span class='rubyid_puts identifier id'>puts</span> <span class='rubyid_command identifier id'>command</span>
+        <span class='rubyid_@response ivar id'>@response</span> <span class='assign token'>=</span> <span class='rubyid_self self kw'>self</span><span class='dot token'>.</span><span class='rubyid_remote identifier id'>remote</span><span class='dot token'>.</span><span class='rubyid_gets identifier id'>gets</span>
+        <span class='rubyid_results identifier id'>results</span> <span class='assign token'>=</span> <span class='rubyid_JSON constant id'>JSON</span><span class='dot token'>.</span><span class='rubyid_parse identifier id'>parse</span><span class='lparen token'>(</span><span class='rubyid_@response ivar id'>@response</span><span class='rparen token'>)</span>
+      <span class='rubyid_end end kw'>end</span>
+      <span class='rubyid_rescue rescue kw'>rescue</span> <span class='rubyid_TimeoutError constant id'>TimeoutError</span> <span class='assign token'>=</span><span class='gt op'>&gt;</span> <span class='rubyid_e identifier id'>e</span>
+        <span class='rubyid_puts identifier id'>puts</span> <span class='dstring node'>&quot;BatsdClient: Timed out on #{command} #{&quot;; retrying.&quot; if attempt &lt; MAX_ATTEMPTS}&quot;</span>
+        <span class='rubyid_if if kw'>if</span> <span class='rubyid_attempt identifier id'>attempt</span> <span class='lt op'>&lt;</span> <span class='rubyid_MAX_ATTEMPTS constant id'>MAX_ATTEMPTS</span> 
+          <span class='rubyid_query_remote identifier id'>query_remote</span><span class='lparen token'>(</span><span class='rubyid_command identifier id'>command</span><span class='comma token'>,</span> <span class='rubyid_attempt identifier id'>attempt</span><span class='plus op'>+</span><span class='integer val'>1</span><span class='rparen token'>)</span>
+        <span class='rubyid_else else kw'>else</span>
+          <span class='lbrack token'>[</span><span class='rbrack token'>]</span>
+        <span class='rubyid_end end kw'>end</span>
+      <span class='rubyid_rescue rescue kw'>rescue</span> <span class='rubyid_Exception constant id'>Exception</span> <span class='assign token'>=</span><span class='gt op'>&gt;</span> <span class='rubyid_e identifier id'>e</span>
+        <span class='rubyid_if if kw'>if</span> <span class='rubyid_attempt identifier id'>attempt</span> <span class='lt op'>&lt;</span> <span class='rubyid_MAX_ATTEMPTS constant id'>MAX_ATTEMPTS</span> 
+          <span class='rubyid_query_remote identifier id'>query_remote</span><span class='lparen token'>(</span><span class='rubyid_command identifier id'>command</span><span class='comma token'>,</span> <span class='rubyid_attempt identifier id'>attempt</span><span class='plus op'>+</span><span class='integer val'>1</span><span class='rparen token'>)</span>
+        <span class='rubyid_else else kw'>else</span>
+          <span class='rubyid_puts identifier id'>puts</span> <span class='dstring node'>&quot;BatsdClient: Error querying remote server with #{command} due to #{e}: #{e.message} #{e.backtrace.join(&quot;\n&quot;)}&quot;</span>
+          <span class='rubyid_self self kw'>self</span><span class='dot token'>.</span><span class='rubyid_remote identifier id'>remote</span> <span class='assign token'>=</span> <span class='rubyid_nil nil kw'>nil</span>
+          <span class='rubyid_raise identifier id'>raise</span> <span class='rubyid_e identifier id'>e</span>
+        <span class='rubyid_end end kw'>end</span>
+    <span class='rubyid_end end kw'>end</span>
+  
+
+<span class='rubyid_end end kw'>end</span>
+</pre></div></div>
+
+    <div id="footer">
+  Generated on Mon May 28 06:37:18 2012 by
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.8.1 (ruby-1.9.3).
+</div>
+
+  </body>
+</html>

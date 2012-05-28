@@ -1,0 +1,133 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>
+  File: persistence
+  
+    &mdash; Documentation by YARD 0.8.1
+  
+</title>
+
+  <link rel="stylesheet" href="css/style.css" type="text/css" media="screen" charset="utf-8" />
+
+  <link rel="stylesheet" href="css/common.css" type="text/css" media="screen" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  hasFrames = window.top.frames.main ? true : false;
+  relpath = '';
+  framesUrl = "frames.html#!" + escape(window.location.href);
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div id="header">
+      <div id="menu">
+  
+    <a href="_index.html">Index</a> &raquo; 
+    <span class="title">File: persistence</span>
+  
+
+  <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
+</div>
+
+      <div id="search">
+  
+    <a class="full_list_link" id="class_list_link"
+        href="class_list.html">
+      Class List
+    </a>
+  
+    <a class="full_list_link" id="method_list_link"
+        href="method_list.html">
+      Method List
+    </a>
+  
+    <a class="full_list_link" id="file_list_link"
+        href="file_list.html">
+      File List
+    </a>
+  
+</div>
+      <div class="clear"></div>
+    </div>
+
+    <iframe id="search_frame"></iframe>
+
+    <div id="content"><div id='filecontents'><h1>Persistence</h1>
+
+<h2>Historical context</h2>
+
+<p>Etsy&#39;s original (&quot;reference&quot;) implementation of statsd primarily served as a first level aggregation
+and passthrough of data to Graphite (<a href="http://graphite.wikidot.com">http://graphite.wikidot.com</a>) and its associated Whisper storage
+engine. In this case, it performs the first aggregation over the course of its flush interval
+(typically 10 seconds in operation) and then passes those aggregated values to Graphite to store.
+It does not directly provide a persistence model.</p>
+
+<p>Batsd uses two datastores to store historical data.</p>
+
+<ul>
+<li>Redis is used to store recent, near realtime data. In most cases,
+this will be used for every-10-second data for the last 1-24 hours.</li>
+<li>Longer history, aggregated data is stored in &quot;flat&quot; files on disk. This could be anywhere from a
+one week retention to a 5 year retention</li>
+</ul>
+
+<h2>Configuration</h2>
+
+<p>The configuration of retention levels is similar in concept to Graphite, and is specified in the config
+file:</p>
+
+<pre class="code ruby"><code><span class='rubyid_retentions identifier id'>retentions</span><span class='colon op'>:</span>
+  <span class='integer val'>10</span><span class='colon op'>:</span>  <span class='integer val'>360</span> <span class='comment val'># store data at 10 second increments for 1 hour</span>
+  <span class='integer val'>60</span><span class='colon op'>:</span>  <span class='integer val'>10080</span>  <span class='comment val'># store data at 1 minute increments for 1 week</span>
+  <span class='integer val'>600</span><span class='colon op'>:</span> <span class='integer val'>52594</span> <span class='comment val'># store data at 10 minute increments for 1 year</span>
+</code></pre>
+
+<p>The shortest-term aggregation is always stored in Redis; the latter ones always stored to disk. In
+the future, this may be configurable.</p>
+
+<h2>Redis persistency</h2>
+
+<p>Near term data stored in redis is stored in sorted sets, one per datapoint, with the Unix timestamp
+as the score and a string structured as <code>#{now}&lt;X&gt;#{value}</code> as the value. This
+does mean that the string &quot;<X>&quot; is a reserved component in Batsd, and cannot be
+used in any key names.</p>
+
+<p>In addition to storing that sorted set, the current set of timer values is
+stored as a single string with expiry set to be used for later aggregations.</p>
+
+<p>A cleanup process is run occasionally to truncate the sorted sets using a <code>ZREMRANGEBYSCORE</code>. 
+See <a href="index.html#Historical_truncation">hisotrical truncation</a> for details on
+configuring this.</p>
+
+<h2>Diskstore</h2>
+
+<p>Longer duration data is stored in flat files located within subdirectories of the <code>root</code> specified
+in the configuration file.</p>
+
+<p>The location of a file will be determined by the MD5 hash of <code>#{metric_name}:#{aggregationLevel}</code>.
+Files are then stored two subdirectories deep using the first four characters of that hash.</p>
+
+<p>For example, with a <code>root</code> of <code>/statsd</code>, the path for the 60 second aggregation of <code>test_metric</code>
+will be <code>/statsd/88/b4/88b4ca597dfc2d67438cc26140b2615b</code>.</p>
+
+<p>Data is written to these files in <code>#{timestamp} #{value}</code> format, with each measurement separated by a <code>\n</code>
+newline character, in sequential order.</p>
+</div></div>
+
+    <div id="footer">
+  Generated on Mon May 28 06:37:18 2012 by
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.8.1 (ruby-1.9.3).
+</div>
+
+  </body>
+</html>

@@ -1,0 +1,391 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>
+  Class: Batsd::Receiver::Daemon
+  
+    &mdash; Documentation by YARD 0.8.1
+  
+</title>
+
+  <link rel="stylesheet" href="../../css/style.css" type="text/css" media="screen" charset="utf-8" />
+
+  <link rel="stylesheet" href="../../css/common.css" type="text/css" media="screen" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  hasFrames = window.top.frames.main ? true : false;
+  relpath = '../../';
+  framesUrl = "../../frames.html#!" + escape(window.location.href);
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="../../js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="../../js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div id="header">
+      <div id="menu">
+  
+    <a href="../../_index.html">Index (D)</a> &raquo;
+    <span class='title'><span class='object_link'><a href="../../Batsd.html" title="Batsd (module)">Batsd</a></span></span> &raquo; <span class='title'><span class='object_link'><a href="../Receiver.html" title="Batsd::Receiver (module)">Receiver</a></span></span>
+     &raquo; 
+    <span class="title">Daemon</span>
+  
+
+  <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
+</div>
+
+      <div id="search">
+  
+    <a class="full_list_link" id="class_list_link"
+        href="../../class_list.html">
+      Class List
+    </a>
+  
+    <a class="full_list_link" id="method_list_link"
+        href="../../method_list.html">
+      Method List
+    </a>
+  
+    <a class="full_list_link" id="file_list_link"
+        href="../../file_list.html">
+      File List
+    </a>
+  
+</div>
+      <div class="clear"></div>
+    </div>
+
+    <iframe id="search_frame"></iframe>
+
+    <div id="content"><h1>Class: Batsd::Receiver::Daemon
+  
+  
+  
+</h1>
+
+<dl class="box">
+  
+    <dt class="r1">Inherits:</dt>
+    <dd class="r1">
+      <span class="inheritName">Object</span>
+      
+        <ul class="fullTree">
+          <li>Object</li>
+          
+            <li class="next">Batsd::Receiver::Daemon</li>
+          
+        </ul>
+        <a href="#" class="inheritanceTree">show all</a>
+      
+      </dd>
+    
+  
+  
+    
+  
+    
+  
+  
+  
+    <dt class="r2 last">Defined in:</dt>
+    <dd class="r2 last">lib/batsd/receiver.rb</dd>
+  
+</dl>
+<div class="clear"></div>
+
+<h2>Overview</h2><div class="docstring">
+  <div class="discussion">
+    
+<p>Interface to run the receiver from the binary</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
+  <h2>Constant Summary</h2>
+  
+    <dl class="constants">
+      
+        <dt id="MAX_TRUNCATION_INTERVAL-constant" class="">MAX_TRUNCATION_INTERVAL =
+          <div class="docstring">
+  <div class="discussion">
+    
+<p>Force a truncation at all intervals at least every MAX_TRUNCATION_INTERVAL
+seconds. This prevents overflow issues in EventMachine, but is largely
+theoretical; it's unlikely any instance of the daemon would run this long.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
+        </dt>
+        <dd><pre class="code"><span class='integer val'>2000000</span>
+</pre></dd>
+      
+    </dl>
+  
+
+
+
+
+
+
+
+  
+    <h2>
+      Instance Method Summary
+      <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
+    </h2>
+
+    <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#initialize-instance_method" title="#initialize (instance method)">- (Daemon) <strong>initialize</strong>(handlers, options = {}) </a>
+    
+
+    
+  </span>
+  
+  
+    <span class="note title constructor">constructor</span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Create a new daemon and set up it's options and  register the handlers
+provided.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#run-instance_method" title="#run (instance method)">- (Object) <strong>run</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Run the event machine server.</p>
+</div></span>
+  
+</li>
+
+      
+    </ul>
+  
+
+<div id="constructor_details" class="method_details_list">
+  <h2>Constructor Details</h2>
+  
+    <div class="method_details first">
+  <h3 class="signature first" id="initialize-instance_method">
+  
+    - (<tt><span class='object_link'><a href="" title="Batsd::Receiver::Daemon (class)">Daemon</a></span></tt>) <strong>initialize</strong>(handlers, options = {}) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Create a new daemon and set up it's options and  register the handlers
+provided</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+60
+61
+62
+63
+64</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/batsd/receiver.rb', line 60</span>
+
+<span class='rubyid_def def kw'>def</span> <span class='rubyid_initialize identifier id'>initialize</span><span class='lparen token'>(</span><span class='rubyid_handlers identifier id'>handlers</span><span class='comma token'>,</span> <span class='rubyid_options identifier id'>options</span><span class='assign token'>=</span><span class='lbrace token'>{</span><span class='rbrace token'>}</span><span class='rparen token'>)</span>
+  <span class='rubyid_@options ivar id'>@options</span> <span class='assign token'>=</span> <span class='rubyid_options identifier id'>options</span>
+  <span class='rubyid_@handlers ivar id'>@handlers</span> <span class='assign token'>=</span> <span class='rubyid_handlers identifier id'>handlers</span>
+  <span class='rubyid_Batsd constant id'>Batsd</span><span class='colon2 op'>::</span><span class='rubyid_Receiver constant id'>Receiver</span><span class='dot token'>.</span><span class='rubyid_handlers identifier id'>handlers</span> <span class='assign token'>=</span> <span class='rubyid_handlers identifier id'>handlers</span>
+<span class='rubyid_end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+  
+</div>
+
+
+  <div id="instance_method_details" class="method_details_list">
+    <h2>Instance Method Details</h2>
+
+    
+      <div class="method_details first">
+  <h3 class="signature first" id="run-instance_method">
+  
+    - (<tt>Object</tt>) <strong>run</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Run the event machine server. This will:</p>
+<ul><li>
+<p>Bind to an address and port and process incoming messages</p>
+</li><li>
+<p>Establish flush timers for each handler that has implemented a flush
+method. These timers will happen at the lowest retention  level (typically
+10 seconds)</p>
+</li></ul>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/batsd/receiver.rb', line 73</span>
+
+<span class='rubyid_def def kw'>def</span> <span class='rubyid_run identifier id'>run</span>
+  <span class='rubyid_EventMachine constant id'>EventMachine</span><span class='colon2 op'>::</span><span class='rubyid_run identifier id'>run</span> <span class='rubyid_do do kw'>do</span>
+    <span class='rubyid_if if kw'>if</span> <span class='rubyid_RUBY_PLATFORM constant id'>RUBY_PLATFORM</span> <span class='eq op'>==</span> <span class='string val'>&quot;java&quot;</span>
+      <span class='rubyid_Thread constant id'>Thread</span><span class='dot token'>.</span><span class='rubyid_current identifier id'>current</span><span class='dot token'>.</span><span class='rubyid_priority identifier id'>priority</span> <span class='assign token'>=</span> <span class='integer val'>10</span>
+    <span class='rubyid_end end kw'>end</span>
+    <span class='rubyid_bind identifier id'>bind</span> <span class='assign token'>=</span> <span class='rubyid_@options ivar id'>@options</span><span class='lbrack token'>[</span><span class='symbol val'>:bind</span><span class='rbrack token'>]</span> <span class='orop op'>||</span> <span class='string val'>'0.0.0.0'</span>
+    <span class='rubyid_port identifier id'>port</span> <span class='assign token'>=</span> <span class='rubyid_@options ivar id'>@options</span><span class='lbrack token'>[</span><span class='symbol val'>:port</span><span class='rbrack token'>]</span> <span class='orop op'>||</span> <span class='integer val'>8125</span>
+    <span class='rubyid_puts identifier id'>puts</span> <span class='dstring node'>&quot;#{Time.now}: Starting receiver on batsd://#{bind}:#{port}&quot;</span>
+    <span class='rubyid_EventMachine constant id'>EventMachine</span><span class='colon2 op'>::</span><span class='rubyid_open_datagram_socket identifier id'>open_datagram_socket</span><span class='lparen token'>(</span><span class='rubyid_bind identifier id'>bind</span><span class='comma token'>,</span> <span class='rubyid_port identifier id'>port</span><span class='comma token'>,</span> <span class='rubyid_Batsd constant id'>Batsd</span><span class='colon2 op'>::</span><span class='rubyid_Receiver constant id'>Receiver</span><span class='rparen token'>)</span>
+    <span class='comment val'># Have to run the statistics service as part of this process so that</span>
+    <span class='comment val'># it has access to the handler objects, which contain their own</span>
+    <span class='comment val'># statistics</span>
+    <span class='rubyid_EventMachine constant id'>EventMachine</span><span class='colon2 op'>::</span><span class='rubyid_start_server identifier id'>start_server</span><span class='lparen token'>(</span><span class='rubyid_bind identifier id'>bind</span><span class='comma token'>,</span> <span class='rubyid_port identifier id'>port</span> <span class='plus op'>+</span> <span class='integer val'>1</span><span class='comma token'>,</span> <span class='rubyid_Batsd constant id'>Batsd</span><span class='colon2 op'>::</span><span class='rubyid_Statistics constant id'>Statistics</span><span class='rparen token'>)</span>
+
+    <span class='rubyid_@handlers ivar id'>@handlers</span><span class='dot token'>.</span><span class='rubyid_each identifier id'>each</span> <span class='rubyid_do do kw'>do</span> <span class='bitor op'>|</span><span class='rubyid_type identifier id'>type</span><span class='comma token'>,</span> <span class='rubyid_handler identifier id'>handler</span><span class='bitor op'>|</span>
+      <span class='rubyid_if if kw'>if</span> <span class='rubyid_handler identifier id'>handler</span><span class='dot token'>.</span><span class='rubyid_respond_to? fid id'>respond_to?</span> <span class='colon op'>:</span><span class='rubyid_flush identifier id'>flush</span>
+        <span class='rubyid_puts identifier id'>puts</span> <span class='dstring node'>&quot;#{Time.now}: Adding flush timer to #{handler}&quot;</span>
+        <span class='rubyid_EventMachine constant id'>EventMachine</span><span class='dot token'>.</span><span class='rubyid_add_periodic_timer identifier id'>add_periodic_timer</span><span class='lparen token'>(</span><span class='rubyid_@options ivar id'>@options</span><span class='lbrack token'>[</span><span class='symbol val'>:retentions</span><span class='rbrack token'>]</span><span class='dot token'>.</span><span class='rubyid_keys identifier id'>keys</span><span class='lbrack token'>[</span><span class='integer val'>0</span><span class='rbrack token'>]</span><span class='dot token'>.</span><span class='rubyid_to_i identifier id'>to_i</span><span class='rparen token'>)</span> <span class='rubyid_do do kw'>do</span>
+           <span class='rubyid_Thread constant id'>Thread</span><span class='dot token'>.</span><span class='rubyid_new identifier id'>new</span> <span class='lbrace token'>{</span> <span class='rubyid_handler identifier id'>handler</span><span class='dot token'>.</span><span class='rubyid_flush identifier id'>flush</span> <span class='rbrace token'>}</span>
+        <span class='rubyid_end end kw'>end</span>
+      <span class='rubyid_end end kw'>end</span>
+    <span class='rubyid_end end kw'>end</span>
+
+    <span class='rubyid_if if kw'>if</span> <span class='rubyid_@options ivar id'>@options</span><span class='lbrack token'>[</span><span class='symbol val'>:autotruncate</span><span class='rbrack token'>]</span>
+      <span class='rubyid_puts identifier id'>puts</span> <span class='string val'>&quot;Enabling autotruncation&quot;</span>
+      <span class='rubyid_@options ivar id'>@options</span><span class='lbrack token'>[</span><span class='symbol val'>:retentions</span><span class='rbrack token'>]</span><span class='dot token'>.</span><span class='rubyid_each identifier id'>each</span> <span class='rubyid_do do kw'>do</span> <span class='bitor op'>|</span><span class='rubyid_interval identifier id'>interval</span><span class='comma token'>,</span> <span class='rubyid_n identifier id'>n</span><span class='bitor op'>|</span>
+        <span class='rubyid_frequency identifier id'>frequency</span> <span class='assign token'>=</span> <span class='lbrack token'>[</span><span class='rubyid_interval identifier id'>interval</span><span class='dot token'>.</span><span class='rubyid_to_i identifier id'>to_i</span> <span class='mult op'>*</span> <span class='rubyid_n identifier id'>n</span><span class='dot token'>.</span><span class='rubyid_to_i identifier id'>to_i</span><span class='comma token'>,</span> <span class='rubyid_MAX_TRUNCATION_INTERVAL constant id'>MAX_TRUNCATION_INTERVAL</span><span class='rbrack token'>]</span><span class='dot token'>.</span><span class='rubyid_min identifier id'>min</span> 
+        <span class='rubyid_EventMachine constant id'>EventMachine</span><span class='dot token'>.</span><span class='rubyid_add_periodic_timer identifier id'>add_periodic_timer</span><span class='lparen token'>(</span><span class='rubyid_frequency identifier id'>frequency</span><span class='rparen token'>)</span> <span class='rubyid_do do kw'>do</span>
+          <span class='rubyid_Thread constant id'>Thread</span><span class='dot token'>.</span><span class='rubyid_new identifier id'>new</span> <span class='lbrace token'>{</span> <span class='rubyid_Batsd constant id'>Batsd</span><span class='colon2 op'>::</span><span class='rubyid_Truncator constant id'>Truncator</span><span class='dot token'>.</span><span class='rubyid_new identifier id'>new</span><span class='lparen token'>(</span><span class='rubyid_@options ivar id'>@options</span><span class='rparen token'>)</span><span class='dot token'>.</span><span class='rubyid_run identifier id'>run</span><span class='lparen token'>(</span><span class='rubyid_interval identifier id'>interval</span><span class='rparen token'>)</span> <span class='rbrace token'>}</span>
+        <span class='rubyid_end end kw'>end</span>
+        <span class='rubyid_puts identifier id'>puts</span> <span class='dstring node'>&quot;Truncator added for #{interval} second aggregations every #{frequency} seconds&quot;</span>
+      <span class='rubyid_end end kw'>end</span>
+    <span class='rubyid_end end kw'>end</span>
+
+  <span class='rubyid_end end kw'>end</span>
+<span class='rubyid_end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+</div>
+
+    <div id="footer">
+  Generated on Mon May 28 06:37:19 2012 by
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.8.1 (ruby-1.9.3).
+</div>
+
+  </body>
+</html>

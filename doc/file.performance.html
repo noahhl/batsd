@@ -1,0 +1,104 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>
+  File: performance
+  
+    &mdash; Documentation by YARD 0.8.1
+  
+</title>
+
+  <link rel="stylesheet" href="css/style.css" type="text/css" media="screen" charset="utf-8" />
+
+  <link rel="stylesheet" href="css/common.css" type="text/css" media="screen" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  hasFrames = window.top.frames.main ? true : false;
+  relpath = '';
+  framesUrl = "frames.html#!" + escape(window.location.href);
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div id="header">
+      <div id="menu">
+  
+    <a href="_index.html">Index</a> &raquo; 
+    <span class="title">File: performance</span>
+  
+
+  <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
+</div>
+
+      <div id="search">
+  
+    <a class="full_list_link" id="class_list_link"
+        href="class_list.html">
+      Class List
+    </a>
+  
+    <a class="full_list_link" id="method_list_link"
+        href="method_list.html">
+      Method List
+    </a>
+  
+    <a class="full_list_link" id="file_list_link"
+        href="file_list.html">
+      File List
+    </a>
+  
+</div>
+      <div class="clear"></div>
+    </div>
+
+    <iframe id="search_frame"></iframe>
+
+    <div id="content"><div id='filecontents'><h1>Performance</h1>
+
+<p>Performance for Batsd is typically comparable with Graphite performance with similar 
+hardware and data volumes. 37signals has been using Batsd with well in excess
+of 10,000 incoming observations per second with minimal load on midrange server
+hardware with SSDs.</p>
+
+<h2>Ruby version</h2>
+
+<p>Ruby 1.9.3 or JRuby 1.6 or later is required.</p>
+
+<p>Batsd makes heavy use of threadpools to defer blocking disk and network operations. 
+Because of this, JRuby is the prefered Ruby version to run, preferably on Java
+version 1.7 to capture the full performance potential.</p>
+
+<p>For high volumes of data, the maximum heap and stack size for the JVM will
+likely need to be raised, eg., by setting <code>JAVA_OPTS=-Xmx2G -Xms2G -Xmn512m</code>.
+Performance can be improved by deferring garbage collection further with
+greater JVM limits.</p>
+
+<h2>Disk</h2>
+
+<p>In almost every case, disk performance will be the bottleneck limiting
+performance. While you can use consumer HDDs or even a network attached storage
+device exposed via NFS, a RAID array of SSDs will offer the best performance.</p>
+
+<h2>Redis</h2>
+
+<p>Redis is unlikely to be a performance limitation, though a localhost instance
+will offer the best performance. Advice on optimizing Redis further can be
+obtained from the <a href="http://redis.io">Redis website</a>.</p>
+</div></div>
+
+    <div id="footer">
+  Generated on Mon May 28 06:37:18 2012 by
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.8.1 (ruby-1.9.3).
+</div>
+
+  </body>
+</html>

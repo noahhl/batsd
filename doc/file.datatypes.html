@@ -1,0 +1,136 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>
+  File: datatypes
+  
+    &mdash; Documentation by YARD 0.8.1
+  
+</title>
+
+  <link rel="stylesheet" href="css/style.css" type="text/css" media="screen" charset="utf-8" />
+
+  <link rel="stylesheet" href="css/common.css" type="text/css" media="screen" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  hasFrames = window.top.frames.main ? true : false;
+  relpath = '';
+  framesUrl = "frames.html#!" + escape(window.location.href);
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div id="header">
+      <div id="menu">
+  
+    <a href="_index.html">Index</a> &raquo; 
+    <span class="title">File: datatypes</span>
+  
+
+  <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
+</div>
+
+      <div id="search">
+  
+    <a class="full_list_link" id="class_list_link"
+        href="class_list.html">
+      Class List
+    </a>
+  
+    <a class="full_list_link" id="method_list_link"
+        href="method_list.html">
+      Method List
+    </a>
+  
+    <a class="full_list_link" id="file_list_link"
+        href="file_list.html">
+      File List
+    </a>
+  
+</div>
+      <div class="clear"></div>
+    </div>
+
+    <iframe id="search_frame"></iframe>
+
+    <div id="content"><div id='filecontents'><h1>Data types</h1>
+
+<p>Batsd is primarily &#39;wireline&#39; compatible with Etsy&#39;s implementation of statsd as detailed in
+<a href="http://codeascraft.etsy.com/2011/02/15/measure-anything-measure-everything/">http://codeascraft.etsy.com/2011/02/15/measure-anything-measure-everything/</a> and implemented in
+<a href="https://github.com/etsy/statsd">https://github.com/etsy/statsd</a> (hereafter called the &#39;reference&#39; implementation).</p>
+
+<p>Datapoints are always sent over UDP to a server. By convention, the server listens on port 8125.</p>
+
+<p>Datapoints are always formatted as</p>
+
+<pre class="code ruby"><code><span class='rubyid_keyname identifier id'>keyname</span><span class='symbol val'>:value</span><span class='bitor op'>|</span><span class='rubyid_datatype identifier id'>datatype</span>
+</code></pre>
+
+<p>where <code>keyname</code> is delimited into sections by dots, value is a numeric value, and datatype is a
+string.</p>
+
+<p>The reference implementation generally defines two datatypes:</p>
+
+<ul>
+<li>&quot;counters&quot;, with a datatype of <code>c</code> and an integer value. Counters are aggregated as cumulative
+values over time.</li>
+<li>&quot;timers&quot;, with a datatype of <code>ms</code> and an integer value. Gauges are averaged over time.</li>
+</ul>
+
+<p>This implementation supports those datatypes as specified, and further adds:</p>
+
+<ul>
+<li>Support for floats as well as integer values for all datatypes</li>
+<li>&quot;gauges&quot;, with a dataype of <code>g</code> and a numeric value. Gauges are not aggregated over time.</li>
+</ul>
+
+<p>When stored, datapoints have the type prepended to the keyname using a colon (e.g., <code>foo:1|c</code> becomes <code>counters:foo</code>)</p>
+
+<h2>Averaging and aggregation</h2>
+
+<h3>Gauges</h3>
+
+<p>Gauges are not aggregated or averaged in any way - they are stored entirely on disk, and are written as 
+soon as they are received (strictly speaking, they are queued to be written as
+soon as they are received; actual writing may be delayed slightly).</p>
+
+<h3>Counters</h3>
+
+<p>Counters are summed up over the course of each retention interval. No
+information about the distribution of values received is retained. </p>
+
+<h3>Timers</h3>
+
+<p>Timers are averaged and several measures are stored about
+the distribution:</p>
+
+<ul>
+<li>mean               - the mean value of all measurements in that interval</li>
+<li>min                - the minimum value of all measurements in that interval</li>
+<li>max                - the maximum value of all measurements in that interval</li>
+<li>count              - the total number of measurements in that interval</li>
+<li>upper_90           - the upper 90th percentile threshold that measurements in that interval all fall below</li>
+<li>standard deviation - the standard deviation of measurements in that interval</li>
+</ul>
+
+<p>These are each calculated and stored for each timer every time an aggregation is performed. They are 
+generally treated as separate metrics for all other purposes, with their type (e.g., &quot;mean&quot;) appended
+to the metric name using a colon delimeter.</p>
+</div></div>
+
+    <div id="footer">
+  Generated on Mon May 28 06:37:18 2012 by
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.8.1 (ruby-1.9.3).
+</div>
+
+  </body>
+</html>

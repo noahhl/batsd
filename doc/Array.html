@@ -1,0 +1,643 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>
+  Class: Array
+  
+    &mdash; Documentation by YARD 0.8.1
+  
+</title>
+
+  <link rel="stylesheet" href="css/style.css" type="text/css" media="screen" charset="utf-8" />
+
+  <link rel="stylesheet" href="css/common.css" type="text/css" media="screen" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  hasFrames = window.top.frames.main ? true : false;
+  relpath = '';
+  framesUrl = "frames.html#!" + escape(window.location.href);
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div id="header">
+      <div id="menu">
+  
+    <a href="_index.html">Index (A)</a> &raquo;
+    
+    
+    <span class="title">Array</span>
+  
+
+  <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
+</div>
+
+      <div id="search">
+  
+    <a class="full_list_link" id="class_list_link"
+        href="class_list.html">
+      Class List
+    </a>
+  
+    <a class="full_list_link" id="method_list_link"
+        href="method_list.html">
+      Method List
+    </a>
+  
+    <a class="full_list_link" id="file_list_link"
+        href="file_list.html">
+      File List
+    </a>
+  
+</div>
+      <div class="clear"></div>
+    </div>
+
+    <iframe id="search_frame"></iframe>
+
+    <div id="content"><h1>Class: Array
+  
+  
+  
+</h1>
+
+<dl class="box">
+  
+    <dt class="r1">Inherits:</dt>
+    <dd class="r1">
+      <span class="inheritName">Object</span>
+      
+        <ul class="fullTree">
+          <li>Object</li>
+          
+            <li class="next">Array</li>
+          
+        </ul>
+        <a href="#" class="inheritanceTree">show all</a>
+      
+      </dd>
+    
+  
+  
+    
+  
+    
+  
+  
+  
+    <dt class="r2 last">Defined in:</dt>
+    <dd class="r2 last">lib/core-ext/array.rb</dd>
+  
+</dl>
+<div class="clear"></div>
+
+<h2>Overview</h2><div class="docstring">
+  <div class="discussion">
+    
+<p>Extensions to Array to enable easier math</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
+
+
+
+
+
+
+  
+    <h2>
+      Instance Method Summary
+      <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
+    </h2>
+
+    <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#mean-instance_method" title="#mean (instance method)">- (Object) <strong>mean</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Calculates the arithmetic mean of values in the array.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#mean_squared-instance_method" title="#mean_squared (instance method)">- (Object) <strong>mean_squared</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Calculates the mean squared error of values in the array.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#median-instance_method" title="#median (instance method)">- (Object) <strong>median</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Calculates the median of values in the array.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#method_missing-instance_method" title="#method_missing (instance method)">- (Object) <strong>method_missing</strong>(method, *args, &amp;block) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Allow [1,2,3].percentile_90, [1,2,3].percentile(75), etc.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#percentile-instance_method" title="#percentile (instance method)">- (Object) <strong>percentile</strong>(threshold) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Calculates the value of the upper percentile of values  in the array.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#standard_dev-instance_method" title="#standard_dev (instance method)">- (Object) <strong>standard_dev</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Calculates the standard deviatiation of values in the array.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#sum-instance_method" title="#sum (instance method)">- (Object) <strong>sum</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Calculates the sum of values in the array.</p>
+</div></span>
+  
+</li>
+
+      
+    </ul>
+  
+
+<div id="method_missing_details" class="method_details_list">
+  <h2>Dynamic Method Handling</h2>
+  <p class="notice this">
+    This class handles dynamic methods through the <tt>method_missing</tt> method
+    
+  </p>
+  
+    <div class="method_details first">
+  <h3 class="signature first" id="method_missing-instance_method">
+  
+    - (<tt>Object</tt>) <strong>method_missing</strong>(method, *args, &amp;block) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Allow [1,2,3].percentile_90, [1,2,3].percentile(75), etc.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+45
+46
+47
+48
+49
+50
+51</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/core-ext/array.rb', line 45</span>
+
+<span class='rubyid_def def kw'>def</span> <span class='rubyid_method_missing identifier id'>method_missing</span><span class='lparen token'>(</span><span class='rubyid_method identifier id'>method</span><span class='comma token'>,</span> <span class='mult op'>*</span><span class='rubyid_args identifier id'>args</span><span class='comma token'>,</span> <span class='bitand op'>&amp;</span><span class='rubyid_block identifier id'>block</span><span class='rparen token'>)</span>
+   <span class='rubyid_if if kw'>if</span> <span class='rubyid_method identifier id'>method</span><span class='dot token'>.</span><span class='rubyid_to_s identifier id'>to_s</span> <span class='match op'>=~</span> <span class='regexp val'>/^percentile_(.+)$/</span>
+     <span class='rubyid_percentile identifier id'>percentile</span><span class='lparen token'>(</span><span class='rubyid_$1 nth_ref id'>$1</span><span class='dot token'>.</span><span class='rubyid_to_i identifier id'>to_i</span><span class='rparen token'>)</span>
+   <span class='rubyid_else else kw'>else</span>
+     <span class='rubyid_super super kw'>super</span> 
+   <span class='rubyid_end end kw'>end</span>
+<span class='rubyid_end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+  
+</div>
+
+
+  <div id="instance_method_details" class="method_details_list">
+    <h2>Instance Method Details</h2>
+
+    
+      <div class="method_details first">
+  <h3 class="signature first" id="mean-instance_method">
+  
+    - (<tt>Object</tt>) <strong>mean</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Calculates the arithmetic mean of values in the array</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+10
+11
+12</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/core-ext/array.rb', line 10</span>
+
+<span class='rubyid_def def kw'>def</span> <span class='rubyid_mean identifier id'>mean</span>
+ <span class='rubyid_self self kw'>self</span><span class='dot token'>.</span><span class='rubyid_sum identifier id'>sum</span><span class='dot token'>.</span><span class='rubyid_to_f identifier id'>to_f</span> <span class='div op'>/</span> <span class='rubyid_self self kw'>self</span><span class='dot token'>.</span><span class='rubyid_length identifier id'>length</span>
+<span class='rubyid_end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="mean_squared-instance_method">
+  
+    - (<tt>Object</tt>) <strong>mean_squared</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Calculates the mean squared error of values in the array</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+34
+35
+36
+37</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/core-ext/array.rb', line 34</span>
+
+<span class='rubyid_def def kw'>def</span> <span class='rubyid_mean_squared identifier id'>mean_squared</span> 
+  <span class='rubyid_m identifier id'>m</span> <span class='assign token'>=</span> <span class='rubyid_mean identifier id'>mean</span>
+  <span class='rubyid_self self kw'>self</span><span class='dot token'>.</span><span class='rubyid_map identifier id'>map</span><span class='lbrace token'>{</span><span class='bitor op'>|</span><span class='rubyid_v identifier id'>v</span><span class='bitor op'>|</span> <span class='lparen token'>(</span><span class='rubyid_v identifier id'>v</span><span class='minus op'>-</span><span class='rubyid_m identifier id'>m</span><span class='rparen token'>)</span><span class='pow op'>**</span><span class='integer val'>2</span><span class='rbrace token'>}</span><span class='dot token'>.</span><span class='rubyid_sum identifier id'>sum</span>
+<span class='rubyid_end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="median-instance_method">
+  
+    - (<tt>Object</tt>) <strong>median</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Calculates the median of values in the array</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+15
+16
+17</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/core-ext/array.rb', line 15</span>
+
+<span class='rubyid_def def kw'>def</span> <span class='rubyid_median identifier id'>median</span>
+ <span class='rubyid_self self kw'>self</span><span class='dot token'>.</span><span class='rubyid_sort identifier id'>sort</span><span class='lbrack token'>[</span><span class='rubyid_self self kw'>self</span><span class='dot token'>.</span><span class='rubyid_length identifier id'>length</span><span class='div op'>/</span><span class='integer val'>2</span><span class='rbrack token'>]</span>
+<span class='rubyid_end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="percentile-instance_method">
+  
+    - (<tt>Object</tt>) <strong>percentile</strong>(threshold) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Calculates the value of the upper percentile of values  in the array. If
+only a single value is provided in the array, that is returned</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/core-ext/array.rb', line 22</span>
+
+<span class='rubyid_def def kw'>def</span> <span class='rubyid_percentile identifier id'>percentile</span><span class='lparen token'>(</span><span class='rubyid_threshold identifier id'>threshold</span><span class='rparen token'>)</span>
+  <span class='rubyid_if if kw'>if</span> <span class='lparen token'>(</span><span class='rubyid_count identifier id'>count</span> <span class='gt op'>&gt;</span> <span class='integer val'>1</span><span class='rparen token'>)</span>
+    <span class='rubyid_self self kw'>self</span><span class='dot token'>.</span><span class='rubyid_sort! fid id'>sort!</span>
+    <span class='comment val'># strip off the top 100-threshold</span>
+    <span class='rubyid_threshold_index identifier id'>threshold_index</span> <span class='assign token'>=</span> <span class='lparen token'>(</span><span class='lparen token'>(</span><span class='lparen token'>(</span><span class='integer val'>100</span> <span class='minus op'>-</span> <span class='rubyid_threshold identifier id'>threshold</span><span class='rparen token'>)</span><span class='dot token'>.</span><span class='rubyid_to_f identifier id'>to_f</span> <span class='div op'>/</span> <span class='integer val'>100</span><span class='rparen token'>)</span> <span class='mult op'>*</span> <span class='rubyid_count identifier id'>count</span><span class='rparen token'>)</span><span class='dot token'>.</span><span class='rubyid_round identifier id'>round</span>
+    <span class='rubyid_self self kw'>self</span><span class='lbrack token'>[</span><span class='integer val'>0</span><span class='dot2 op'>..</span><span class='minus op'>-</span><span class='rubyid_threshold_index identifier id'>threshold_index</span><span class='rbrack token'>]</span><span class='dot token'>.</span><span class='rubyid_last identifier id'>last</span>
+  <span class='rubyid_else else kw'>else</span>
+    <span class='rubyid_self self kw'>self</span><span class='dot token'>.</span><span class='rubyid_first identifier id'>first</span>
+  <span class='rubyid_end end kw'>end</span>
+<span class='rubyid_end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="standard_dev-instance_method">
+  
+    - (<tt>Object</tt>) <strong>standard_dev</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Calculates the standard deviatiation of values in the array</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+40
+41
+42</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/core-ext/array.rb', line 40</span>
+
+<span class='rubyid_def def kw'>def</span> <span class='rubyid_standard_dev identifier id'>standard_dev</span>
+  <span class='lparen token'>(</span><span class='rubyid_mean_squared identifier id'>mean_squared</span><span class='div op'>/</span><span class='lparen token'>(</span><span class='rubyid_count identifier id'>count</span><span class='minus op'>-</span><span class='integer val'>1</span><span class='rparen token'>)</span><span class='rparen token'>)</span><span class='pow op'>**</span><span class='integer val'>0</span><span class='integer val'>.5</span>
+<span class='rubyid_end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="sum-instance_method">
+  
+    - (<tt>Object</tt>) <strong>sum</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Calculates the sum of values in the array</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+5
+6
+7</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/core-ext/array.rb', line 5</span>
+
+<span class='rubyid_def def kw'>def</span> <span class='rubyid_sum identifier id'>sum</span> 
+ <span class='rubyid_inject identifier id'>inject</span><span class='lparen token'>(</span> <span class='rubyid_nil nil kw'>nil</span> <span class='rparen token'>)</span> <span class='lbrace token'>{</span> <span class='bitor op'>|</span><span class='rubyid_sum identifier id'>sum</span><span class='comma token'>,</span><span class='rubyid_x identifier id'>x</span><span class='bitor op'>|</span> <span class='rubyid_sum identifier id'>sum</span> <span class='integer val'>? </span><span class='rubyid_sum identifier id'>sum</span><span class='plus op'>+</span><span class='rubyid_x identifier id'>x</span> <span class='colon op'>:</span> <span class='rubyid_x identifier id'>x</span> <span class='rbrace token'>}</span> 
+<span class='rubyid_end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+</div>
+
+    <div id="footer">
+  Generated on Mon May 28 06:37:19 2012 by
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.8.1 (ruby-1.9.3).
+</div>
+
+  </body>
+</html>

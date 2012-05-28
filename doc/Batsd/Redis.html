@@ -1,0 +1,949 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>
+  Class: Batsd::Redis
+  
+    &mdash; Documentation by YARD 0.8.1
+  
+</title>
+
+  <link rel="stylesheet" href="../css/style.css" type="text/css" media="screen" charset="utf-8" />
+
+  <link rel="stylesheet" href="../css/common.css" type="text/css" media="screen" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  hasFrames = window.top.frames.main ? true : false;
+  relpath = '../';
+  framesUrl = "../frames.html#!" + escape(window.location.href);
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="../js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="../js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div id="header">
+      <div id="menu">
+  
+    <a href="../_index.html">Index (R)</a> &raquo;
+    <span class='title'><span class='object_link'><a href="../Batsd.html" title="Batsd (module)">Batsd</a></span></span>
+     &raquo; 
+    <span class="title">Redis</span>
+  
+
+  <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
+</div>
+
+      <div id="search">
+  
+    <a class="full_list_link" id="class_list_link"
+        href="../class_list.html">
+      Class List
+    </a>
+  
+    <a class="full_list_link" id="method_list_link"
+        href="../method_list.html">
+      Method List
+    </a>
+  
+    <a class="full_list_link" id="file_list_link"
+        href="../file_list.html">
+      File List
+    </a>
+  
+</div>
+      <div class="clear"></div>
+    </div>
+
+    <iframe id="search_frame"></iframe>
+
+    <div id="content"><h1>Class: Batsd::Redis
+  
+  
+  
+</h1>
+
+<dl class="box">
+  
+    <dt class="r1">Inherits:</dt>
+    <dd class="r1">
+      <span class="inheritName">Object</span>
+      
+        <ul class="fullTree">
+          <li>Object</li>
+          
+            <li class="next">Batsd::Redis</li>
+          
+        </ul>
+        <a href="#" class="inheritanceTree">show all</a>
+      
+      </dd>
+    
+  
+  
+    
+  
+    
+  
+  
+  
+    <dt class="r2 last">Defined in:</dt>
+    <dd class="r2 last">lib/batsd/redis.rb</dd>
+  
+</dl>
+<div class="clear"></div>
+
+<h2>Overview</h2><div class="docstring">
+  <div class="discussion">
+    
+<p>This is a thin wrapper around the redis client to handle multistep
+procedures that could be executed using Redis scripting</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
+
+
+
+
+
+
+  
+    <h2>
+      Instance Method Summary
+      <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
+    </h2>
+
+    <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#add_datapoint-instance_method" title="#add_datapoint (instance method)">- (Object) <strong>add_datapoint</strong>(key) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Stores a reference to the datapoint in  the 'datapoints' set.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#client-instance_method" title="#client (instance method)">- (Object) <strong>client</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Expose the redis client directly.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#datapoints-instance_method" title="#datapoints (instance method)">- (Object) <strong>datapoints</strong>(with_gauges = true) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Convenience accessor to members of datapoints set.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#extract_values_from_string-instance_method" title="#extract_values_from_string (instance method)">- (Object) <strong>extract_values_from_string</strong>(key) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Create an array out of a string of values delimited by &lt;X&gt;.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#get_and_clear_key-instance_method" title="#get_and_clear_key (instance method)">- (Object) <strong>get_and_clear_key</strong>(key) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Returns the value of a key and then deletes it.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#initialize-instance_method" title="#initialize (instance method)">- (Redis) <strong>initialize</strong>(options) </a>
+    
+
+    
+  </span>
+  
+  
+    <span class="note title constructor">constructor</span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Opens a new connection to the redis instance specified  in the
+configuration or localhost:6379.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#store_and_update_all_counters-instance_method" title="#store_and_update_all_counters (instance method)">- (Object) <strong>store_and_update_all_counters</strong>(timestamp, key, value) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Store a counter measurement for each of the specified retentions.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#store_raw_timers_for_aggregations-instance_method" title="#store_raw_timers_for_aggregations (instance method)">- (Object) <strong>store_raw_timers_for_aggregations</strong>(key, values) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Store unaggregated, raw timer values in bucketed keys so that they can
+actually be aggregated "raw".</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#store_timer-instance_method" title="#store_timer (instance method)">- (Object) <strong>store_timer</strong>(timestamp, key, value) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Store a timer to a zset.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#truncate_zset-instance_method" title="#truncate_zset (instance method)">- (Object) <strong>truncate_zset</strong>(key, since) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Truncate a zset since a treshold time.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#values_from_zset-instance_method" title="#values_from_zset (instance method)">- (Object) <strong>values_from_zset</strong>(metric, begin_ts, end_ts) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Return properly formatted values from the zset.</p>
+</div></span>
+  
+</li>
+
+      
+    </ul>
+  
+
+<div id="constructor_details" class="method_details_list">
+  <h2>Constructor Details</h2>
+  
+    <div class="method_details first">
+  <h3 class="signature first" id="initialize-instance_method">
+  
+    - (<tt><span class='object_link'><a href="" title="Batsd::Redis (class)">Redis</a></span></tt>) <strong>initialize</strong>(options) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Opens a new connection to the redis instance specified  in the
+configuration or localhost:6379</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+12
+13
+14
+15
+16</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/batsd/redis.rb', line 12</span>
+
+<span class='rubyid_def def kw'>def</span> <span class='rubyid_initialize identifier id'>initialize</span><span class='lparen token'>(</span><span class='rubyid_options identifier id'>options</span><span class='rparen token'>)</span>
+  <span class='rubyid_@redis ivar id'>@redis</span> <span class='assign token'>=</span> <span class='colon3 op'>::</span><span class='rubyid_Redis constant id'>Redis</span><span class='dot token'>.</span><span class='rubyid_new identifier id'>new</span><span class='lparen token'>(</span><span class='rubyid_options identifier id'>options</span><span class='lbrack token'>[</span><span class='symbol val'>:redis</span><span class='rbrack token'>]</span> <span class='orop op'>||</span> <span class='lbrace token'>{</span><span class='rubyid_host identifier id'>host</span><span class='colon op'>:</span> <span class='string val'>&quot;127.0.0.1&quot;</span><span class='comma token'>,</span> <span class='rubyid_port identifier id'>port</span><span class='colon op'>:</span> <span class='integer val'>6379</span><span class='rbrace token'>}</span> <span class='rparen token'>)</span>
+  <span class='rubyid_@redis ivar id'>@redis</span><span class='dot token'>.</span><span class='rubyid_ping identifier id'>ping</span>
+  <span class='rubyid_@retentions ivar id'>@retentions</span> <span class='assign token'>=</span> <span class='rubyid_options identifier id'>options</span><span class='lbrack token'>[</span><span class='symbol val'>:retentions</span><span class='rbrack token'>]</span><span class='dot token'>.</span><span class='rubyid_keys identifier id'>keys</span>
+<span class='rubyid_end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+  
+</div>
+
+
+  <div id="instance_method_details" class="method_details_list">
+    <h2>Instance Method Details</h2>
+
+    
+      <div class="method_details first">
+  <h3 class="signature first" id="add_datapoint-instance_method">
+  
+    - (<tt>Object</tt>) <strong>add_datapoint</strong>(key) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Stores a reference to the datapoint in  the 'datapoints' set</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+125
+126
+127</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/batsd/redis.rb', line 125</span>
+
+<span class='rubyid_def def kw'>def</span> <span class='rubyid_add_datapoint identifier id'>add_datapoint</span><span class='lparen token'>(</span><span class='rubyid_key identifier id'>key</span><span class='rparen token'>)</span>
+  <span class='rubyid_@redis ivar id'>@redis</span><span class='dot token'>.</span><span class='rubyid_sadd identifier id'>sadd</span> <span class='string val'>&quot;datapoints&quot;</span><span class='comma token'>,</span> <span class='rubyid_key identifier id'>key</span>
+<span class='rubyid_end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="client-instance_method">
+  
+    - (<tt>Object</tt>) <strong>client</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Expose the redis client directly</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+19
+20
+21</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/batsd/redis.rb', line 19</span>
+
+<span class='rubyid_def def kw'>def</span> <span class='rubyid_client identifier id'>client</span>
+  <span class='rubyid_@redis ivar id'>@redis</span>
+<span class='rubyid_end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="datapoints-instance_method">
+  
+    - (<tt>Object</tt>) <strong>datapoints</strong>(with_gauges = true) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Convenience accessor to members of datapoints set</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+114
+115
+116
+117
+118
+119
+120</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/batsd/redis.rb', line 114</span>
+
+<span class='rubyid_def def kw'>def</span> <span class='rubyid_datapoints identifier id'>datapoints</span><span class='lparen token'>(</span><span class='rubyid_with_gauges identifier id'>with_gauges</span><span class='assign token'>=</span><span class='rubyid_true true kw'>true</span><span class='rparen token'>)</span>
+  <span class='rubyid_datapoints identifier id'>datapoints</span> <span class='assign token'>=</span> <span class='rubyid_@redis ivar id'>@redis</span><span class='dot token'>.</span><span class='rubyid_smembers identifier id'>smembers</span> <span class='string val'>&quot;datapoints&quot;</span>
+  <span class='rubyid_unless unless kw'>unless</span> <span class='rubyid_with_gauges identifier id'>with_gauges</span>
+    <span class='rubyid_datapoints identifier id'>datapoints</span><span class='dot token'>.</span><span class='rubyid_reject! fid id'>reject!</span><span class='lbrace token'>{</span><span class='bitor op'>|</span><span class='rubyid_d identifier id'>d</span><span class='bitor op'>|</span> <span class='lparen token'>(</span><span class='rubyid_d identifier id'>d</span><span class='dot token'>.</span><span class='rubyid_match identifier id'>match</span><span class='lparen token'>(</span><span class='regexp val'>/^gauge/</span><span class='rparen token'>)</span> <span class='rubyid_rescue rescue kw'>rescue</span> <span class='rubyid_false false kw'>false</span><span class='rparen token'>)</span> <span class='rbrace token'>}</span>
+  <span class='rubyid_end end kw'>end</span>
+  <span class='rubyid_datapoints identifier id'>datapoints</span>
+<span class='rubyid_end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="extract_values_from_string-instance_method">
+  
+    - (<tt>Object</tt>) <strong>extract_values_from_string</strong>(key) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Create an array out of a string of values delimited by &lt;X&gt;</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+79
+80
+81
+82</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/batsd/redis.rb', line 79</span>
+
+<span class='rubyid_def def kw'>def</span> <span class='rubyid_extract_values_from_string identifier id'>extract_values_from_string</span><span class='lparen token'>(</span><span class='rubyid_key identifier id'>key</span><span class='rparen token'>)</span>
+  <span class='rubyid_cmd identifier id'>cmd</span> <span class='assign token'>=</span> <span class='string val'>&quot;local t={} ; local i=1\nlocal str = redis.call('get', KEYS[1])\nif (str) then\nfor s in string.gmatch(str, \&quot;([^\&quot;..\&quot;&lt;X&gt;\&quot;..\&quot;]+)\&quot;) do\nt[i] = s\ni = i + 1\nend\nredis.call('del', KEYS[1])\nend\nreturn t\n&quot;</span>
+  <span class='rubyid_@redis ivar id'>@redis</span><span class='dot token'>.</span><span class='rubyid_eval identifier id'>eval</span><span class='lparen token'>(</span><span class='rubyid_cmd identifier id'>cmd</span><span class='comma token'>,</span> <span class='integer val'>1</span><span class='comma token'>,</span> <span class='rubyid_key identifier id'>key</span><span class='dot token'>.</span><span class='rubyid_to_sym identifier id'>to_sym</span><span class='rparen token'>)</span>
+<span class='rubyid_end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="get_and_clear_key-instance_method">
+  
+    - (<tt>Object</tt>) <strong>get_and_clear_key</strong>(key) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns the value of a key and then deletes it.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+68
+69
+70
+71</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/batsd/redis.rb', line 68</span>
+
+<span class='rubyid_def def kw'>def</span> <span class='rubyid_get_and_clear_key identifier id'>get_and_clear_key</span><span class='lparen token'>(</span><span class='rubyid_key identifier id'>key</span><span class='rparen token'>)</span>
+  <span class='rubyid_cmd identifier id'>cmd</span> <span class='assign token'>=</span> <span class='string val'>&quot;local str = redis.call('get', KEYS[1])\nredis.call('del', KEYS[1])\nreturn str\n&quot;</span>
+  <span class='rubyid_@redis ivar id'>@redis</span><span class='dot token'>.</span><span class='rubyid_eval identifier id'>eval</span><span class='lparen token'>(</span><span class='rubyid_cmd identifier id'>cmd</span><span class='comma token'>,</span> <span class='integer val'>1</span><span class='comma token'>,</span> <span class='rubyid_key identifier id'>key</span><span class='dot token'>.</span><span class='rubyid_to_sym identifier id'>to_sym</span><span class='rparen token'>)</span>
+<span class='rubyid_end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="store_and_update_all_counters-instance_method">
+  
+    - (<tt>Object</tt>) <strong>store_and_update_all_counters</strong>(timestamp, key, value) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Store a counter measurement for each of the specified retentions</p>
+<ul><li>
+<p>For shortest retention (where timestep == flush interval), add the value
+and timestamp to the appropriate zset</p>
+</li><li>
+<p>For longer retention intervals, increment the appropriate counter by the
+value specified.</p>
+</li></ul>
+
+<p>TODO: This can be done in a single network request by rewriting it as a
+redis script in Lua</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/batsd/redis.rb', line 34</span>
+
+<span class='rubyid_def def kw'>def</span> <span class='rubyid_store_and_update_all_counters identifier id'>store_and_update_all_counters</span><span class='lparen token'>(</span><span class='rubyid_timestamp identifier id'>timestamp</span><span class='comma token'>,</span> <span class='rubyid_key identifier id'>key</span><span class='comma token'>,</span> <span class='rubyid_value identifier id'>value</span><span class='rparen token'>)</span>
+  <span class='rubyid_@retentions ivar id'>@retentions</span><span class='dot token'>.</span><span class='rubyid_each_with_index identifier id'>each_with_index</span> <span class='rubyid_do do kw'>do</span> <span class='bitor op'>|</span><span class='rubyid_t identifier id'>t</span><span class='comma token'>,</span> <span class='rubyid_index identifier id'>index</span><span class='bitor op'>|</span>
+    <span class='rubyid_if if kw'>if</span> <span class='rubyid_index identifier id'>index</span><span class='dot token'>.</span><span class='rubyid_zero? fid id'>zero?</span>
+      <span class='rubyid_@redis ivar id'>@redis</span><span class='dot token'>.</span><span class='rubyid_zadd identifier id'>zadd</span> <span class='rubyid_key identifier id'>key</span><span class='comma token'>,</span> <span class='rubyid_timestamp identifier id'>timestamp</span><span class='comma token'>,</span> <span class='dstring node'>&quot;#{timestamp}&lt;X&gt;#{value}&quot;</span>
+    <span class='rubyid_else else kw'>else</span> <span class='rubyid_index identifier id'>index</span><span class='dot token'>.</span><span class='rubyid_zero? fid id'>zero?</span>
+      <span class='rubyid_@redis ivar id'>@redis</span><span class='dot token'>.</span><span class='rubyid_incrby identifier id'>incrby</span> <span class='dstring node'>&quot;#{key}:#{t}&quot;</span><span class='comma token'>,</span> <span class='rubyid_value identifier id'>value</span>
+      <span class='rubyid_@redis ivar id'>@redis</span><span class='dot token'>.</span><span class='rubyid_expire identifier id'>expire</span> <span class='dstring node'>&quot;#{key}:#{t}&quot;</span><span class='comma token'>,</span> <span class='rubyid_t identifier id'>t</span><span class='dot token'>.</span><span class='rubyid_to_i identifier id'>to_i</span> <span class='mult op'>*</span> <span class='integer val'>2</span>
+    <span class='rubyid_end end kw'>end</span>
+  <span class='rubyid_end end kw'>end</span>
+<span class='rubyid_end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="store_raw_timers_for_aggregations-instance_method">
+  
+    - (<tt>Object</tt>) <strong>store_raw_timers_for_aggregations</strong>(key, values) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Store unaggregated, raw timer values in bucketed keys so that they can
+actually be aggregated "raw"</p>
+
+<p>The set of tiemrs are stored as a single string key delimited by  x0. In
+benchmarks, this is more efficient in memory by 2-3x, and less efficient in
+time by ~10%</p>
+
+<p>TODO: can this be done more efficiently with redis scripting?</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+59
+60
+61
+62
+63
+64
+65</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/batsd/redis.rb', line 59</span>
+
+<span class='rubyid_def def kw'>def</span> <span class='rubyid_store_raw_timers_for_aggregations identifier id'>store_raw_timers_for_aggregations</span><span class='lparen token'>(</span><span class='rubyid_key identifier id'>key</span><span class='comma token'>,</span> <span class='rubyid_values identifier id'>values</span><span class='rparen token'>)</span>
+  <span class='rubyid_@retentions ivar id'>@retentions</span><span class='dot token'>.</span><span class='rubyid_each_with_index identifier id'>each_with_index</span> <span class='rubyid_do do kw'>do</span> <span class='bitor op'>|</span><span class='rubyid_t identifier id'>t</span><span class='comma token'>,</span> <span class='rubyid_index identifier id'>index</span><span class='bitor op'>|</span>
+    <span class='rubyid_next next kw'>next</span> <span class='rubyid_if if_mod kw'>if</span> <span class='rubyid_index identifier id'>index</span><span class='dot token'>.</span><span class='rubyid_zero? fid id'>zero?</span>
+    <span class='rubyid_@redis ivar id'>@redis</span><span class='dot token'>.</span><span class='rubyid_append identifier id'>append</span> <span class='dstring node'>&quot;#{key}:#{t}&quot;</span><span class='comma token'>,</span> <span class='dstring node'>&quot;&lt;X&gt;#{values.join(&quot;&lt;X&gt;&quot;)}&quot;</span>
+    <span class='rubyid_@redis ivar id'>@redis</span><span class='dot token'>.</span><span class='rubyid_expire identifier id'>expire</span> <span class='dstring node'>&quot;#{key}:#{t}&quot;</span><span class='comma token'>,</span> <span class='rubyid_t identifier id'>t</span><span class='dot token'>.</span><span class='rubyid_to_i identifier id'>to_i</span> <span class='mult op'>*</span> <span class='integer val'>2</span>
+  <span class='rubyid_end end kw'>end</span>
+<span class='rubyid_end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="store_timer-instance_method">
+  
+    - (<tt>Object</tt>) <strong>store_timer</strong>(timestamp, key, value) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Store a timer to a zset</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+47
+48
+49</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/batsd/redis.rb', line 47</span>
+
+<span class='rubyid_def def kw'>def</span> <span class='rubyid_store_timer identifier id'>store_timer</span><span class='lparen token'>(</span><span class='rubyid_timestamp identifier id'>timestamp</span><span class='comma token'>,</span> <span class='rubyid_key identifier id'>key</span><span class='comma token'>,</span> <span class='rubyid_value identifier id'>value</span><span class='rparen token'>)</span>
+  <span class='rubyid_@redis ivar id'>@redis</span><span class='dot token'>.</span><span class='rubyid_zadd identifier id'>zadd</span> <span class='rubyid_key identifier id'>key</span><span class='comma token'>,</span> <span class='rubyid_timestamp identifier id'>timestamp</span><span class='comma token'>,</span> <span class='dstring node'>&quot;#{timestamp}&lt;X&gt;#{value}&quot;</span>
+<span class='rubyid_end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="truncate_zset-instance_method">
+  
+    - (<tt>Object</tt>) <strong>truncate_zset</strong>(key, since) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Truncate a zset since a treshold time</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+98
+99
+100</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/batsd/redis.rb', line 98</span>
+
+<span class='rubyid_def def kw'>def</span> <span class='rubyid_truncate_zset identifier id'>truncate_zset</span><span class='lparen token'>(</span><span class='rubyid_key identifier id'>key</span><span class='comma token'>,</span> <span class='rubyid_since identifier id'>since</span><span class='rparen token'>)</span>
+  <span class='rubyid_@redis ivar id'>@redis</span><span class='dot token'>.</span><span class='rubyid_zremrangebyscore identifier id'>zremrangebyscore</span> <span class='rubyid_key identifier id'>key</span><span class='comma token'>,</span> <span class='integer val'>0</span><span class='comma token'>,</span> <span class='rubyid_since identifier id'>since</span>
+<span class='rubyid_end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="values_from_zset-instance_method">
+  
+    - (<tt>Object</tt>) <strong>values_from_zset</strong>(metric, begin_ts, end_ts) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Return properly formatted values from the zset</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+103
+104
+105
+106
+107
+108
+109
+110</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/batsd/redis.rb', line 103</span>
+
+<span class='rubyid_def def kw'>def</span> <span class='rubyid_values_from_zset identifier id'>values_from_zset</span><span class='lparen token'>(</span><span class='rubyid_metric identifier id'>metric</span><span class='comma token'>,</span> <span class='rubyid_begin_ts identifier id'>begin_ts</span><span class='comma token'>,</span> <span class='rubyid_end_ts identifier id'>end_ts</span><span class='rparen token'>)</span>
+  <span class='rubyid_begin begin kw'>begin</span>
+    <span class='rubyid_values identifier id'>values</span> <span class='assign token'>=</span> <span class='rubyid_@redis ivar id'>@redis</span><span class='dot token'>.</span><span class='rubyid_zrangebyscore identifier id'>zrangebyscore</span><span class='lparen token'>(</span><span class='rubyid_metric identifier id'>metric</span><span class='comma token'>,</span> <span class='rubyid_begin_ts identifier id'>begin_ts</span><span class='comma token'>,</span> <span class='rubyid_end_ts identifier id'>end_ts</span><span class='rparen token'>)</span>
+    <span class='rubyid_values identifier id'>values</span><span class='dot token'>.</span><span class='rubyid_collect identifier id'>collect</span><span class='lbrace token'>{</span><span class='bitor op'>|</span><span class='rubyid_val identifier id'>val</span><span class='bitor op'>|</span> <span class='rubyid_ts identifier id'>ts</span><span class='comma token'>,</span> <span class='rubyid_val identifier id'>val</span> <span class='assign token'>=</span> <span class='rubyid_val identifier id'>val</span><span class='dot token'>.</span><span class='rubyid_split identifier id'>split</span><span class='lparen token'>(</span><span class='string val'>&quot;&lt;X&gt;&quot;</span><span class='rparen token'>)</span><span class='semicolon token'>;</span> <span class='lbrace token'>{</span><span class='rubyid_timestamp identifier id'>timestamp</span><span class='colon op'>:</span> <span class='rubyid_ts identifier id'>ts</span><span class='comma token'>,</span> <span class='rubyid_value identifier id'>value</span><span class='colon op'>:</span> <span class='rubyid_val identifier id'>val</span> <span class='rbrace token'>}</span> <span class='rbrace token'>}</span>
+  <span class='rubyid_rescue rescue kw'>rescue</span>
+    <span class='lbrack token'>[</span><span class='rbrack token'>]</span>
+  <span class='rubyid_end end kw'>end</span>
+<span class='rubyid_end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+</div>
+
+    <div id="footer">
+  Generated on Mon May 28 06:37:19 2012 by
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.8.1 (ruby-1.9.3).
+</div>
+
+  </body>
+</html>

@@ -1,0 +1,346 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>
+  Class: Batsd::Truncator
+  
+    &mdash; Documentation by YARD 0.8.1
+  
+</title>
+
+  <link rel="stylesheet" href="../css/style.css" type="text/css" media="screen" charset="utf-8" />
+
+  <link rel="stylesheet" href="../css/common.css" type="text/css" media="screen" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  hasFrames = window.top.frames.main ? true : false;
+  relpath = '../';
+  framesUrl = "../frames.html#!" + escape(window.location.href);
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="../js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="../js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div id="header">
+      <div id="menu">
+  
+    <a href="../_index.html">Index (T)</a> &raquo;
+    <span class='title'><span class='object_link'><a href="../Batsd.html" title="Batsd (module)">Batsd</a></span></span>
+     &raquo; 
+    <span class="title">Truncator</span>
+  
+
+  <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
+</div>
+
+      <div id="search">
+  
+    <a class="full_list_link" id="class_list_link"
+        href="../class_list.html">
+      Class List
+    </a>
+  
+    <a class="full_list_link" id="method_list_link"
+        href="../method_list.html">
+      Method List
+    </a>
+  
+    <a class="full_list_link" id="file_list_link"
+        href="../file_list.html">
+      File List
+    </a>
+  
+</div>
+      <div class="clear"></div>
+    </div>
+
+    <iframe id="search_frame"></iframe>
+
+    <div id="content"><h1>Class: Batsd::Truncator
+  
+  
+  
+</h1>
+
+<dl class="box">
+  
+    <dt class="r1">Inherits:</dt>
+    <dd class="r1">
+      <span class="inheritName">Object</span>
+      
+        <ul class="fullTree">
+          <li>Object</li>
+          
+            <li class="next">Batsd::Truncator</li>
+          
+        </ul>
+        <a href="#" class="inheritanceTree">show all</a>
+      
+      </dd>
+    
+  
+  
+    
+  
+    
+  
+  
+  
+    <dt class="r2 last">Defined in:</dt>
+    <dd class="r2 last">lib/batsd/truncator.rb</dd>
+  
+</dl>
+<div class="clear"></div>
+
+<h2>Overview</h2><div class="docstring">
+  <div class="discussion">
+    
+<p>Handle truncation for redis zsets and files written to disk</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
+
+
+
+
+
+
+  
+    <h2>
+      Instance Method Summary
+      <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
+    </h2>
+
+    <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#initialize-instance_method" title="#initialize (instance method)">- (Truncator) <strong>initialize</strong>(options = {}) </a>
+    
+
+    
+  </span>
+  
+  
+    <span class="note title constructor">constructor</span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Create a new truncator.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#run-instance_method" title="#run (instance method)">- (Object) <strong>run</strong>(retention) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Perform a truncation run.</p>
+</div></span>
+  
+</li>
+
+      
+    </ul>
+  
+
+<div id="constructor_details" class="method_details_list">
+  <h2>Constructor Details</h2>
+  
+    <div class="method_details first">
+  <h3 class="signature first" id="initialize-instance_method">
+  
+    - (<tt><span class='object_link'><a href="" title="Batsd::Truncator (class)">Truncator</a></span></tt>) <strong>initialize</strong>(options = {}) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Create a new truncator</p>
+<ul><li>
+<p>Establish the diskstore that will be used</p>
+</li><li>
+<p>Establish the redis connection that will be needed</p>
+</li></ul>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+12
+13
+14
+15
+16
+17</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/batsd/truncator.rb', line 12</span>
+
+<span class='rubyid_def def kw'>def</span> <span class='rubyid_initialize identifier id'>initialize</span><span class='lparen token'>(</span><span class='rubyid_options identifier id'>options</span><span class='assign token'>=</span><span class='lbrace token'>{</span><span class='rbrace token'>}</span><span class='rparen token'>)</span>
+  <span class='rubyid_@options ivar id'>@options</span> <span class='assign token'>=</span> <span class='rubyid_options identifier id'>options</span>
+  <span class='rubyid_@retentions ivar id'>@retentions</span> <span class='assign token'>=</span> <span class='rubyid_options identifier id'>options</span><span class='lbrack token'>[</span><span class='symbol val'>:retentions</span><span class='rbrack token'>]</span><span class='dot token'>.</span><span class='rubyid_keys identifier id'>keys</span>
+  <span class='rubyid_@redis ivar id'>@redis</span> <span class='assign token'>=</span> <span class='rubyid_Batsd constant id'>Batsd</span><span class='colon2 op'>::</span><span class='rubyid_Redis constant id'>Redis</span><span class='dot token'>.</span><span class='rubyid_new identifier id'>new</span><span class='lparen token'>(</span><span class='rubyid_options identifier id'>options</span> <span class='rparen token'>)</span>
+  <span class='rubyid_@diskstore ivar id'>@diskstore</span> <span class='assign token'>=</span> <span class='rubyid_Batsd constant id'>Batsd</span><span class='colon2 op'>::</span><span class='rubyid_Diskstore constant id'>Diskstore</span><span class='dot token'>.</span><span class='rubyid_new identifier id'>new</span><span class='lparen token'>(</span><span class='rubyid_options identifier id'>options</span><span class='lbrack token'>[</span><span class='symbol val'>:root</span><span class='rbrack token'>]</span><span class='rparen token'>)</span>
+<span class='rubyid_end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+  
+</div>
+
+
+  <div id="instance_method_details" class="method_details_list">
+    <h2>Instance Method Details</h2>
+
+    
+      <div class="method_details first">
+  <h3 class="signature first" id="run-instance_method">
+  
+    - (<tt>Object</tt>) <strong>run</strong>(retention) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Perform a truncation run. Sole argument is the aggregation level to be
+truncated (e.g., 10, 60, 600)</p>
+
+<p>If the retention interval is the first one, it's assumed to stored in
+redis, and the truncation is performed by zremrangebyscore on the zsets.</p>
+
+<p>For other retention intervals, it's assumed that they are stored on disk.
+Each key is truncated on disk.</p>
+
+<p>In neither case are gauges included for truncation.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/batsd/truncator.rb', line 30</span>
+
+<span class='rubyid_def def kw'>def</span> <span class='rubyid_run identifier id'>run</span><span class='lparen token'>(</span><span class='rubyid_retention identifier id'>retention</span><span class='rparen token'>)</span>
+  <span class='rubyid_min_ts identifier id'>min_ts</span> <span class='assign token'>=</span> <span class='rubyid_Time constant id'>Time</span><span class='dot token'>.</span><span class='rubyid_now identifier id'>now</span><span class='dot token'>.</span><span class='rubyid_to_i identifier id'>to_i</span> <span class='minus op'>-</span> <span class='lparen token'>(</span><span class='rubyid_@options ivar id'>@options</span><span class='lbrack token'>[</span><span class='symbol val'>:retentions</span><span class='rbrack token'>]</span><span class='lbrack token'>[</span><span class='rubyid_retention identifier id'>retention</span><span class='rbrack token'>]</span> <span class='mult op'>*</span> <span class='rubyid_retention identifier id'>retention</span><span class='rparen token'>)</span>
+  <span class='rubyid_keys identifier id'>keys</span> <span class='assign token'>=</span> <span class='rubyid_@redis ivar id'>@redis</span><span class='dot token'>.</span><span class='rubyid_datapoints identifier id'>datapoints</span><span class='lparen token'>(</span><span class='rubyid_with_gauges identifier id'>with_gauges</span><span class='assign token'>=</span><span class='rubyid_false false kw'>false</span><span class='rparen token'>)</span>
+  <span class='rubyid_keys identifier id'>keys</span> <span class='assign token'>=</span> <span class='rubyid_keys identifier id'>keys</span><span class='dot token'>.</span><span class='rubyid_collect identifier id'>collect</span> <span class='rubyid_do do kw'>do</span> <span class='bitor op'>|</span><span class='rubyid_k identifier id'>k</span><span class='bitor op'>|</span>
+    <span class='rubyid_if if kw'>if</span> <span class='lparen token'>(</span><span class='rubyid_k identifier id'>k</span><span class='dot token'>.</span><span class='rubyid_match identifier id'>match</span><span class='lparen token'>(</span><span class='regexp val'>/^timer/</span><span class='rparen token'>)</span> <span class='rubyid_rescue rescue kw'>rescue</span> <span class='rubyid_false false kw'>false</span><span class='rparen token'>)</span>
+      <span class='lbrack token'>[</span><span class='string val'>&quot;mean&quot;</span><span class='comma token'>,</span> <span class='string val'>&quot;min&quot;</span><span class='comma token'>,</span> <span class='string val'>&quot;max&quot;</span><span class='comma token'>,</span> <span class='string val'>&quot;upper_90&quot;</span><span class='comma token'>,</span> <span class='string val'>&quot;stddev&quot;</span><span class='comma token'>,</span> <span class='string val'>&quot;count&quot;</span><span class='rbrack token'>]</span><span class='dot token'>.</span><span class='rubyid_collect identifier id'>collect</span><span class='lbrace token'>{</span><span class='bitor op'>|</span><span class='rubyid_a identifier id'>a</span><span class='bitor op'>|</span> <span class='dstring node'>&quot;#{k}:#{a}&quot;</span><span class='rbrace token'>}</span>
+    <span class='rubyid_else else kw'>else</span>
+      <span class='rubyid_k identifier id'>k</span>
+    <span class='rubyid_end end kw'>end</span>
+  <span class='rubyid_end end kw'>end</span><span class='dot token'>.</span><span class='rubyid_flatten identifier id'>flatten</span>
+
+  <span class='rubyid_if if kw'>if</span> <span class='rubyid_retention identifier id'>retention</span> <span class='eq op'>==</span> <span class='rubyid_@retentions ivar id'>@retentions</span><span class='dot token'>.</span><span class='rubyid_first identifier id'>first</span>
+    <span class='comment val'># First retention is stored in redis, so just need to truncate the zset</span>
+    <span class='comment val'># TODO: can we do this in bulk with lua script?</span>
+    <span class='rubyid_keys identifier id'>keys</span><span class='dot token'>.</span><span class='rubyid_each identifier id'>each</span> <span class='lbrace token'>{</span> <span class='bitor op'>|</span><span class='rubyid_key identifier id'>key</span><span class='bitor op'>|</span> <span class='rubyid_@redis ivar id'>@redis</span><span class='dot token'>.</span><span class='rubyid_truncate_zset identifier id'>truncate_zset</span><span class='lparen token'>(</span><span class='rubyid_key identifier id'>key</span><span class='comma token'>,</span> <span class='rubyid_min_ts identifier id'>min_ts</span><span class='rparen token'>)</span> <span class='rbrace token'>}</span>
+  <span class='rubyid_else else kw'>else</span>
+    <span class='comment val'># Stored on disk</span>
+    <span class='rubyid_keys identifier id'>keys</span><span class='dot token'>.</span><span class='rubyid_each identifier id'>each</span> <span class='rubyid_do do kw'>do</span> <span class='bitor op'>|</span><span class='rubyid_key identifier id'>key</span><span class='bitor op'>|</span>
+      <span class='rubyid_key identifier id'>key</span> <span class='assign token'>=</span> <span class='dstring node'>&quot;#{key}:#{retention}&quot;</span>
+      <span class='rubyid_@diskstore ivar id'>@diskstore</span><span class='dot token'>.</span><span class='rubyid_truncate identifier id'>truncate</span><span class='lparen token'>(</span><span class='rubyid_@diskstore ivar id'>@diskstore</span><span class='dot token'>.</span><span class='rubyid_build_filename identifier id'>build_filename</span><span class='lparen token'>(</span><span class='rubyid_key identifier id'>key</span><span class='rparen token'>)</span><span class='comma token'>,</span> <span class='rubyid_min_ts identifier id'>min_ts</span><span class='rparen token'>)</span>
+    <span class='rubyid_end end kw'>end</span>
+  <span class='rubyid_end end kw'>end</span>
+<span class='rubyid_end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+</div>
+
+    <div id="footer">
+  Generated on Mon May 28 06:37:19 2012 by
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.8.1 (ruby-1.9.3).
+</div>
+
+  </body>
+</html>

@@ -1,0 +1,548 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>
+  Class: Batsd::Handler::Counter
+  
+    &mdash; Documentation by YARD 0.8.1
+  
+</title>
+
+  <link rel="stylesheet" href="../../css/style.css" type="text/css" media="screen" charset="utf-8" />
+
+  <link rel="stylesheet" href="../../css/common.css" type="text/css" media="screen" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  hasFrames = window.top.frames.main ? true : false;
+  relpath = '../../';
+  framesUrl = "../../frames.html#!" + escape(window.location.href);
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="../../js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="../../js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div id="header">
+      <div id="menu">
+  
+    <a href="../../_index.html">Index (C)</a> &raquo;
+    <span class='title'><span class='object_link'><a href="../../Batsd.html" title="Batsd (module)">Batsd</a></span></span> &raquo; <span class='title'><span class='object_link'><a href="../Handler.html" title="Batsd::Handler (class)">Handler</a></span></span>
+     &raquo; 
+    <span class="title">Counter</span>
+  
+
+  <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
+</div>
+
+      <div id="search">
+  
+    <a class="full_list_link" id="class_list_link"
+        href="../../class_list.html">
+      Class List
+    </a>
+  
+    <a class="full_list_link" id="method_list_link"
+        href="../../method_list.html">
+      Method List
+    </a>
+  
+    <a class="full_list_link" id="file_list_link"
+        href="../../file_list.html">
+      File List
+    </a>
+  
+</div>
+      <div class="clear"></div>
+    </div>
+
+    <iframe id="search_frame"></iframe>
+
+    <div id="content"><h1>Class: Batsd::Handler::Counter
+  
+  
+  
+</h1>
+
+<dl class="box">
+  
+    <dt class="r1">Inherits:</dt>
+    <dd class="r1">
+      <span class="inheritName"><span class='object_link'><a href="../Handler.html" title="Batsd::Handler (class)">Batsd::Handler</a></span></span>
+      
+        <ul class="fullTree">
+          <li>Object</li>
+          
+            <li class="next"><span class='object_link'><a href="../Handler.html" title="Batsd::Handler (class)">Batsd::Handler</a></span></li>
+          
+            <li class="next">Batsd::Handler::Counter</li>
+          
+        </ul>
+        <a href="#" class="inheritanceTree">show all</a>
+      
+      </dd>
+    
+  
+  
+    
+  
+    
+  
+  
+  
+    <dt class="r2 last">Defined in:</dt>
+    <dd class="r2 last">lib/batsd/handlers/counter.rb</dd>
+  
+</dl>
+<div class="clear"></div>
+
+<h2>Overview</h2><div class="docstring">
+  <div class="discussion">
+    
+<p>Handles counter measurements ("|c")</p>
+
+<p>Counter measurements are summed together across  aggregation intervals</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
+
+
+
+
+
+
+  
+    <h2>
+      Instance Method Summary
+      <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
+    </h2>
+
+    <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#flush-instance_method" title="#flush (instance method)">- (Object) <strong>flush</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Flushes the accumulated counters that are pending in
+<tt>@active_counters</tt>.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#handle-instance_method" title="#handle (instance method)">- (Object) <strong>handle</strong>(key, value, sample_rate) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Processes an incoming counter measurement.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#initialize-instance_method" title="#initialize (instance method)">- (Counter) <strong>initialize</strong>(options) </a>
+    
+
+    
+  </span>
+  
+  
+    <span class="note title constructor">constructor</span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Set up a new handler to handle counters.</p>
+</div></span>
+  
+</li>
+
+      
+    </ul>
+  
+
+
+  
+  
+  
+  
+  
+  
+  
+  
+  <h3 class="inherited">Methods inherited from <span class='object_link'><a href="../Handler.html" title="Batsd::Handler (class)">Batsd::Handler</a></span></h3>
+  <p class="inherited"><span class='object_link'><a href="../Handler.html#statistics-instance_method" title="Batsd::Handler#statistics (method)">#statistics</a></span>, <span class='object_link'><a href="../Handler.html#threadpool-instance_method" title="Batsd::Handler#threadpool (method)">#threadpool</a></span></p>
+<div id="constructor_details" class="method_details_list">
+  <h2>Constructor Details</h2>
+  
+    <div class="method_details first">
+  <h3 class="signature first" id="initialize-instance_method">
+  
+    - (<tt><span class='object_link'><a href="" title="Batsd::Handler::Counter (class)">Counter</a></span></tt>) <strong>initialize</strong>(options) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Set up a new handler to handle counters</p>
+<ul><li>
+<p>Set up a redis client</p>
+</li><li>
+<p>Set up a diskstore client to write aggregates to disk</p>
+</li><li>
+<p>Initialize last flush timers to now</p>
+</li></ul>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/batsd/handlers/counter.rb', line 16</span>
+
+<span class='rubyid_def def kw'>def</span> <span class='rubyid_initialize identifier id'>initialize</span><span class='lparen token'>(</span><span class='rubyid_options identifier id'>options</span><span class='rparen token'>)</span>
+  <span class='rubyid_@redis ivar id'>@redis</span> <span class='assign token'>=</span> <span class='rubyid_Batsd constant id'>Batsd</span><span class='colon2 op'>::</span><span class='rubyid_Redis constant id'>Redis</span><span class='dot token'>.</span><span class='rubyid_new identifier id'>new</span><span class='lparen token'>(</span><span class='rubyid_options identifier id'>options</span><span class='rparen token'>)</span>
+  <span class='rubyid_@diskstore ivar id'>@diskstore</span> <span class='assign token'>=</span> <span class='rubyid_Batsd constant id'>Batsd</span><span class='colon2 op'>::</span><span class='rubyid_Diskstore constant id'>Diskstore</span><span class='dot token'>.</span><span class='rubyid_new identifier id'>new</span><span class='lparen token'>(</span><span class='rubyid_options identifier id'>options</span><span class='lbrack token'>[</span><span class='symbol val'>:root</span><span class='rbrack token'>]</span><span class='rparen token'>)</span>
+  <span class='rubyid_@counters ivar id'>@counters</span> <span class='assign token'>=</span> <span class='rubyid_@active_counters ivar id'>@active_counters</span> <span class='assign token'>=</span> <span class='lbrace token'>{</span><span class='rbrace token'>}</span>
+  <span class='rubyid_@retentions ivar id'>@retentions</span> <span class='assign token'>=</span> <span class='rubyid_options identifier id'>options</span><span class='lbrack token'>[</span><span class='symbol val'>:retentions</span><span class='rbrack token'>]</span><span class='dot token'>.</span><span class='rubyid_keys identifier id'>keys</span>
+  <span class='rubyid_@flush_interval ivar id'>@flush_interval</span> <span class='assign token'>=</span> <span class='rubyid_@retentions ivar id'>@retentions</span><span class='dot token'>.</span><span class='rubyid_first identifier id'>first</span>
+  <span class='rubyid_now identifier id'>now</span> <span class='assign token'>=</span> <span class='rubyid_Time constant id'>Time</span><span class='dot token'>.</span><span class='rubyid_now identifier id'>now</span><span class='dot token'>.</span><span class='rubyid_to_i identifier id'>to_i</span>
+  <span class='rubyid_@last_flushes ivar id'>@last_flushes</span> <span class='assign token'>=</span> <span class='rubyid_@retentions ivar id'>@retentions</span><span class='dot token'>.</span><span class='rubyid_inject identifier id'>inject</span><span class='lparen token'>(</span><span class='lbrace token'>{</span><span class='rbrace token'>}</span><span class='rparen token'>)</span><span class='lbrace token'>{</span><span class='bitor op'>|</span><span class='rubyid_l identifier id'>l</span><span class='comma token'>,</span> <span class='rubyid_r identifier id'>r</span><span class='bitor op'>|</span> <span class='rubyid_l identifier id'>l</span><span class='lbrack token'>[</span><span class='rubyid_r identifier id'>r</span><span class='rbrack token'>]</span> <span class='assign token'>=</span> <span class='rubyid_now identifier id'>now</span><span class='semicolon token'>;</span> <span class='rubyid_l identifier id'>l</span> <span class='rbrace token'>}</span>
+  <span class='rubyid_super super kw'>super</span>
+<span class='rubyid_end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+  
+</div>
+
+
+  <div id="instance_method_details" class="method_details_list">
+    <h2>Instance Method Details</h2>
+
+    
+      <div class="method_details first">
+  <h3 class="signature first" id="flush-instance_method">
+  
+    - (<tt>Object</tt>) <strong>flush</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Flushes the accumulated counters that are pending in
+<tt>@active_counters</tt>.</p>
+
+<p>Each counter is pushed into the threadpool queue, which will update all of
+the counters for all of the aggregations in Redis</p>
+
+<p><tt>flush</tt> is also used to write the latter aggregations from redis to
+disk. It does this by tracking the last time they were written. If that was
+a sufficient time ago, the value will be retrieved from redis, cleared, and
+written to disk in another thread.</p>
+
+<p>When the last level of aggregation (least granularity) is written, the
+<tt>@counters</tt> will be flushed to the 'datapoints' set in redis and
+reset</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/batsd/handlers/counter.rb', line 61</span>
+
+<span class='rubyid_def def kw'>def</span> <span class='rubyid_flush identifier id'>flush</span>
+  <span class='rubyid_puts identifier id'>puts</span> <span class='dstring node'>&quot;Current threadpool queue for counters: #{@threadpool.size}&quot;</span> <span class='rubyid_if if_mod kw'>if</span> <span class='rubyid_ENV constant id'>ENV</span><span class='lbrack token'>[</span><span class='string val'>&quot;VVERBOSE&quot;</span><span class='rbrack token'>]</span>
+  <span class='comment val'># Flushing is usually very fast, but always fix it so that the</span>
+  <span class='comment val'># entire thing is based on a constant start time</span>
+  <span class='comment val'># Saves on time syscalls too</span>
+  <span class='rubyid_flush_start identifier id'>flush_start</span> <span class='assign token'>=</span> <span class='rubyid_Time constant id'>Time</span><span class='dot token'>.</span><span class='rubyid_now identifier id'>now</span><span class='dot token'>.</span><span class='rubyid_to_i identifier id'>to_i</span>
+
+  <span class='rubyid_n identifier id'>n</span> <span class='assign token'>=</span> <span class='rubyid_@active_counters ivar id'>@active_counters</span><span class='dot token'>.</span><span class='rubyid_size identifier id'>size</span>
+  <span class='rubyid_t identifier id'>t</span> <span class='assign token'>=</span> <span class='rubyid_Benchmark constant id'>Benchmark</span><span class='dot token'>.</span><span class='rubyid_measure identifier id'>measure</span> <span class='rubyid_do do kw'>do</span> 
+    <span class='rubyid_ts identifier id'>ts</span> <span class='assign token'>=</span> <span class='lparen token'>(</span><span class='rubyid_flush_start identifier id'>flush_start</span> <span class='minus op'>-</span> <span class='rubyid_flush_start identifier id'>flush_start</span> <span class='mod op'>%</span> <span class='rubyid_@flush_interval ivar id'>@flush_interval</span><span class='rparen token'>)</span>
+    <span class='rubyid_counters identifier id'>counters</span> <span class='assign token'>=</span> <span class='rubyid_@active_counters ivar id'>@active_counters</span><span class='dot token'>.</span><span class='rubyid_dup identifier id'>dup</span>
+    <span class='rubyid_@active_counters ivar id'>@active_counters</span> <span class='assign token'>=</span> <span class='lbrace token'>{</span><span class='rbrace token'>}</span>
+    <span class='rubyid_counters identifier id'>counters</span><span class='dot token'>.</span><span class='rubyid_each_slice identifier id'>each_slice</span><span class='lparen token'>(</span><span class='integer val'>50</span><span class='rparen token'>)</span> <span class='rubyid_do do kw'>do</span> <span class='bitor op'>|</span><span class='rubyid_keys identifier id'>keys</span><span class='bitor op'>|</span>
+      <span class='rubyid_@threadpool ivar id'>@threadpool</span><span class='dot token'>.</span><span class='rubyid_queue identifier id'>queue</span> <span class='rubyid_ts identifier id'>ts</span><span class='comma token'>,</span> <span class='rubyid_keys identifier id'>keys</span> <span class='rubyid_do do kw'>do</span> <span class='bitor op'>|</span><span class='rubyid_timestamp identifier id'>timestamp</span><span class='comma token'>,</span> <span class='rubyid_keys identifier id'>keys</span><span class='bitor op'>|</span>
+        <span class='rubyid_keys identifier id'>keys</span><span class='dot token'>.</span><span class='rubyid_each identifier id'>each</span> <span class='rubyid_do do kw'>do</span> <span class='bitor op'>|</span><span class='rubyid_key identifier id'>key</span><span class='comma token'>,</span> <span class='rubyid_value identifier id'>value</span><span class='bitor op'>|</span>
+          <span class='rubyid_@redis ivar id'>@redis</span><span class='dot token'>.</span><span class='rubyid_store_and_update_all_counters identifier id'>store_and_update_all_counters</span><span class='lparen token'>(</span><span class='rubyid_timestamp identifier id'>timestamp</span><span class='comma token'>,</span> <span class='rubyid_key identifier id'>key</span><span class='comma token'>,</span> <span class='rubyid_value identifier id'>value</span><span class='rparen token'>)</span>
+        <span class='rubyid_end end kw'>end</span>
+      <span class='rubyid_end end kw'>end</span>
+    <span class='rubyid_end end kw'>end</span>
+  <span class='rubyid_end end kw'>end</span>
+  <span class='rubyid_puts identifier id'>puts</span> <span class='dstring node'>&quot;Flushed #{n} counters in #{t.real} seconds&quot;</span> <span class='rubyid_if if_mod kw'>if</span> <span class='rubyid_ENV constant id'>ENV</span><span class='lbrack token'>[</span><span class='string val'>&quot;VERBOSE&quot;</span><span class='rbrack token'>]</span>
+
+  
+  <span class='comment val'># If it's time for the latter aggregation to be written to disk, queue</span>
+  <span class='comment val'># those up</span>
+  <span class='rubyid_@retentions ivar id'>@retentions</span><span class='dot token'>.</span><span class='rubyid_each_with_index identifier id'>each_with_index</span> <span class='rubyid_do do kw'>do</span> <span class='bitor op'>|</span><span class='rubyid_retention identifier id'>retention</span><span class='comma token'>,</span> <span class='rubyid_index identifier id'>index</span><span class='bitor op'>|</span>
+    <span class='comment val'># First retention is always just flushed to redis on the flush interval</span>
+    <span class='rubyid_next next kw'>next</span> <span class='rubyid_if if_mod kw'>if</span> <span class='rubyid_index identifier id'>index</span><span class='dot token'>.</span><span class='rubyid_zero? fid id'>zero?</span>
+
+    <span class='comment val'># Only if we're in need of a write to disk - if the next flush will be</span>
+    <span class='comment val'># past the threshold</span>
+    <span class='rubyid_if if kw'>if</span> <span class='lparen token'>(</span><span class='rubyid_flush_start identifier id'>flush_start</span> <span class='plus op'>+</span> <span class='rubyid_@flush_interval ivar id'>@flush_interval</span><span class='rparen token'>)</span> <span class='gt op'>&gt;</span> <span class='rubyid_@last_flushes ivar id'>@last_flushes</span><span class='lbrack token'>[</span><span class='rubyid_retention identifier id'>retention</span><span class='rbrack token'>]</span> <span class='plus op'>+</span> <span class='rubyid_retention identifier id'>retention</span><span class='dot token'>.</span><span class='rubyid_to_i identifier id'>to_i</span>
+      <span class='rubyid_puts identifier id'>puts</span> <span class='dstring node'>&quot;Starting disk writing for timers@#{retention}&quot;</span> <span class='rubyid_if if_mod kw'>if</span> <span class='rubyid_ENV constant id'>ENV</span><span class='lbrack token'>[</span><span class='string val'>&quot;VERBOSE&quot;</span><span class='rbrack token'>]</span>
+      <span class='rubyid_t identifier id'>t</span> <span class='assign token'>=</span> <span class='rubyid_Benchmark constant id'>Benchmark</span><span class='dot token'>.</span><span class='rubyid_measure identifier id'>measure</span> <span class='rubyid_do do kw'>do</span> 
+        <span class='rubyid_ts identifier id'>ts</span> <span class='assign token'>=</span> <span class='lparen token'>(</span><span class='rubyid_flush_start identifier id'>flush_start</span> <span class='minus op'>-</span> <span class='rubyid_flush_start identifier id'>flush_start</span> <span class='mod op'>%</span> <span class='rubyid_retention identifier id'>retention</span><span class='dot token'>.</span><span class='rubyid_to_i identifier id'>to_i</span><span class='rparen token'>)</span>
+        <span class='rubyid_@counters ivar id'>@counters</span><span class='dot token'>.</span><span class='rubyid_keys identifier id'>keys</span><span class='dot token'>.</span><span class='rubyid_each_slice identifier id'>each_slice</span><span class='lparen token'>(</span><span class='integer val'>400</span><span class='rparen token'>)</span> <span class='rubyid_do do kw'>do</span> <span class='bitor op'>|</span><span class='rubyid_keys identifier id'>keys</span><span class='bitor op'>|</span>
+          <span class='rubyid_@threadpool ivar id'>@threadpool</span><span class='dot token'>.</span><span class='rubyid_queue identifier id'>queue</span> <span class='rubyid_ts identifier id'>ts</span><span class='comma token'>,</span> <span class='rubyid_keys identifier id'>keys</span><span class='comma token'>,</span> <span class='rubyid_retention identifier id'>retention</span> <span class='rubyid_do do kw'>do</span> <span class='bitor op'>|</span><span class='rubyid_timestamp identifier id'>timestamp</span><span class='comma token'>,</span> <span class='rubyid_keys identifier id'>keys</span><span class='comma token'>,</span> <span class='rubyid_retention identifier id'>retention</span><span class='bitor op'>|</span>
+            <span class='rubyid_keys identifier id'>keys</span><span class='dot token'>.</span><span class='rubyid_each identifier id'>each</span> <span class='rubyid_do do kw'>do</span> <span class='bitor op'>|</span><span class='rubyid_key identifier id'>key</span><span class='bitor op'>|</span>
+              <span class='rubyid_key identifier id'>key</span> <span class='assign token'>=</span> <span class='dstring node'>&quot;#{key}:#{retention}&quot;</span>
+              <span class='rubyid_value identifier id'>value</span> <span class='assign token'>=</span> <span class='rubyid_@redis ivar id'>@redis</span><span class='dot token'>.</span><span class='rubyid_get_and_clear_key identifier id'>get_and_clear_key</span><span class='lparen token'>(</span><span class='rubyid_key identifier id'>key</span><span class='rparen token'>)</span>
+              <span class='rubyid_if if kw'>if</span> <span class='rubyid_value identifier id'>value</span>
+                <span class='rubyid_value identifier id'>value</span> <span class='assign token'>=</span> <span class='dstring node'>&quot;#{ts} #{value}&quot;</span>
+                <span class='rubyid_@diskstore ivar id'>@diskstore</span><span class='dot token'>.</span><span class='rubyid_append_value_to_file identifier id'>append_value_to_file</span><span class='lparen token'>(</span><span class='rubyid_@diskstore ivar id'>@diskstore</span><span class='dot token'>.</span><span class='rubyid_build_filename identifier id'>build_filename</span><span class='lparen token'>(</span><span class='rubyid_key identifier id'>key</span><span class='rparen token'>)</span><span class='comma token'>,</span> <span class='rubyid_value identifier id'>value</span><span class='rparen token'>)</span>
+              <span class='rubyid_end end kw'>end</span>
+            <span class='rubyid_end end kw'>end</span>
+          <span class='rubyid_end end kw'>end</span>
+        <span class='rubyid_end end kw'>end</span>
+        <span class='rubyid_@last_flushes ivar id'>@last_flushes</span><span class='lbrack token'>[</span><span class='rubyid_retention identifier id'>retention</span><span class='rbrack token'>]</span> <span class='assign token'>=</span> <span class='rubyid_flush_start identifier id'>flush_start</span>
+      <span class='rubyid_end end kw'>end</span>
+      <span class='rubyid_puts identifier id'>puts</span> <span class='dstring node'>&quot;#{Time.now}: Handled disk writing for counters@#{retention} in #{t.real}&quot;</span> <span class='rubyid_if if_mod kw'>if</span> <span class='rubyid_ENV constant id'>ENV</span><span class='lbrack token'>[</span><span class='string val'>&quot;VERBOSE&quot;</span><span class='rbrack token'>]</span>
+
+      <span class='comment val'># If this is the last retention we're handling, flush the</span>
+      <span class='comment val'># counters list to redis and reset it</span>
+      <span class='rubyid_if if kw'>if</span> <span class='rubyid_retention identifier id'>retention</span> <span class='eq op'>==</span> <span class='rubyid_@retentions ivar id'>@retentions</span><span class='dot token'>.</span><span class='rubyid_last identifier id'>last</span>
+        <span class='rubyid_puts identifier id'>puts</span> <span class='dstring node'>&quot;Clearing the counters list. Current state is: #{@counters}&quot;</span> <span class='rubyid_if if_mod kw'>if</span> <span class='rubyid_ENV constant id'>ENV</span><span class='lbrack token'>[</span><span class='string val'>&quot;VVERBOSE&quot;</span><span class='rbrack token'>]</span>
+        <span class='rubyid_t identifier id'>t</span> <span class='assign token'>=</span> <span class='rubyid_Benchmark constant id'>Benchmark</span><span class='dot token'>.</span><span class='rubyid_measure identifier id'>measure</span> <span class='rubyid_do do kw'>do</span> 
+          <span class='rubyid_@redis ivar id'>@redis</span><span class='dot token'>.</span><span class='rubyid_add_datapoint identifier id'>add_datapoint</span> <span class='rubyid_@counters ivar id'>@counters</span><span class='dot token'>.</span><span class='rubyid_keys identifier id'>keys</span>
+          <span class='rubyid_@counters ivar id'>@counters</span> <span class='assign token'>=</span> <span class='lbrace token'>{</span><span class='rbrace token'>}</span>
+        <span class='rubyid_end end kw'>end</span>
+        <span class='rubyid_puts identifier id'>puts</span> <span class='dstring node'>&quot;#{Time.now}: Flushed datapoints for counters in #{t.real}&quot;</span> <span class='rubyid_if if_mod kw'>if</span> <span class='rubyid_ENV constant id'>ENV</span><span class='lbrack token'>[</span><span class='string val'>&quot;VERBOSE&quot;</span><span class='rbrack token'>]</span>
+      <span class='rubyid_end end kw'>end</span>
+    <span class='rubyid_end end kw'>end</span>
+
+  <span class='rubyid_end end kw'>end</span>
+
+<span class='rubyid_end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="handle-instance_method">
+  
+    - (<tt>Object</tt>) <strong>handle</strong>(key, value, sample_rate) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Processes an incoming counter measurement</p>
+<ul><li>
+<p>Normalize for sample rate provided</p>
+</li><li>
+<p>Adds the value to any existing values by the same key and stores it in
+<tt>@active_counters</tt></p>
+</li><li>
+<p>Add the key and a nil value to <tt>@counters</tt> in order to track the set
+of counters that have been handled "recently". This is a relatively memory
+efficient, relatively fast way of storing a unique set of keys.</p>
+</li></ul>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+37
+38
+39
+40
+41
+42
+43
+44</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/batsd/handlers/counter.rb', line 37</span>
+
+<span class='rubyid_def def kw'>def</span> <span class='rubyid_handle identifier id'>handle</span><span class='lparen token'>(</span><span class='rubyid_key identifier id'>key</span><span class='comma token'>,</span> <span class='rubyid_value identifier id'>value</span><span class='comma token'>,</span> <span class='rubyid_sample_rate identifier id'>sample_rate</span><span class='rparen token'>)</span>
+  <span class='rubyid_if if kw'>if</span> <span class='rubyid_sample_rate identifier id'>sample_rate</span>
+    <span class='rubyid_value identifier id'>value</span> <span class='assign token'>=</span> <span class='rubyid_value identifier id'>value</span><span class='dot token'>.</span><span class='rubyid_to_f identifier id'>to_f</span> <span class='div op'>/</span> <span class='rubyid_sample_rate identifier id'>sample_rate</span><span class='dot token'>.</span><span class='rubyid_gsub identifier id'>gsub</span><span class='lparen token'>(</span><span class='string val'>&quot;@&quot;</span><span class='comma token'>,</span> <span class='string val'>&quot;&quot;</span><span class='rparen token'>)</span><span class='dot token'>.</span><span class='rubyid_to_f identifier id'>to_f</span>
+  <span class='rubyid_end end kw'>end</span>
+  <span class='rubyid_key identifier id'>key</span>   <span class='assign token'>=</span> <span class='dstring node'>&quot;counters:#{key}&quot;</span>
+  <span class='rubyid_@active_counters ivar id'>@active_counters</span><span class='lbrack token'>[</span><span class='rubyid_key identifier id'>key</span><span class='rbrack token'>]</span> <span class='assign token'>=</span> <span class='rubyid_@active_counters ivar id'>@active_counters</span><span class='lbrack token'>[</span><span class='rubyid_key identifier id'>key</span><span class='rbrack token'>]</span><span class='dot token'>.</span><span class='rubyid_to_i identifier id'>to_i</span> <span class='plus op'>+</span> <span class='rubyid_value identifier id'>value</span><span class='dot token'>.</span><span class='rubyid_to_i identifier id'>to_i</span>
+  <span class='rubyid_@counters ivar id'>@counters</span><span class='lbrack token'>[</span><span class='rubyid_key identifier id'>key</span><span class='rbrack token'>]</span> <span class='assign token'>=</span> <span class='rubyid_nil nil kw'>nil</span>
+<span class='rubyid_end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+</div>
+
+    <div id="footer">
+  Generated on Mon May 28 06:37:20 2012 by
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.8.1 (ruby-1.9.3).
+</div>
+
+  </body>
+</html>
