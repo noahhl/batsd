@@ -10,8 +10,7 @@ read more about persistence in [About:
 Persistence](http://noahhl.github.com/batsd/doc/file.persistence.html).
 
 Batsd grew out of usage at [37signals](http://37signals.com), where it has been
-used in some form for the last year, recording upwards of one gigabyte worth of
-metrics per day. An [earlier form](https://github.com/noahhl/statsd-server) was
+used for the last year. An [earlier form](https://github.com/noahhl/statsd-server) was
 inspired by [quasor](https://github.com/quasor/statsd). 
 
 ### Documentation:
@@ -31,7 +30,6 @@ inspired by [quasor](https://github.com/quasor/statsd).
 #### Pre-requisites
 Batsd requires Ruby 1.9.2 or JRuby 1.6 or greater, and access to a Redis
 v2.6.0-rc3 or later instance.
-
 
     git clone git://github.com/noahhl/batsd && cd batsd && bundle install
 
@@ -112,25 +110,22 @@ Run the server to expose data to clients
 The server is run as a separate process to allow for controlled upgrades of one
 or the other component, without affecting data acquisition or presentation.
 
-Example scripts to send data to statsd from various sources are included in
-`examples/acquisition/`. A sample client to extract data is included in
-`examples/client.rb`.
+A sample client to extract data is included in `examples/client.rb`.
 [jeremy/statsd](https://github.com/jeremy/statsd-ruby.git) is the recommended
-ruby statsd client, regardless of whether using batsd or another server
-implementation.
+ruby statsd client for sending data.
 
 # Getting help and contributing
 
 ### Getting help with Batsd
 The fastest way to get help is to send an email to batsd@librelist.com. 
-Github issues and pull requests are checked regularly, but email is always the fastest way to get help.
+Github issues and pull requests are checked regularly.
 
 ### Contributing
 Pull requests with passing tests are welcomed and appreciated.
 
 # License
 
- Copyright (c) 2012 
+ Copyright (c) 2012 Noah Lorang
 
  Permission is hereby granted, free of charge, to any person obtaining
  a copy of this software and associated documentation files (the
