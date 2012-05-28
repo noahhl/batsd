@@ -121,11 +121,11 @@ implementation.
 # Getting help and contributing
 
 ### Getting help with Batsd
-The preferred way to get help is to send an email to batsd@librelist.com. 
+The fastest way to get help is to send an email to batsd@librelist.com. 
 Github issues and pull requests are checked regularly, but email is always the fastest way to get help.
 
 ### Contributing
-Pull requests with passing tests are appreciated.
+Pull requests with passing tests are welcomed and appreciated.
 
 # License
 
