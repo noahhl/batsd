@@ -17,11 +17,11 @@ inspired by [quasor](https://github.com/quasor/statsd).
 
   * [Getting started](#Getting_started)
   * [Getting help](#Getting_help_and_contributing)
-  * [About: Datatypes](file.datatypes.html)
-  * [About: Persistence](file.persistence.html)
-  * [About: Performance](file.performance.html)
-  * [Annotated source code](_index.html)
-  * [Future plans](file.future.html)
+  * [About: Datatypes](http://noahhl.github.com/batsd/doc/file.datatypes.html)
+  * [About: Persistence](http://noahhl.github.com/batsd/doc/file.persistence.html)
+  * [About: Performance](http://noahhl.github.com/batsd/doc/file.performance.html)
+  * [Annotated source code](http://noahhl.github.com/batsd/doc/_index.html)
+  * [Future plans](http://noahhl.github.com/batsd/doc/file.future.html)
   * [License](#License)
 
 
