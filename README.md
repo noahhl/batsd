@@ -17,6 +17,7 @@ inspired by [quasor](https://github.com/quasor/statsd).
 
   * [Getting started](http://noahhl.github.com/batsd/doc/index.html#Getting_started)
   * [Getting help](http://noahhl.github.com/batsd/doc/index.html#Getting_help_and_contributing)
+  * [Why not Graphite?](http://noahhl.github.com/batsd/doc/file.why-not.html)
   * [About: Datatypes](http://noahhl.github.com/batsd/doc/file.datatypes.html)
   * [About: Persistence](http://noahhl.github.com/batsd/doc/file.persistence.html)
   * [About: Performance](http://noahhl.github.com/batsd/doc/file.performance.html)

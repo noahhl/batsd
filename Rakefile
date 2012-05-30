@@ -9,5 +9,5 @@ end
 task :default => :test
 
 YARD::Rake::YardocTask.new do |t|
-  t.files   = ['lib/**/*.rb', "-", "examples/**/*.rb", "doc/persistence.md",  "doc/datatypes.md", "doc/performance.md", "doc/future.md"] 
+  t.files   = ['lib/**/*.rb', "-", "examples/**/*.rb", "doc/persistence.md",  "doc/datatypes.md", "doc/performance.md", "doc/future.md", "doc/why-not.md"] 
 end
