@@ -68,24 +68,25 @@
 
 <p>Batsd differs from etsy&#39;s statsd implementation primarily in how it stores data
 -- data is stored to a combination of Redis and flat files on disk. You can
-read more about persistence in <a href="file.persistence.html">About: Persistence</a>.</p>
+read more about persistence in <a href="http://noahhl.github.com/batsd/doc/file.persistence.html">About:
+Persistence</a>.</p>
 
 <p>Batsd grew out of usage at <a href="http://37signals.com">37signals</a>, where it has been
-used in some form for the last year, recording upwards of one gigabyte worth of
-metrics per day. An <a href="https://github.com/noahhl/statsd-server">earlier form</a> was
+used for the last year. An <a href="https://github.com/noahhl/statsd-server">earlier form</a> was
 inspired by <a href="https://github.com/quasor/statsd">quasor</a>. </p>
 
 <h3>Documentation:</h3>
 
 <ul>
-<li><a href="#Getting_started">Getting started</a></li>
-<li><a href="#Getting_help_and_contributing">Getting help</a></li>
-<li><a href="file.datatypes.html">About: Datatypes</a></li>
-<li><a href="file.persistence.html">About: Persistence</a></li>
-<li><a href="file.performance.html">About: Performance</a></li>
-<li><a href="_index.html">Annotated source code</a></li>
-<li><a href="file.future.html">Future plans</a></li>
-<li><a href="#License">License</a></li>
+<li><a href="http://noahhl.github.com/batsd/doc/index.html#Getting_started">Getting started</a></li>
+<li><a href="http://noahhl.github.com/batsd/doc/index.html#Getting_help_and_contributing">Getting help</a></li>
+<li><a href="http://noahhl.github.com/batsd/doc/file.why-not.html">Why not Graphite?</a></li>
+<li><a href="http://noahhl.github.com/batsd/doc/file.datatypes.html">About: Datatypes</a></li>
+<li><a href="http://noahhl.github.com/batsd/doc/file.persistence.html">About: Persistence</a></li>
+<li><a href="http://noahhl.github.com/batsd/doc/file.performance.html">About: Performance</a></li>
+<li><a href="http://noahhl.github.com/batsd/doc/main.html">Annotated source code</a></li>
+<li><a href="http://noahhl.github.com/batsd/doc/file.future.html">Future plans</a></li>
+<li><a href="http://noahhl.github.com/batsd/doc/index.html#License">License</a></li>
 </ul>
 
 <h1>Getting started</h1>
@@ -186,27 +187,24 @@ to prevent it from growing more than desired.</p>
 <p>The server is run as a separate process to allow for controlled upgrades of one
 or the other component, without affecting data acquisition or presentation.</p>
 
-<p>Example scripts to send data to statsd from various sources are included in
-<code>examples/acquisition/</code>. A sample client to extract data is included in
-<code>examples/client.rb</code>.
+<p>A sample client to extract data is included in <code>examples/client.rb</code>.
 <a href="https://github.com/jeremy/statsd-ruby.git">jeremy/statsd</a> is the recommended
-ruby statsd client, regardless of whether using batsd or another server
-implementation.</p>
+ruby statsd client for sending data.</p>
 
 <h1>Getting help and contributing</h1>
 
 <h3>Getting help with Batsd</h3>
 
-<p>The preferred way to get help is to send an email to <a href="mailto:batsd@librelist.com">batsd@librelist.com</a>. 
-Github issues and pull requests are checked regularly, but email is always the fastest way to get help.</p>
+<p>The fastest way to get help is to send an email to <a href="mailto:batsd@librelist.com">batsd@librelist.com</a>. 
+Github issues and pull requests are checked regularly.</p>
 
 <h3>Contributing</h3>
 
-<p>Pull requests with passing tests are appreciated.</p>
+<p>Pull requests with passing tests are welcomed and appreciated.</p>
 
 <h1>License</h1>
 
-<p>Copyright (c) 2012 37signals, LLC</p>
+<p>Copyright (c) 2012 Noah Lorang</p>
 
 <p>Permission is hereby granted, free of charge, to any person obtaining
  a copy of this software and associated documentation files (the
@@ -229,7 +227,7 @@ Github issues and pull requests are checked regularly, but email is always the f
 </div></div>
 
     <div id="footer">
-  Generated on Mon May 28 06:37:18 2012 by
+  Generated on Wed May 30 08:22:22 2012 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.1 (ruby-1.9.3).
 </div>

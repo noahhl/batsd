@@ -2,9 +2,11 @@
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <title>
-  Documentation by YARD 0.8.1
+  File: README
+  
+    &mdash; Documentation by YARD 0.8.1
   
 </title>
 
@@ -28,6 +30,9 @@
   <body>
     <div id="header">
       <div id="menu">
+  
+    <a href="_index.html">Index</a> &raquo; 
+    <span class="title">File: README</span>
   
 
   <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
@@ -56,228 +61,173 @@
 
     <iframe id="search_frame"></iframe>
 
-    <div id="content"><h1 class="noborder title">Documentation by YARD 0.8.1</h1>
-<div id="listing">
-  <h1 class="alphaindex">Alphabetic Index</h1>
-  
-  <h2>File Listing</h2>
-  <ul id="files" class="index_inline_list">
-  
-  
-    <li class="r1"><a href="index.html" title="README">README</a></li>
-    
-  
-    <li class="r2"><a href="file.client.html" title="Example client">Example client</a></li>
-    
-  
-    <li class="r1"><a href="file.persistence.html" title="persistence">persistence</a></li>
-    
-  
-    <li class="r2"><a href="file.datatypes.html" title="datatypes">datatypes</a></li>
-    
-  
-    <li class="r1"><a href="file.performance.html" title="performance">performance</a></li>
-    
-  
-    <li class="r2"><a href="file.future.html" title="future">future</a></li>
-    
-  
-  </ul>
+    <div id="content"><div id='filecontents'><h1>Batsd </h1>
 
-<div class="clear"></div>
-<h2>Namespace Listing A-Z</h2>
+<p>Batsd is a ruby-based daemon for aggregating and storing statistics. It targets
+&quot;wireline&quot; compatibility with Etsy&#39;s StatsD implementation.</p>
 
+<p>Batsd differs from etsy&#39;s statsd implementation primarily in how it stores data
+-- data is stored to a combination of Redis and flat files on disk. You can
+read more about persistence in <a href="http://noahhl.github.com/batsd/doc/file.persistence.html">About:
+Persistence</a>.</p>
 
+<p>Batsd grew out of usage at <a href="http://37signals.com">37signals</a>, where it has been
+used for the last year. An <a href="https://github.com/noahhl/statsd-server">earlier form</a> was
+inspired by <a href="https://github.com/quasor/statsd">quasor</a>. </p>
 
+<h3>Documentation:</h3>
 
-<table>
-  <tr>
-    <td valign='top' width="33%">
-      
-        
-        <ul id="alpha_A" class="alpha">
-          <li class="letter">A</li>
-          <ul>
-            
-              <li>
-                <span class='object_link'><a href="Array.html" title="Array (class)">Array</a></span>
-                
-              </li>
-            
-          </ul>
-        </ul>
-      
-        
-        <ul id="alpha_B" class="alpha">
-          <li class="letter">B</li>
-          <ul>
-            
-              <li>
-                <span class='object_link'><a href="Batsd.html" title="Batsd (module)">Batsd</a></span>
-                
-              </li>
-            
-          </ul>
-        </ul>
-      
-        
-        <ul id="alpha_C" class="alpha">
-          <li class="letter">C</li>
-          <ul>
-            
-              <li>
-                <span class='object_link'><a href="Batsd/Handler/Counter.html" title="Batsd::Handler::Counter (class)">Counter</a></span>
-                
-                  <small>(Batsd::Handler)</small>
-                
-              </li>
-            
-          </ul>
-        </ul>
-      
-        
-        <ul id="alpha_D" class="alpha">
-          <li class="letter">D</li>
-          <ul>
-            
-              <li>
-                <span class='object_link'><a href="Batsd/Server/Daemon.html" title="Batsd::Server::Daemon (class)">Daemon</a></span>
-                
-                  <small>(Batsd::Server)</small>
-                
-              </li>
-            
-              <li>
-                <span class='object_link'><a href="Batsd/Receiver/Daemon.html" title="Batsd::Receiver::Daemon (class)">Daemon</a></span>
-                
-                  <small>(Batsd::Receiver)</small>
-                
-              </li>
-            
-              <li>
-                <span class='object_link'><a href="Batsd/Diskstore.html" title="Batsd::Diskstore (class)">Diskstore</a></span>
-                
-                  <small>(Batsd)</small>
-                
-              </li>
-            
-          </ul>
-        </ul>
-      
-        
-        <ul id="alpha_G" class="alpha">
-          <li class="letter">G</li>
-          <ul>
-            
-              <li>
-                <span class='object_link'><a href="Batsd/Handler/Gauge.html" title="Batsd::Handler::Gauge (class)">Gauge</a></span>
-                
-                  <small>(Batsd::Handler)</small>
-                
-              </li>
-            
-          </ul>
-        </ul>
-      
-        
-        <ul id="alpha_H" class="alpha">
-          <li class="letter">H</li>
-          <ul>
-            
-              <li>
-                <span class='object_link'><a href="Batsd/Handler.html" title="Batsd::Handler (class)">Handler</a></span>
-                
-                  <small>(Batsd)</small>
-                
-              </li>
-            
-          </ul>
-        </ul>
-      
-        
-        <ul id="alpha_R" class="alpha">
-          <li class="letter">R</li>
-          <ul>
-            
-              <li>
-                <span class='object_link'><a href="Batsd/Receiver.html" title="Batsd::Receiver (module)">Receiver</a></span>
-                
-                  <small>(Batsd)</small>
-                
-              </li>
-            
-              <li>
-                <span class='object_link'><a href="Batsd/Redis.html" title="Batsd::Redis (class)">Redis</a></span>
-                
-                  <small>(Batsd)</small>
-                
-              </li>
-            
-          </ul>
-        </ul>
-      
-        
-          </td><td valign='top' width="33%">
-          
-        
-        <ul id="alpha_S" class="alpha">
-          <li class="letter">S</li>
-          <ul>
-            
-              <li>
-                <span class='object_link'><a href="Batsd/Server.html" title="Batsd::Server (module)">Server</a></span>
-                
-                  <small>(Batsd)</small>
-                
-              </li>
-            
-              <li>
-                <span class='object_link'><a href="Batsd/Statistics.html" title="Batsd::Statistics (module)">Statistics</a></span>
-                
-                  <small>(Batsd)</small>
-                
-              </li>
-            
-          </ul>
-        </ul>
-      
-        
-        <ul id="alpha_T" class="alpha">
-          <li class="letter">T</li>
-          <ul>
-            
-              <li>
-                <span class='object_link'><a href="Threadpool.html" title="Threadpool (class)">Threadpool</a></span>
-                
-              </li>
-            
-              <li>
-                <span class='object_link'><a href="Batsd/Handler/Timer.html" title="Batsd::Handler::Timer (class)">Timer</a></span>
-                
-                  <small>(Batsd::Handler)</small>
-                
-              </li>
-            
-              <li>
-                <span class='object_link'><a href="Batsd/Truncator.html" title="Batsd::Truncator (class)">Truncator</a></span>
-                
-                  <small>(Batsd)</small>
-                
-              </li>
-            
-          </ul>
-        </ul>
-      
-    </td>
-  </tr>
-</table>
+<ul>
+<li><a href="http://noahhl.github.com/batsd/doc/index.html#Getting_started">Getting started</a></li>
+<li><a href="http://noahhl.github.com/batsd/doc/index.html#Getting_help_and_contributing">Getting help</a></li>
+<li><a href="http://noahhl.github.com/batsd/doc/file.why-not.html">Why not Graphite?</a></li>
+<li><a href="http://noahhl.github.com/batsd/doc/file.datatypes.html">About: Datatypes</a></li>
+<li><a href="http://noahhl.github.com/batsd/doc/file.persistence.html">About: Persistence</a></li>
+<li><a href="http://noahhl.github.com/batsd/doc/file.performance.html">About: Performance</a></li>
+<li><a href="http://noahhl.github.com/batsd/doc/main.html">Annotated source code</a></li>
+<li><a href="http://noahhl.github.com/batsd/doc/file.future.html">Future plans</a></li>
+<li><a href="http://noahhl.github.com/batsd/doc/index.html#License">License</a></li>
+</ul>
 
-</div>
+<h1>Getting started</h1>
 
-</div>
+<h3>Installation</h3>
+
+<h4>Pre-requisites</h4>
+
+<p>Batsd requires Ruby 1.9.2 or JRuby 1.6 or greater, and access to a Redis
+v2.6.0-rc3 or later instance.</p>
+
+<pre class="code ruby"><code><span class='rubyid_git identifier id'>git</span> <span class='rubyid_clone identifier id'>clone</span> <span class='rubyid_git identifier id'>git</span><span class='symbol val'>:/</span><span class='regexp val'>/github.com/n</span><span class='rubyid_oahhl identifier id'>oahhl</span><span class='div op'>/</span><span class='rubyid_batsd identifier id'>batsd</span> <span class='andop op'>&amp;&amp;</span> <span class='rubyid_cd identifier id'>cd</span> <span class='rubyid_batsd identifier id'>batsd</span> <span class='andop op'>&amp;&amp;</span> <span class='rubyid_bundle identifier id'>bundle</span> <span class='rubyid_install identifier id'>install</span>
+</code></pre>
+
+<h3>Configuration</h3>
+
+<p>Edit config.yml to your liking. </p>
+
+<p>Example config.yml</p>
+
+<pre class="code ruby"><code><span class='comment val'># Host and port to bind to for stats collection</span>
+<span class='rubyid_bind identifier id'>bind</span><span class='colon op'>:</span> <span class='integer val'>0</span><span class='float val'>.0.0</span><span class='integer val'>.0</span>
+<span class='rubyid_port identifier id'>port</span><span class='colon op'>:</span> <span class='integer val'>8125</span>
+<span class='comment val'># Where to store data. Data at the first retention level is stored</span>
+<span class='comment val'># in redis; further data retentions are stored on disk</span>
+
+<span class='comment val'># Root path to store disk aggregations</span>
+<span class='rubyid_root identifier id'>root</span><span class='colon op'>:</span> <span class='regexp val'>/statsd 
+redis:
+  host: 127.0.0.1
+  port: 6379
+
+# Configure how much data to retain at what intervals
+# Key is seconds, value is number of measurements at that
+# aggregation to retain
+retentions:
+  10:  360 # store data at 10 second increments for 1 hour
+  60:  10080  # store data at 1 minute increments for 1 week
+  600: 52594 # store data at 10 minute increments for 1 year
+
+# Automatically truncate datasets from within the receiver process
+autotruncate: false
+</span></code></pre>
+
+<h4>Port usage</h4>
+
+<p>Batsd will actually use three consecutive ports:</p>
+
+<ul>
+<li>The port you specified will be the &quot;receiver&quot; port, which listens for 
+incoming measurements over UDP. By convention, port 8125 is typically used for this.</li>
+<li>One port higher will expose a statistics interface over TCP to monitor the
+health and performance of the daemon.</li>
+<li>Two ports higher will be used by the server to expose data to clients over
+TCP.</li>
+</ul>
+
+<h4>Historical truncation</h4>
+
+<p>Batsd must occasionally truncate the data that is stored in Redis and on disk
+to prevent it from growing more than desired.</p>
+
+<p>There are two options for doing this:</p>
+
+<p>1) Setting up truncate commands to be run via crontab or some other
+  scheduler. The recommended interval is 0.5-2x the duration retained for
+  a given interval (e.g., 30-120 minutes if storing one hour of 10 second
+  data). <em>This is the recommended approach to truncating.</em></p>
+
+<p>Truncations can be run using the <code>bin/batsd -c path/to/config.yml  truncate
+  #{interval}</code> syntax.</p>
+
+<p>An example configuration crontab:</p>
+
+<pre class="code ruby"><code>  <span class='comment val'># truncate 10 second aggregations</span>
+  <span class='integer val'>0</span> <span class='mult op'>*</span> <span class='mult op'>*</span> <span class='mult op'>*</span> <span class='mult op'>*</span> <span class='rubyid_bash identifier id'>bash</span> <span class='minus op'>-</span><span class='rubyid_l identifier id'>l</span> <span class='minus op'>-</span><span class='rubyid_c identifier id'>c</span> <span class='string val'>'cd /u/apps/batsd/current &amp;&amp; ./bin/batsd -c /u/apps/batsd/current/config.yml truncate 10'</span>
+  <span class='comment val'># truncate 60 second aggregations</span>
+  <span class='integer val'>0</span> <span class='integer val'>0</span> <span class='mult op'>*</span> <span class='mult op'>*</span> <span class='integer val'>2</span><span class='comma token'>,</span><span class='integer val'>5</span> <span class='rubyid_bash identifier id'>bash</span> <span class='minus op'>-</span><span class='rubyid_l identifier id'>l</span> <span class='minus op'>-</span><span class='rubyid_c identifier id'>c</span> <span class='string val'>'cd /u/apps/batsd/current &amp;&amp; ./bin/batsd -c /u/apps/batsd/current/config.yml truncate 60'</span>
+</code></pre>
+
+<p>2) <em>Not recommended</em>: you can enable autotruncation, which will automatically
+  truncate at 1x the retained duration by running a new thread within the
+  receiver daemon. This is not recommended, because it will always be relative
+  to the start time of the daemon; this makes it easy to miss truncations.</p>
+
+<h3>Usage</h3>
+
+<p>Run the receiver (&quot;receiver&quot; argument is optional):</p>
+
+<pre class="code ruby"><code><span class='rubyid_batsd identifier id'>batsd</span> <span class='minus op'>-</span><span class='rubyid_c identifier id'>c</span> <span class='rubyid_config identifier id'>config</span><span class='dot token'>.</span><span class='rubyid_yml identifier id'>yml</span> <span class='rubyid_receiver identifier id'>receiver</span>
+</code></pre>
+
+<p>Run the server to expose data to clients</p>
+
+<pre class="code ruby"><code><span class='rubyid_batsd identifier id'>batsd</span> <span class='minus op'>-</span><span class='rubyid_c identifier id'>c</span> <span class='rubyid_config identifier id'>config</span><span class='dot token'>.</span><span class='rubyid_yml identifier id'>yml</span> <span class='rubyid_server identifier id'>server</span>
+</code></pre>
+
+<p>The server is run as a separate process to allow for controlled upgrades of one
+or the other component, without affecting data acquisition or presentation.</p>
+
+<p>A sample client to extract data is included in <code>examples/client.rb</code>.
+<a href="https://github.com/jeremy/statsd-ruby.git">jeremy/statsd</a> is the recommended
+ruby statsd client for sending data.</p>
+
+<h1>Getting help and contributing</h1>
+
+<h3>Getting help with Batsd</h3>
+
+<p>The fastest way to get help is to send an email to <a href="mailto:batsd@librelist.com">batsd@librelist.com</a>. 
+Github issues and pull requests are checked regularly.</p>
+
+<h3>Contributing</h3>
+
+<p>Pull requests with passing tests are welcomed and appreciated.</p>
+
+<h1>License</h1>
+
+<p>Copyright (c) 2012 Noah Lorang</p>
+
+<p>Permission is hereby granted, free of charge, to any person obtaining
+ a copy of this software and associated documentation files (the
+ &quot;Software&quot;), to deal in the Software without restriction, including
+ without limitation the rights to use, copy, modify, merge, publish,
+ distribute, sublicense, and/or sell copies of the Software, and to
+ permit persons to whom the Software is furnished to do so, subject to
+ the following conditions:</p>
+
+<p>The above copyright notice and this permission notice shall be
+ included in all copies or substantial portions of the Software.</p>
+
+<p>THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND,
+ EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+ LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+ OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>
+</div></div>
 
     <div id="footer">
-  Generated on Mon May 28 06:37:18 2012 by
+  Generated on Wed May 30 08:22:22 2012 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.1 (ruby-1.9.3).
 </div>
