@@ -2,7 +2,9 @@ Batsd
 ======
 
 Batsd is a ruby-based daemon for aggregating and storing statistics. It targets
-"wireline" compatibility with Etsy's StatsD implementation.
+"wireline" compatibility with [Etsy's StatsD
+implementation](https://github.com/etsy/statsd), which they described in
+a [blog post](http://codeascraft.etsy.com/2011/02/15/measure-anything-measure-everything/).
 
 Batsd differs from etsy's statsd implementation primarily in how it stores data
 -- data is stored to a combination of Redis and flat files on disk. You can
