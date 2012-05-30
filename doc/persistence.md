@@ -32,7 +32,7 @@ the future, this may be configurable.
 
 Near term data stored in redis is stored in sorted sets, one per datapoint, with the Unix timestamp
 as the score and a string structured as `#{now}<X>#{value}` as the value. This
-does mean that the string "<X>" is a reserved component in Batsd, and cannot be
+does mean that the string `<X>` is a reserved component in Batsd, and cannot be
 used in any key names.
 
 In addition to storing that sorted set, the current set of timer values is
