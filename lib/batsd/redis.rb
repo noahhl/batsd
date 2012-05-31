@@ -12,6 +12,9 @@ module Batsd
     def initialize(options)
       @redis = ::Redis.new(options[:redis] || {host: "127.0.0.1", port: 6379} )
       @redis.ping
+      if @redis.info['redis_version'].to_f < 2.5
+        abort "You need Redis 2.6+ in order to run Batsd. See http://redis.io/ for details."
+      end
       @retentions = options[:retentions].keys
     end
     
