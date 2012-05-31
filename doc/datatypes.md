@@ -17,7 +17,7 @@ The reference implementation generally defines two datatypes:
 
 + "counters", with a datatype of `c` and an integer value. Counters are aggregated as cumulative
    values over time.
-+ "timers", with a datatype of `ms` and an integer value. Gauges are averaged over time.
++ "timers", with a datatype of `ms` and an integer value. Timers are averaged over time.
 
 This implementation supports those datatypes as specified, and further adds:
 
