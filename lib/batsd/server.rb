@@ -26,20 +26,25 @@ module Batsd
     def receive_data(msg)  
       msg.split("\n").each do |row|
         begin
-          command = row.split(" ")[0]
-          return unless command 
+          msg_split = row.split(" ")
+          command = msg_split[0]
+
+          return unless command
           case
             when command.match(/available/i)
               EM.defer { send_data "#{JSON(@redis.datapoints)}\n" }
             when command.match(/values/i)
               EM.defer do
-                 command, metric, begin_time, end_time = row.split(" ")
-                 datapoints = []
+                 command, metric, begin_time, end_time = msg_split
+                 datapoints, interval = [], 0
+
                  if metric.match(/^gauge/)
                    datapoints = @diskstore.read(metric, begin_time, end_time)
                  else
                    Batsd::Server.config[:retentions].each_with_index do |retention, index|
                      next if (Time.now.to_i - (retention[0] * retention[1]) > begin_time.to_i)
+                     interval = retention[0]
+
                      if index.zero?
                        datapoints = @redis.values_from_zset(metric, begin_time, end_time)
                        break
@@ -49,7 +54,7 @@ module Batsd
                      end
                    end
                  end
-                 send_data "#{JSON({"#{metric}" => datapoints})}\n"
+                 send_data "#{JSON({'interval' => interval, "#{metric}" => datapoints})}\n"
               end
             when command.match(/ping/i)
               send_data "PONG\n"
