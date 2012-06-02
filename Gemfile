@@ -10,6 +10,6 @@ end
 
 group :production do
   if defined?(JRUBY_VERSION)
-    gem 'json-jruby', '~> 1.7.3'
+    gem 'json', '~> 1.7.3'
   end
 end
