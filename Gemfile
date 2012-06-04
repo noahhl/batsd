@@ -7,3 +7,9 @@ group :development, :test do
   gem 'mocha'
   gem 'rake'
 end
+
+group :production do
+  if defined?(JRUBY_VERSION)
+    gem 'json', '~> 1.7.3'
+  end
+end
