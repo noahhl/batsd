@@ -1,6 +1,7 @@
 # @title Example client
 require 'timeout'
 require 'json'
+require 'socket'
 
 # Example client to access data exposed via batsd server
 class Client
