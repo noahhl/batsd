@@ -8,6 +8,7 @@ GEM
       metaclass (~> 0.0.1)
     rake (0.9.2.2)
     redis (3.0.0.rc1)
+    yard (0.8.2)
 
 PLATFORMS
   java
@@ -18,3 +19,4 @@ DEPENDENCIES
   mocha
   rake
   redis (~> 3.0.0.rc1)
+  yard
