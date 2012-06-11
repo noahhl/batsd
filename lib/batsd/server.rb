@@ -1,4 +1,5 @@
 require 'json'
+
 module Batsd
   # Makes data from statsd available over a TCP socket
   module Server
@@ -62,7 +63,7 @@ module Batsd
               send_data "BYE\n"
               close_connection
             else
-              send_data "#{JSON({error: "Unrecognized command #{command}"})}\n"
+              send_data "#{JSON({:error => "Unrecognized command #{command}"})}\n"
           end
         rescue Exception => e
           puts e if ENV["VERBOSE"]
@@ -81,7 +82,7 @@ module Batsd
         @options = options
         @bind = @options[:bind] || '0.0.0.0'
         @port = (@options[:port] || 8125) + 2
-        Batsd::Server.config = @options.merge(port: @port)
+        Batsd::Server.config = @options.merge(:port => @port)
       end
 
       # Run the server
