@@ -12,9 +12,7 @@ module Batsd
     def initialize(options)
       @redis = ::Redis.new(options[:redis] || {host: "127.0.0.1", port: 6379} )
       @redis.ping
-      if @redis.info['redis_version'].to_f < 2.5
-        abort "You need Redis 2.6+ in order to run Batsd. See http://redis.io/ for details."
-      end
+      @lua_support = @redis.info['redis_version'].to_f >= 2.5
       @retentions = options[:retentions].keys
     end
     
@@ -69,29 +67,41 @@ module Batsd
     
     # Returns the value of a key and then deletes it.
     def get_and_clear_key(key)
-      cmd = <<-EOF
-        local str = redis.call('get', KEYS[1])
-        redis.call('del', KEYS[1])
-        return str
-      EOF
-      @redis.eval(cmd, 1, key.to_sym)
+      if @lua_support
+        cmd = <<-EOF
+          local str = redis.call('get', KEYS[1])
+          redis.call('del', KEYS[1])
+          return str
+        EOF
+        @redis.eval(cmd, 1, key.to_sym)
+      else
+        @redis.multi { |multi|
+          multi.get(key)
+          multi.del(key)
+        }.first
+      end
     end
     
     # Create an array out of a string of values delimited by <X>
     def extract_values_from_string(key)
-      cmd = <<-EOF
-        local t={} ; local i=1
-        local str = redis.call('get', KEYS[1])
-        if (str) then
-          for s in string.gmatch(str, "([^".."<X>".."]+)") do
-            t[i] = s 
-            i = i + 1
+      if @lua_support
+        cmd = <<-EOF
+          local t={} ; local i=1
+          local str = redis.call('get', KEYS[1])
+          if (str) then
+            for s in string.gmatch(str, "([^".."<X>".."]+)") do
+              t[i] = s
+              i = i + 1
+            end
+            redis.call('del', KEYS[1])
           end
-          redis.call('del', KEYS[1])
-        end
-        return t
-      EOF
-      @redis.eval(cmd, 1, key.to_sym)
+          return t
+        EOF
+        @redis.eval(cmd, 1, key.to_sym)
+      else
+        values = get_and_clear_key(key)
+        values.split('<X>') if values
+      end
     end
 
     # Truncate a zset since a treshold time
