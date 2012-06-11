@@ -75,10 +75,10 @@ module Batsd
         EOF
         @redis.eval(cmd, 1, key.to_sym)
       else
-        @redis.multi { |multi|
+        @redis.multi do |multi|
           multi.get(key)
           multi.del(key)
-        }.first
+        end.first
       end
     end
     
