@@ -21,5 +21,5 @@ require 'batsd/handlers/timer'
 # to disk at different levels of aggregation.
 module Batsd
   # Current version of the daemon
-  VERSION = "0.1.0"
+  VERSION = "0.1.1"
 end

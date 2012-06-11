@@ -32,7 +32,9 @@ inspired by [quasor](https://github.com/quasor/statsd).
 ### Installation
 #### Pre-requisites
 Batsd requires Ruby 1.9.2 or JRuby 1.6 or greater, and access to a Redis
-v2.6.0-rc3 or later instance.
+instance. Redis > 2.6.0-rc3 will enable the use of Redis scripting, which 
+is preferred for performance reasons, but earlier versions are supported with 
+a performance penalty.
 
     git clone git://github.com/noahhl/batsd && cd batsd && bundle install
 

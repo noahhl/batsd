@@ -1,0 +1,11 @@
+v0.1.1 - 2012-06-11
++ Feature: Support Redis versions < 2.6 (Grzesiek Kolodziejczyk)
++ Feature: Warn and abort on unsupported Redis version; superceded by above (Luca Spiller)
++ Bug fix: Explicitly require socket for MRI (Grzesiek Kolodziejczyk)
++ Bug fix: Explicitly require yard (Grzesiek Kolodziejczyk)
++ Bug fix: Explicitly require json (Michael Coyne)
++ Docs:    Fix copy-paste failure (Victor Martinez) 
+
+
+v0.1.0 - 2012-05-28
+Initial release
