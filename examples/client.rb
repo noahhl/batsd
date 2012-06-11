@@ -1,7 +1,6 @@
 # @title Example client
 require 'timeout'
 require 'json'
-require 'socket'
 
 # Example client to access data exposed via batsd server
 class Client
@@ -48,7 +47,7 @@ class Client
         return []
       end
     end
-    results = values[metric_name].collect{|v| { timestamp: Time.at(v["timestamp"].to_i), value: v["value"].to_f }  }
+    results = values[metric_name].collect{|v| { :timestamp => Time.at(v["timestamp"].to_i), :value => v["value"].to_f }  }
     results
   end
 

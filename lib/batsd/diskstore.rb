@@ -55,7 +55,7 @@ module Batsd
           while (line = file.gets)
             ts, value = line.split
             if ts >= start_ts && ts <= end_ts
-              datapoints << {timestamp: ts.to_i, value: value}
+              datapoints << {:timestamp => ts.to_i, :value => value}
             end
           end
           file.close
@@ -95,6 +95,6 @@ module Batsd
     ensure 
       FileUtils.rm("#{filename}tmp") rescue nil
     end
-
+  
   end
 end

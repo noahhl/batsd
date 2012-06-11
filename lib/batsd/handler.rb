@@ -40,8 +40,8 @@ module Batsd
     #
     def statistics
       {
-        threadpool_size: @threadpool.pool,  
-        queue_depth: @threadpool.size
+        :threadpool_size => @threadpool.pool,  
+        :queue_depth => @threadpool.size
       }.merge(@statistics)
     end
 

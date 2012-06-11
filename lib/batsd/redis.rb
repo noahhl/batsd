@@ -10,7 +10,7 @@ module Batsd
     # in the configuration or localhost:6379
     #
     def initialize(options)
-      @redis = ::Redis.new(options[:redis] || {host: "127.0.0.1", port: 6379} )
+      @redis = ::Redis.new(options[:redis] || {:host => "127.0.0.1", :port => 6379} )
       @redis.ping
       if @redis.info['redis_version'].to_f < 2.5
         abort "You need Redis 2.6+ in order to run Batsd. See http://redis.io/ for details."
@@ -104,7 +104,7 @@ module Batsd
     def values_from_zset(metric, begin_ts, end_ts)
       begin
         values = @redis.zrangebyscore(metric, begin_ts, end_ts)
-        values.collect{|val| ts, val = val.split("<X>"); {timestamp: ts, value: val } }
+        values.collect{|val| ts, val = val.split("<X>"); {:timestamp => ts, :value => val } }
       rescue
         []
       end

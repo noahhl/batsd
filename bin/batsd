@@ -8,7 +8,7 @@ require 'batsd'
 ENV["VERBOSE"]="1" if ENV["VVERBOSE"]
 begin
   ORIGINAL_ARGV = ARGV.dup
-  options = { config: "config.yml" }
+  options = { :config => "config.yml" }
   
   parser = OptionParser.new do |opts|
     opts.banner = "Usage: batsd [options] (*server|truncate) args"
@@ -60,9 +60,9 @@ begin
     # The key that they are assigned to should correspond to
     # the data type appended to the message (e.g., since
     # counters append |c, the counters handler is at handlers[:c])
-    handlers = { c: Batsd::Handler::Counter.new(config), 
-                 g: Batsd::Handler::Gauge.new(config), 
-                 ms: Batsd::Handler::Timer.new(config)
+    handlers = { :c => Batsd::Handler::Counter.new(config), 
+                 :g => Batsd::Handler::Gauge.new(config), 
+                 :ms => Batsd::Handler::Timer.new(config)
                }
     Batsd::Receiver::Daemon.new(handlers, config).run
   else
