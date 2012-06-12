@@ -93,7 +93,8 @@ module Batsd
           puts "Starting disk writing for timers@#{retention}" if ENV["VERBOSE"]
           t = Benchmark.measure do 
             ts = (flush_start - flush_start % retention.to_i)
-            @counters.keys.each_slice(400) do |keys|
+            counters = @counters.dup
+            counters.keys.each_slice(400) do |keys|
               @threadpool.queue ts, keys, retention do |timestamp, keys, retention|
                 keys.each do |key|
                   key = "#{key}:#{retention}"
