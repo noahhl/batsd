@@ -53,8 +53,8 @@ Example config.yml
     # Root path to store disk aggregations
     root: /statsd 
     redis:
-      host: 127.0.0.1
-      port: 6379
+      :host: 127.0.0.1
+      :port: 6379
     
     # Configure how much data to retain at what intervals
     # Key is seconds, value is number of measurements at that
