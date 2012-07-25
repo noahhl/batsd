@@ -80,12 +80,13 @@ module Batsd
       def initialize(options={})
         @options = options
         @bind = @options[:bind] || '0.0.0.0'
-        @port = (@options[:port] || 8125) + 2
+        @port = @options[:manual_port] || ((@options[:port] || 8125) + 2)
         Batsd::Server.config = @options.merge(port: @port)
       end
 
       # Run the server
       def run
+        puts "Starting server on #{@port}"
         EventMachine.threadpool_size = 100
         EventMachine::run do
           EventMachine::start_server(@bind, @port, Batsd::Server)  
