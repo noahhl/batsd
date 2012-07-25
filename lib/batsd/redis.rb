@@ -10,7 +10,7 @@ module Batsd
     # in the configuration or localhost:6379
     #
     def initialize(options)
-      @redis = ::Redis.new(options[:redis] || {host: "127.0.0.1", port: 6379} )
+      @redis = ::Redis.new((options[:redis] || {host: "127.0.0.1", port: 6379}).symbolize_keys)
       @redis.ping
       @lua_support = @redis.info['redis_version'].to_f >= 2.5
       @retentions = options[:retentions].keys
