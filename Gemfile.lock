@@ -1,8 +1,8 @@
 GEM
   remote: http://rubygems.org/
   specs:
-    eventmachine (1.0.0.beta.4)
-    eventmachine (1.0.0.beta.4-java)
+    eventmachine (1.0.0.rc.4)
+    eventmachine (1.0.0.rc.4-java)
     json (1.7.3)
     json (1.7.3-java)
     metaclass (0.0.1)
@@ -17,7 +17,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  eventmachine (~> 1.0.0.beta.4)
+  eventmachine (~> 1.0.0.rc.4)
   json
   mocha
   rake
