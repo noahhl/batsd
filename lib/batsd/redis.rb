@@ -73,7 +73,7 @@ module Batsd
           redis.call('del', KEYS[1])
           return str
         EOF
-        @redis.eval(cmd, 1, key.to_sym)
+        @redis.eval(cmd, [key.to_sym])
       else
         @redis.multi do |multi|
           multi.get(key)
@@ -97,7 +97,7 @@ module Batsd
           end
           return t
         EOF
-        @redis.eval(cmd, 1, key.to_sym)
+        @redis.eval(cmd, [key.to_sym])
       else
         values = get_and_clear_key(key)
         values.split('<X>') if values
