@@ -49,7 +49,7 @@ module Batsd
           @threadpool.queue @diskstore, keys, retention, min_ts do |diskstore, keys, retention, min_ts|
             keys.each do |key|
               key = "#{key}:#{retention}"
-              diskstore.truncate(diskstore.build_filename(key), min_ts)
+              diskstore.truncate(diskstore.build_filename(key), min_ts.to_s)
             end
           end
         end
