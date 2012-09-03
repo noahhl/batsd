@@ -3,8 +3,9 @@ GEM
   specs:
     eventmachine (1.0.0.rc.4)
     eventmachine (1.0.0.rc.4-java)
-    json (1.7.3)
-    json (1.7.3-java)
+    json (1.5.0-java)
+    json-jruby (1.5.0-java)
+      json (= 1.5.0)
     metaclass (0.0.1)
     mocha (0.11.3)
       metaclass (~> 0.0.1)
@@ -18,7 +19,7 @@ PLATFORMS
 
 DEPENDENCIES
   eventmachine (~> 1.0.0.rc.4)
-  json
+  json-jruby
   mocha
   rake
   redis (~> 3.0.1)

@@ -2,7 +2,11 @@ source :rubygems
 
 gem 'eventmachine', '~>1.0.0.rc.4'
 gem 'redis', "~> 3.0.1"
-gem 'json'
+if RUBY_PLATFORM == 'java'
+  gem 'json-jruby'
+else
+  gem 'json'
+end
 
 group :development, :test do
   gem 'yard'
