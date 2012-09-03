@@ -16,7 +16,7 @@ class Threadpool
           begin
             job.call(*args)
           rescue Exception => e
-            puts "Thread #{Thread.current} error: #{e} #{e.message} #{e.backtrace.join("\n")}"
+            puts "Thread #{Thread.current} error: #{e} #{e.try(:message)} #{e.try(:backtrace).to_a.join("\n")}"
           end
         end
       end
@@ -45,7 +45,11 @@ class Threadpool
   # Returns the size of the pool of workers
   #
   def pool 
-    @pool.size
+    @pool.select(&:alive?).size
+  end
+
+  def threads
+    @pool
   end
 
 end

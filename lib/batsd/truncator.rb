@@ -47,9 +47,13 @@ module Batsd
         # Stored on disk
         keys.each do |key|
           key = "#{key}:#{retention}"
-          @threadpool.queue key, min_ts do |key, min_ts|
-            @diskstore.truncate(@diskstore.build_filename(key), min_ts)
+          @threadpool.queue @diskstore, key, min_ts do |diskstore, key, min_ts|
+            diskstore.truncate(diskstore.build_filename(key), min_ts)
           end
+        end
+        while @threadpool.size > 0
+          puts "#{Time.now}: Current truncator threadpool size: #{@threadpool.size}" if ENV["VVERBOSE"]
+          sleep 5
         end
       end
     end
