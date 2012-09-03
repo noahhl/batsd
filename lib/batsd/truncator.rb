@@ -14,6 +14,7 @@ module Batsd
       @retentions = options[:retentions].keys
       @redis = Batsd::Redis.new(options )
       @diskstore = Batsd::Diskstore.new(options[:root])
+      @threadpool = Threadpool.new(options[:truncate_threadpool_size] || 10)
     end
 
     # Perform a truncation run. Sole argument is the aggregation level to be
@@ -46,7 +47,9 @@ module Batsd
         # Stored on disk
         keys.each do |key|
           key = "#{key}:#{retention}"
-          @diskstore.truncate(@diskstore.build_filename(key), min_ts)
+          @threadpool.queue key, min_ts do |key, min_ts|
+            @diskstore.truncate(@diskstore.build_filename(key), min_ts)
+          end
         end
       end
     end

@@ -88,7 +88,7 @@ module Batsd
         end
         FileUtils.cp("#{filename}tmp", filename) rescue nil
       end
-    rescue Errno::ENOENT
+    rescue Errno::ENOENT => e
       puts "Encountered an error trying to truncate #{filename}: #{e}" if ENV["VVERBOSE"] 
     rescue Exception => e
       puts "Encountered an error trying to truncate #{filename}: #{e}"
