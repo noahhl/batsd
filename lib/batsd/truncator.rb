@@ -45,10 +45,12 @@ module Batsd
         keys.each { |key| @redis.truncate_zset(key, min_ts) }
       else
         # Stored on disk
-        keys.each do |key|
-          key = "#{key}:#{retention}"
-          @threadpool.queue @diskstore, key, min_ts do |diskstore, key, min_ts|
-            diskstore.truncate(diskstore.build_filename(key), min_ts)
+        keys.each_slice(100) do |keys|
+          @threadpool.queue @diskstore, keys, retention, min_ts do |diskstore, keys, retention, min_ts|
+            keys.each do |key|
+              key = "#{key}:#{retention}"
+              diskstore.truncate(diskstore.build_filename(key), min_ts)
+            end
           end
         end
         while @threadpool.size > 0
