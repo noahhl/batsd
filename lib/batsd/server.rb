@@ -42,7 +42,9 @@ module Batsd
                    datapoints = @diskstore.read(metric, begin_time, end_time)
                  else
                    Batsd::Server.config[:retentions].each_with_index do |retention, index|
-                     next if (Time.now.to_i - (retention[0] * retention[1]) > begin_time.to_i)
+                     if (index != Batsd::Server.config[:retentions].count - 1) && (Time.now.to_i - (retention[0] * retention[1]) > begin_time.to_i)
+                       next
+                     end
                      interval = retention[0]
 
                      if index.zero?
