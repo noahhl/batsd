@@ -32,7 +32,7 @@ module Batsd
     def receive_data(msg)    
       msg.split("\n").each do |row|
         puts "received #{row}" if ENV["VVERBOSE"]
-        key, value, type, sample = row.split(/\||:|!/)
+        key, value, type, sample = row.split(/\||:/)
         if handler = Batsd::Receiver.handlers[type.strip.to_sym]
           handler.handle(key, value, sample)
         else
