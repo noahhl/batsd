@@ -3,6 +3,7 @@ require 'eventmachine'
 require 'redis'
 
 require 'core-ext/array'
+require 'core-ext/hash'
 
 require 'batsd/diskstore'
 require 'batsd/redis'
