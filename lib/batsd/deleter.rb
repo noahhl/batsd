@@ -1,10 +1,10 @@
 module Batsd
   #
-  # Handle truncation for redis zsets and files written to disk
+  # Handle deletion for redis zsets and files written to disk
   #
   class Deleter
 
-    # Create a new truncator
+    # Create a new deleter
     #
     # * Establish the diskstore that will be used
     # * Establish the redis connection that will be needed
