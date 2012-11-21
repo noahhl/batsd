@@ -96,5 +96,29 @@ module Batsd
       FileUtils.rm("#{filename}tmp") rescue nil
     end
 
+    # Deletes a file, if it exists.
+    # If :delete_empty_dirs is true, empty directories will be deleted too.
+    #
+    def delete(filename, options={})
+      if File.exists? filename
+        FileUtils.rm(filename)
+      end
+
+      if options[:delete_empty_dirs]
+        p = filename
+        begin
+          2.times do
+            p = File.dirname(p)
+            Dir.rmdir(p) rescue break # only delete if dir is empty, else break
+          end
+        rescue => e
+          puts "Encountered an error trying to remove empty directory #{p}: #{e.class}"
+        end
+      end
+    rescue Errno::ENOENT => e
+      puts "Encountered an ENOENT error trying to delete #{filename}: #{e}" if ENV["VVERBOSE"] 
+    rescue Exception => e
+      puts "Encountered an error trying to delete #{filename}: #{e.class}"
+    end
   end
 end

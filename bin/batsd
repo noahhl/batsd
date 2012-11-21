@@ -69,6 +69,16 @@ begin
                  ms: Batsd::Handler::Timer.new(config)
                }
     Batsd::Receiver::Daemon.new(handlers, config).run
+  when :delete
+    statistic = ARGV[1]
+    if !statistic.nil? && !statistic.empty?
+      @deleter = Batsd::Deleter.new(config)
+      @deleter.delete(statistic)
+      puts "Deleted \"#{statistic}\"."
+    else
+      puts "Need to specify a statistic."
+      exit 1
+    end
   else
     puts "I don't know how to #{command}."
     exit 1
