@@ -70,11 +70,10 @@ begin
                }
     Batsd::Receiver::Daemon.new(handlers, config).run
   when :delete
-    statistic = ARGV[1]
-    if !statistic.nil? && !statistic.empty?
+    if ARGV[1] && !ARGV[1].empty?
       @deleter = Batsd::Deleter.new(config)
-      @deleter.delete(statistic)
-      puts "Deleted \"#{statistic}\"."
+      @deleter.delete(ARGV[1])
+      puts "Deleted \"#{ARGV[1]}\"."
     else
       puts "Need to specify a statistic."
       exit 1
