@@ -115,6 +115,10 @@ Run the server to expose data to clients
 The server is run as a separate process to allow for controlled upgrades of one
 or the other component, without affecting data acquisition or presentation.
 
+Delete an existing data point (replace &lt;statistic&gt; with the name of the metric, e.g. "counters:mymetric")
+
+    batsd -c config.yml delete <statistic>
+
 A sample client to extract data is included in `examples/client.rb`.
 [jeremy/statsd](https://github.com/jeremy/statsd-ruby.git) is the recommended
 ruby statsd client for sending data.

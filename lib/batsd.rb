@@ -12,6 +12,7 @@ require 'batsd/server'
 require 'batsd/statistics'
 
 require 'batsd/truncator'
+require 'batsd/deleter'
 require 'batsd/handler'
 require 'batsd/handlers/gauge'
 require 'batsd/handlers/counter'

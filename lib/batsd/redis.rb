@@ -81,6 +81,11 @@ module Batsd
         end.first
       end
     end
+
+    # Deletes the given key
+    def clear_key(key)
+      @redis.del(key)
+    end
     
     # Create an array out of a string of values delimited by <X>
     def extract_values_from_string(key)
@@ -135,6 +140,13 @@ module Batsd
     #
     def add_datapoint(key)
       @redis.sadd "datapoints", key
+    end
+
+    # Stores a reference to the datapoint in 
+    # the 'datapoints' set
+    #
+    def remove_datapoint(key)
+      @redis.srem "datapoints", key
     end
 
   end

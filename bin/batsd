@@ -69,6 +69,15 @@ begin
                  ms: Batsd::Handler::Timer.new(config)
                }
     Batsd::Receiver::Daemon.new(handlers, config).run
+  when :delete
+    if ARGV[1] && !ARGV[1].empty?
+      @deleter = Batsd::Deleter.new(config)
+      @deleter.delete(ARGV[1])
+      puts "Deleted \"#{ARGV[1]}\"."
+    else
+      puts "Need to specify a statistic."
+      exit 1
+    end
   else
     puts "I don't know how to #{command}."
     exit 1
