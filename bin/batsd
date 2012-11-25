@@ -77,9 +77,8 @@ begin
   when :delete
     statistic = ARGV[1]
     if statistic && !statistic.empty?
-      deleter = Batsd::Deleter.new(config)
-      deleter.delete(statistic)
-      puts "Deleted \"#{statistic}\"."
+      deletions = Batsd::Deleter.new(config).delete(statistic)
+      puts "Deleted #{deletions.join(",")}." 
     else
       puts "Need to specify a statistic."
       exit 1
