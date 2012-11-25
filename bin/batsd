@@ -44,9 +44,9 @@ begin
   command = (ARGV[0] || :receiver).downcase.to_sym
   case command
   when :truncate
-    @truncator = Batsd::Truncator.new(config)
+    truncator = Batsd::Truncator.new(config)
     if ARGV[1].to_i.to_s == ARGV[1]
-      @truncator.run(ARGV[1].to_i)
+      truncator.run(ARGV[1].to_i)
     else
       puts "Need to specify a truncation level (#{config[:retentions].keys.join(",")} are configured)."
       exit 1
@@ -75,10 +75,11 @@ begin
       puts d.match(/^timers:/) ? "#{d}:(mean|count|min|max|upper_90|stddev)" : d
     end
   when :delete
-    if ARGV[1] && !ARGV[1].empty?
-      @deleter = Batsd::Deleter.new(config)
-      @deleter.delete(ARGV[1])
-      puts "Deleted \"#{ARGV[1]}\"."
+    statistic = ARGV[1]
+    if statistic && !statistic.empty?
+      deleter = Batsd::Deleter.new(config)
+      deleter.delete(statistic)
+      puts "Deleted \"#{statistic}\"."
     else
       puts "Need to specify a statistic."
       exit 1
