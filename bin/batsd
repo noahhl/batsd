@@ -74,6 +74,15 @@ begin
     Batsd::Redis.new(config).datapoints.each do |d|
       puts d.match(/^timers:/) ? "#{d}:(mean|count|min|max|upper_90|stddev)" : d
     end
+  when :delete
+    if ARGV[1] && !ARGV[1].empty?
+      @deleter = Batsd::Deleter.new(config)
+      @deleter.delete(ARGV[1])
+      puts "Deleted \"#{ARGV[1]}\"."
+    else
+      puts "Need to specify a statistic."
+      exit 1
+    end
   else
     puts "I don't know how to #{command}."
     exit 1

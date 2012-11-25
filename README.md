@@ -132,6 +132,10 @@ Print available datapoints:
 
     batsd -c config.yml datapoints
 
+Delete an existing data point (replace &lt;statistic&gt; with the name of the 
+metric, e.g. "counters:mymetric" or "timers:mymetric:mean"):
+
+    batsd -c config.yml delete <statistic>
 
 # Getting help and contributing
 

@@ -45,5 +45,17 @@ class DiskstoreTest < Test::Unit::TestCase
     assert_equal 26, @diskstore.read(@statistic, now.to_s, (now + 50).to_s).length
   end
 
+  def test_delete_unlinks_file
+    @diskstore.delete(@diskstore.build_filename(@statistic))
+    assert_equal false, File.exists?(@diskstore.build_filename(@statistic))
+    # parent directory still exists
+    assert_equal true, File.exists?(File.dirname(@diskstore.build_filename(@statistic)))
+    # delete empty parents
+    @diskstore.delete(@diskstore.build_filename(@statistic), :delete_empty_dirs => true)
+    # now both parent directories are gone too
+    assert_equal false, File.exists?(File.dirname(@diskstore.build_filename(@statistic)))
+    assert_equal false, File.exists?(File.dirname(File.dirname(@diskstore.build_filename(@statistic))))
+  end
+
 
 end
