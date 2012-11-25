@@ -119,6 +119,20 @@ A sample client to extract data is included in `examples/client.rb`.
 [jeremy/statsd](https://github.com/jeremy/statsd-ruby.git) is the recommended
 ruby statsd client for sending data.
 
+#### Other command line options
+Truncate datapoints at specified aggregation level:
+
+    batsd -c config.yml truncate
+
+Print receiver statistics:
+
+    batsd -c config.yml stats
+
+Print available datapoints:
+
+    batsd -c config.yml datapoints
+
+
 # Getting help and contributing
 
 ### Getting help with Batsd
