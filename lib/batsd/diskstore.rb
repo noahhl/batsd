@@ -109,7 +109,12 @@ module Batsd
         begin
           2.times do
             p = File.dirname(p)
-            Dir.rmdir(p) rescue break # only delete if dir is empty, else break
+            begin
+              Dir.rmdir(p) 
+            rescue Errno::ENOTEMPTY # only delete if dir is empty, else break
+              puts "#{p} is not empty, skipping" if ENV["VERBOSE"]
+              break 
+            end
           end
         rescue => e
           puts "Encountered an error trying to remove empty directory #{p}: #{e.class}"
