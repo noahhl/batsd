@@ -36,7 +36,7 @@ module Batsd
       @retentions.each_with_index do |t, index|
         if index.zero?
           @redis.zadd key, timestamp, "#{timestamp}<X>#{value}"
-        else index.zero?
+        else
           @redis.incrby "#{key}:#{t}", value
           @redis.expire "#{key}:#{t}", t.to_i * 2
         end
