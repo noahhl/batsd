@@ -53,10 +53,11 @@ module Batsd
     # Reads until it reaches end_ts or the end fo the file. Returns an array
     # of <code>{timestamp: ts, value: v}</code> hashes.
     #
-    def read(statistic, start_ts, end_ts, ignore_new_versions=false)
-      if statistic.match(/^timer/) && !ignore_new_versions
-        return(send :"read_timer_v#{Batsd::TIMER_VERSION}", statistic, start_ts, end_ts)
-      end
+    def read(statistic, start_ts, end_ts, version=2)
+      send :"read_v#{version}", statistic, start_ts, end_ts
+    end
+
+    def read_v1(statistic, start_ts, end_ts)
       datapoints = []
       filename = build_filename(statistic)
       begin
@@ -76,19 +77,30 @@ module Batsd
       end
       datapoints
     end
-    
-    # Read and parse a second generation timer
-    def read_timer_v2(statistic, start_ts, end_ts)
+
+    def read_v2(statistic, start_ts, end_ts)
       datapoints = []
       fields = []
       filename = build_filename(statistic)
       begin
         File.open(filename, 'r') do |file| 
-          fields = file.gets.split(": ").last.split("/")
           while (line = file.gets)
-            ts, value = line.split
-            if ts >= start_ts && ts <= end_ts
-              datapoints << {timestamp: ts.to_i, value: value.split("/")}
+            if line[0] == "v"
+              fields = line.split(": ")
+              if fields.length > 1
+                fields = fields.last.split("/")
+              else
+                fields = []
+              end
+            else
+              ts, value = line.split
+              if ts >= start_ts && ts <= end_ts
+                if statistic.match(/^timer/)
+                  datapoints << {timestamp: ts.to_i, value: value.split("/")}
+                else
+                  datapoints << {timestamp: ts.to_i, value: value}
+                end
+              end
             end
           end
           file.close
@@ -98,8 +110,13 @@ module Batsd
       rescue Exception => e
         Batsd.logger.warn "Encountered an error trying to read #{filename}: #{e}"
       end
-      [datapoints, fields]
+      if fields.any?
+        [datapoints, fields]
+      else
+        datapoints
+      end
     end
+    
 
     # Truncates a file by rewriting to a temp file everything after the since
     # timestamp that is provided. The temp file is then renaemed to the

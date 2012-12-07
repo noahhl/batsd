@@ -25,4 +25,5 @@ require 'batsd/handlers/timer'
 module Batsd
   # Current version of the daemon
   VERSION = "0.1.1"
+  DATASTORE_VERSION = 2
 end

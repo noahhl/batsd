@@ -16,17 +16,7 @@ module Batsd
     end
 
     def delete(statistic)
-      if statistic.match(/^timers:/)
-        # Fully specified key
-        if statistic.match(/^timers:.*:(mean|count|min|max|stddev|upper_90)/) 
-          deletions = [statistic]
-        else
-          # Only statistic, not mean/min/max. Delete all of them
-          deletions = %w(mean count min max stddev upper_90).collect{|a| "#{statistic}:#{a}"}
-        end
-      else
-        deletions = [statistic]
-      end
+      deletions = [statistic]
       deletions.each do |statistic|
         retentions = @options[:retentions].keys
         # first retention
@@ -36,7 +26,7 @@ module Batsd
 
         # other retentions
         retentions.each do |retention|
-          key = "#{statistic}:#{retention}"
+          key = "#{statistic}:#{retention}:#{DATASTORE_VERSION}"
           @diskstore.delete(@diskstore.build_filename(key), :delete_empty_dirs => true)
         end
       end

@@ -1,3 +1,16 @@
+v0.2.0 - Unreleased
++ Feature: Add bin/batsd delete (groe)
++ Feature: Add bin/batsd datapoints
++ Bug fix: bump to redis-rb 3.0.2 to fix string vs. sym initialization (Daniel Naves de Carvalho)
++ Bug fix: fix truncator to make string comparisons as appropriate
++ Performance improvement: use json-jruby for performance
++ Bug fix: don't split on bang when receiving data (Grzesiek Kolodziejczyk)
++ Bug fix: fix typo in conditional (Romain Tribes)
++ Feature: Use ruby logger library instead of 'puts'ing to stdout 
++ Feature: version 2 of timer storage; stores all aspects of a timer (count, mean, min, etc.) in a single file.
++ Feature: migrator to move timers from old to new storage
++ Feature: Add script/console
+
 v0.1.1 - 2012-06-11
 + Feature: Support Redis versions < 2.6 (Grzesiek Kolodziejczyk)
 + Feature: Warn and abort on unsupported Redis version; superceded by above (Luca Spiller)

@@ -40,7 +40,7 @@ class Array
   def standard_dev
     (mean_squared/(count-1))**0.5
   end
-  alias_method :stddev, standard_dev
+  alias_method :stddev, :standard_dev
 
   # Allow [1,2,3].percentile_90, [1,2,3].percentile(75), etc.
   def method_missing(method, *args, &block)

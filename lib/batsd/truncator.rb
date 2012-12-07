@@ -31,13 +31,6 @@ module Batsd
     def run(retention)
       min_ts = Time.now.to_i - (@options[:retentions][retention] * retention)
       keys = @redis.datapoints(with_gauges=false)
-      keys = keys.collect do |k|
-        if (k.match(/^timer/) rescue false)
-          ["mean", "min", "max", "upper_90", "stddev", "count"].collect{|a| "#{k}:#{a}"}
-        else
-          k
-        end
-      end.flatten
 
       if retention == @retentions.first
         # First retention is stored in redis, so just need to truncate the zset

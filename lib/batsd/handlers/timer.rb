@@ -1,6 +1,5 @@
 module Batsd
-  TIMER_VERSION = 2
-  STANDARD_OPERATIONS = ["min", "max", "median", "mean", "stddev", "percentile_90", "percentile_95", "percentile_99", "percentile_999"]
+  STANDARD_OPERATIONS = ["min", "max", "median", "mean", "stddev", "percentile_90", "percentile_95", "percentile_99"]
   #
   # Handles timer measurements ("|c")
   #
@@ -25,7 +24,7 @@ module Batsd
       @timers = {}
       now = Time.now.to_i
       @last_flushes = @retentions.inject({}){|l, r| l[r] = now; l }
-      @fast_threadpool = Threadpool.new((options[:threadpool_size] || 100)/2)
+      @fast_threadpool = Threadpool.new(options[:threadpool_size] || 100)
       super
     end
 
@@ -99,7 +98,19 @@ module Batsd
                 keys.each do |key|
                   values = @redis.extract_values_from_string("#{key}:#{retention}")
                   if values
-                    write_aggregations_to_disk_from_raw_values(values, @diskstore)
+                    values = values.collect(&:to_f)
+                    count = values.count
+
+                    Batsd.logger.debug "Writing the aggregates for #{values.count} values for #{key} at the #{retention} level to disk." 
+                    combined_values = [count] + @operations.collect do |aggregation|
+                      count > 1 ? values.send(aggregation.to_sym) : values.first
+                    end
+
+                    if count > 0 
+                      combined_values = combined_values.join("/")
+                      decode_key = "v#{DATASTORE_VERSION} #{key}:#{retention}: #{(["count"] + @operations).join("/")}"
+                      @diskstore.append_value_to_file(@diskstore.build_filename("#{key}:#{retention}:#{DATASTORE_VERSION}"), "#{timestamp} #{combined_values}", 0, decode_key)
+                    end
 
                   end
                 end
@@ -123,22 +134,6 @@ module Batsd
         end
       end
 
-    end
-
-    def write_aggregations_to_disk_from_raw_values(values, diskstore)
-      values = values.collect(&:to_f)
-      count = values.count
-
-      Batsd.logger.debug "Writing the aggregates for #{values.count} values for #{key} at the #{retention} level to disk." 
-      combined_values = [count] + @operations.collect do |aggregation|
-        count > 1 ? values.send(aggregation.to_sym) : values.first
-      end
-
-      if count > 0 
-        combined_values = combined_values.join("/")
-        decode_key = "v#{TIMER_VERSION}: count/#{operations.join("/")}"
-        diskstore.append_value_to_file(diskstore.build_filename("#{key}:#{retention}:#{TIMER_VERSION}"), "#{timestamp} #{combined_values}", 0, decode_key)
-      end
     end
 
 
