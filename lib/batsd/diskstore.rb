@@ -88,7 +88,7 @@ module Batsd
             if line[0] == "v"
               fields = line.split(": ")
               if fields.length > 1
-                fields = fields.last.split("/")
+                fields = fields.last.split("/").map(&:chomp)
               else
                 fields = []
               end
