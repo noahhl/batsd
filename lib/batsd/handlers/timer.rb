@@ -1,4 +1,5 @@
 module Batsd
+  TIMER_VERSION = 2
   #
   # Handles timer measurements ("|c")
   #
@@ -96,18 +97,20 @@ module Batsd
                   values = @redis.extract_values_from_string("#{key}:#{retention}")
                   if values
                     values = values.collect(&:to_f)
-                    Batsd.logger.debug "Writing the aggregates for #{values.count} values for #{key} at the #{retention} level to disk." 
                     count = values.count
-                    ["mean", "count", "min", "max", ["upper_90", "percentile_90"], ["stddev", "standard_dev"]].each do |aggregation|
-                      if aggregation.is_a? Array
-                        name = aggregation[0]
-                        aggregation = aggregation[1]
-                      else
-                        name = aggregation
-                      end
-                      val = (count > 1 ? values.send(aggregation.to_sym) : values.first)
-                      @diskstore.append_value_to_file(@diskstore.build_filename("#{key}:#{name}:#{retention}"), "#{timestamp} #{val}")
+
+                    Batsd.logger.debug "Writing the aggregates for #{values.count} values for #{key} at the #{retention} level to disk." 
+                    operations = ["min", "max", "mean", "percentile_90", "standard_dev"]
+                    combined_values = [count] + operations.collect do |aggregation|
+                      count > 1 ? values.send(aggregation.to_sym) : values.first
                     end
+
+                    if count > 0 
+                      combined_values = combined_values.join("/")
+                      decode_key = "v#{TIMER_VERSION}: count/#{operations.join("/")}"
+                      @diskstore.append_value_to_file(@diskstore.build_filename("#{key}:#{retention}:#{TIMER_VERSION}"), "#{timestamp} #{combined_values}", 0, decode_key)
+                    end
+
                   end
                 end
               end

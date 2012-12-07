@@ -41,6 +41,7 @@ module Batsd
                  if metric.match(/^gauge/)
                    datapoints = @diskstore.read(metric, begin_time, end_time)
                  else
+
                    Batsd::Server.config[:retentions].each_with_index do |retention, index|
                      if (index != Batsd::Server.config[:retentions].count - 1) && (Time.now.to_i - (retention[0] * retention[1]) > begin_time.to_i)
                        next
@@ -51,7 +52,24 @@ module Batsd
                        datapoints = @redis.values_from_zset(metric, begin_time, end_time)
                        break
                      else
-                       datapoints = @diskstore.read("#{metric}:#{retention[0]}", begin_time, end_time)
+
+                       if metric.match(/^timers:/)
+                         if metric.match(/^timers:.*:(.*)$/) 
+                           metric = metric.rpartition(":").first
+                           operation = $1
+                         end 
+                         datapoints, headers = @diskstore.read("#{metric}:#{retention[0]}:#{Batsd::TIMER_VERSION}", begin_time, end_time)
+                         if defined? operation
+                           index = headers.index(operation) || 0
+                           datapoints = datapoints.collect{|v| {timestamp: v[:timestamp], value: v[:value][index]}}
+                           metric = "#{metric}:#{operation}"
+                         else
+                           {fields: headers, data: datapoints}
+                         end
+                       else
+                         datapoints = @diskstore.read("#{metric}:#{retention[0]}", begin_time, end_time)
+                       end
+
                        break
                      end
                    end

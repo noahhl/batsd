@@ -28,17 +28,23 @@ module Batsd
     # Open the file in append mode (creating directories needed along
     # the way), write the value and a newline, and close the file again.
     #
-    def append_value_to_file(filename, value, attempts=0)
-      FileUtils.mkdir_p filename.split("/")[0..-2].join("/")
+    def append_value_to_file(filename, value, attempts=0, header=nil)
+      existed = File.exists? filename
+      FileUtils.mkdir_p filename.split("/")[0..-2].join("/") unless existed
+
       File.open(filename, 'a+') do |file|
+        unless existed || header.nil?
+          file.write("#{header}\n")
+        end
         file.write("#{value}\n")
         file.close
       end
+      existed
     rescue Exception => e
       Batsd.logger.warn "Encountered an error trying to store to #{filename}: #{e} #{e.message} #{e.backtrace if ENV["VERBOSE"]}"
       if attempts < 2
         Batsd.logger.warn "Retrying #{filename} for the #{attempts+1} time"
-        append_value_to_file(filename, value, attempts+1)
+        append_value_to_file(filename, value, attempts+1, header)
       end
     end
 
@@ -48,6 +54,9 @@ module Batsd
     # of <code>{timestamp: ts, value: v}</code> hashes.
     #
     def read(statistic, start_ts, end_ts)
+      if statistic.match(/^timer/)
+        return(send :"read_timer_v#{Batsd::TIMER_VERSION}", statistic, start_ts, end_ts)
+      end
       datapoints = []
       filename = build_filename(statistic)
       begin
@@ -66,6 +75,30 @@ module Batsd
         Batsd.logger.warn "Encountered an error trying to read #{filename}: #{e}"
       end
       datapoints
+    end
+    
+    # Read and parse a second generation timer
+    def read_timer_v2(statistic, start_ts, end_ts)
+      datapoints = []
+      fields = []
+      filename = build_filename(statistic)
+      begin
+        File.open(filename, 'r') do |file| 
+          fields = file.gets.split(": ").last.split("/")
+          while (line = file.gets)
+            ts, value = line.split
+            if ts >= start_ts && ts <= end_ts
+              datapoints << {timestamp: ts.to_i, value: value.split("/")}
+            end
+          end
+          file.close
+        end
+      rescue Errno::ENOENT => e
+        Batsd.logger.debug "Encountered an error trying to read #{filename}: #{e}" 
+      rescue Exception => e
+        Batsd.logger.warn "Encountered an error trying to read #{filename}: #{e}"
+      end
+      [datapoints, fields]
     end
 
     # Truncates a file by rewriting to a temp file everything after the since
