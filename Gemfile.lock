@@ -3,7 +3,6 @@ GEM
   specs:
     eventmachine (1.0.0.rc.4)
     eventmachine (1.0.0.rc.4-java)
-    json (1.5.0)
     json (1.5.0-java)
     json-jruby (1.5.0-java)
       json (= 1.5.0)
