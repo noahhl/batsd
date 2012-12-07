@@ -67,13 +67,10 @@ module Batsd
               Batsd.logger.debug "Storing #{values.size} values to redis for #{key} at #{timestamp}" 
               # Store all the aggregates for the flush interval level
               count = values.count
-              @redis.store_timer timestamp, "#{key}:mean", values.mean
-              @redis.store_timer timestamp, "#{key}:count", count 
-              @redis.store_timer timestamp, "#{key}:min", values.min
-              @redis.store_timer timestamp, "#{key}:max", values.max
-              @redis.store_timer timestamp, "#{key}:upper_90", values.percentile_90
-              if count > 1
-                @redis.store_timer timestamp, "#{key}:stddev", values.standard_dev
+
+              (["count"] + @operations).each do |aggregation|
+                aggregate_value = count > 1 ? values.send(aggregation.to_sym) : values.first
+                 @redis.store_timer timestamp, "#{key}:#{aggregation}", aggregate_value
               end
               @redis.store_raw_timers_for_aggregations key, values
             end
