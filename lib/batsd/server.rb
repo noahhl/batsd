@@ -35,7 +35,8 @@ module Batsd
               EM.defer { send_data "#{JSON(@redis.datapoints)}\n" }
             when command.match(/values/i)
               EM.defer do
-                 command, metric, begin_time, end_time = msg_split
+                 command, metric, begin_time, end_time, version = msg_split
+                 version = (version || DATASTORE_VERSION).to_i
                  datapoints, interval = [], 0
 
                  if metric.match(/^gauge/)
@@ -53,7 +54,7 @@ module Batsd
                        break
                      else
 
-                       if metric.match(/^timers:/)
+                       if version >= 2 && metric.match(/^timers:/)
                          if metric.match(/^timers:.*:(.*)$/) 
                            metric = metric.rpartition(":").first
                            operation = $1
@@ -67,7 +68,7 @@ module Batsd
                            {fields: headers, data: datapoints}
                          end
                        else
-                         datapoints = @diskstore.read("#{metric}:#{retention[0]}", begin_time, end_time)
+                         datapoints = @diskstore.read("#{metric}:#{retention[0]}", begin_time, end_time, version)
                        end
 
                        break
