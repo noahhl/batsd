@@ -23,7 +23,7 @@ class Array
     if (count > 1)
       self.sort!
       # strip off the top 100-threshold
-      threshold_index = (((100 - threshold).to_f / 100) * count).round
+      threshold_index = (((100 - threshold).to_f / 100) * count).ceil
       self[0..-threshold_index].last
     else
       self.first
