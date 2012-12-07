@@ -7,7 +7,7 @@ if RUBY_PLATFORM == 'java'
 else
   gem 'json'
 end
-
+gem 'terminal-table'
 group :development, :test do
   gem 'yard'
   gem 'mocha'
