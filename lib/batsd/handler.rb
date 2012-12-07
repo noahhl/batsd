@@ -24,7 +24,7 @@ module Batsd
     #
     def handle(key, value, sample_rate)
       @threadpool.queue do
-        puts "Received #{key} #{value} #{sample_rate}" if ENV["VVERBOSE"]
+        Batsd.logger.debug "Received #{key} #{value} #{sample_rate}" 
       end
     end
 

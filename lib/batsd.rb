@@ -4,6 +4,8 @@ require 'redis'
 
 require 'core-ext/array'
 
+require 'batsd/logger'
+
 require 'batsd/diskstore'
 require 'batsd/redis'
 require 'batsd/threadpool'

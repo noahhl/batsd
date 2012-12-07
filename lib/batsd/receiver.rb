@@ -19,7 +19,7 @@ module Batsd
     
     # Startup message after server is launched
     def post_init
-      puts "#{Time.now}: batsd receiver is running and knows how to handle " + 
+      Batsd.logger.warn "batsd receiver is running and knows how to handle " + 
             Batsd::Receiver.handlers.collect{|k, v| k }.join(", ")
     end
 
@@ -31,16 +31,16 @@ module Batsd
     #
     def receive_data(msg)    
       msg.split("\n").each do |row|
-        puts "received #{row}" if ENV["VVERBOSE"]
+        Batsd.logger.debug "received #{row}" 
         key, value, type, sample = row.split(/\||:/)
         if handler = Batsd::Receiver.handlers[type.strip.to_sym]
           handler.handle(key, value, sample)
         else
-          puts "No handler for type #{type}"
+          Batsd.logger.debug "No handler for type #{type}"
         end
       end
     rescue Exception => e
-      puts "#{Time.now}: Uncaught error #{e.message}"
+      Batsd.logger.warn "Uncaught error #{e.message}"
     end
 
     #
@@ -77,7 +77,7 @@ module Batsd
           end
           bind = @options[:bind] || '0.0.0.0'
           port = @options[:port] || 8125
-          puts "#{Time.now}: Starting receiver on batsd://#{bind}:#{port}"
+          Batsd.logger.warn "Starting receiver on batsd://#{bind}:#{port}"
           EventMachine::open_datagram_socket(bind, port, Batsd::Receiver)
           # Have to run the statistics service as part of this process so that
           # it has access to the handler objects, which contain their own
@@ -86,7 +86,7 @@ module Batsd
 
           @handlers.each do |type, handler|
             if handler.respond_to? :flush
-              puts "#{Time.now}: Adding flush timer to #{handler}"
+              Batsd.logger.warn "Adding flush timer to #{handler}"
               EventMachine.add_periodic_timer(@options[:retentions].keys[0].to_i) do
                  Thread.new { handler.flush }
               end
@@ -94,13 +94,13 @@ module Batsd
           end
 
           if @options[:autotruncate]
-            puts "Enabling autotruncation"
+            Batsd.logger.warn "Enabling autotruncation"
             @options[:retentions].each do |interval, n|
               frequency = [interval.to_i * n.to_i, MAX_TRUNCATION_INTERVAL].min 
               EventMachine.add_periodic_timer(frequency) do
                 Thread.new { Batsd::Truncator.new(@options).run(interval) }
               end
-              puts "Truncator added for #{interval} second aggregations every #{frequency} seconds"
+              Batsd.logger.warn "Truncator added for #{interval} second aggregations every #{frequency} seconds"
             end
           end
 

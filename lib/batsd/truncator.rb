@@ -54,7 +54,7 @@ module Batsd
           end
         end
         while @threadpool.size > 0
-          puts "#{Time.now}: Current truncator threadpool size: #{@threadpool.size}" if ENV["VVERBOSE"]
+          Batsd.logger.debug "Current truncator threadpool size: #{@threadpool.size}"
           sleep 5
         end
       end

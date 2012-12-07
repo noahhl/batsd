@@ -5,7 +5,8 @@ require 'bundler/setup'
 require 'yaml'
 require 'optparse'
 require 'batsd'
-ENV["VERBOSE"]="1" if ENV["VVERBOSE"]
+
+
 begin
   ORIGINAL_ARGV = ARGV.dup
   options = { config: "config.yml" }
@@ -39,6 +40,16 @@ begin
     puts parser.help
     exit
   end
+
+  ENV["VERBOSE"]="1" if ENV["VVERBOSE"]
+  if ENV["VVERBOSE"]
+    Batsd.logger.level = Logger::DEBUG
+  elsif ENV["VERBOSE"]
+    Batsd.logger.level = Logger::INFO
+  else
+    Batsd.logger.level = Logger::WARN
+  end
+
   config = YAML.load_file(options[:config]).inject({}){|memo,(k,v)| memo[k.to_sym] = v; memo}.merge(options)
   
   command = (ARGV[0] || :receiver).downcase.to_sym

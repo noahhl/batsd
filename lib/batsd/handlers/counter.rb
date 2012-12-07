@@ -59,7 +59,7 @@ module Batsd
     # redis and reset
     #
     def flush
-      puts "Current threadpool queue for counters: #{@threadpool.size}" if ENV["VVERBOSE"]
+      Batsd.logger.debug "Current threadpool queue for counters: #{@threadpool.size}" 
       # Flushing is usually very fast, but always fix it so that the
       # entire thing is based on a constant start time
       # Saves on time syscalls too
@@ -78,7 +78,7 @@ module Batsd
           end
         end
       end
-      puts "Flushed #{n} counters in #{t.real} seconds" if ENV["VERBOSE"]
+      Batsd.logger.info "Flushed #{n} counters in #{t.real} seconds" 
 
       
       # If it's time for the latter aggregation to be written to disk, queue
@@ -90,7 +90,7 @@ module Batsd
         # Only if we're in need of a write to disk - if the next flush will be
         # past the threshold
         if (flush_start + @flush_interval) > @last_flushes[retention] + retention.to_i
-          puts "Starting disk writing for timers@#{retention}" if ENV["VERBOSE"]
+          Batsd.logger.info "Starting disk writing for timers@#{retention}" 
           t = Benchmark.measure do 
             ts = (flush_start - flush_start % retention.to_i)
             counters = @counters.dup
@@ -108,17 +108,17 @@ module Batsd
             end
             @last_flushes[retention] = flush_start
           end
-          puts "#{Time.now}: Handled disk writing for counters@#{retention} in #{t.real}" if ENV["VERBOSE"]
+          Batsd.logger.info "Handled disk writing for counters@#{retention} in #{t.real}" 
 
           # If this is the last retention we're handling, flush the
           # counters list to redis and reset it
           if retention == @retentions.last
-            puts "Clearing the counters list. Current state is: #{@counters}" if ENV["VVERBOSE"]
+            Batsd.logger.debug "Clearing the counters list. Current state is: #{@counters}" 
             t = Benchmark.measure do 
               @redis.add_datapoint @counters.keys
               @counters = {}
             end
-            puts "#{Time.now}: Flushed datapoints for counters in #{t.real}" if ENV["VERBOSE"]
+            Batsd.logger.info "Flushed datapoints for counters in #{t.real}" 
           end
         end
 

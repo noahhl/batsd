@@ -47,7 +47,7 @@ module Batsd
     #    Redis and reset that tracking in process.
     #
     def flush
-      puts "Current threadpool queue for timers: #{@threadpool.size}" if ENV["VVERBOSE"]
+      Batsd.logger.debug "Current threadpool queue for timers: #{@threadpool.size}" 
       # Flushing is usually very fast, but always fix it so that the
       # entire thing is based on a constant start time
       # Saves on time syscalls too
@@ -61,7 +61,7 @@ module Batsd
         timers.each_slice(50) do |keys|
           @threadpool.queue ts, keys do |timestamp, keys|
             keys.each do |key, values|
-              puts "Storing #{values.size} values to redis for #{key} at #{timestamp}" if ENV["VVERBOSE"]
+              Batsd.logger.debug "Storing #{values.size} values to redis for #{key} at #{timestamp}" 
               # Store all the aggregates for the flush interval level
               count = values.count
               @redis.store_timer timestamp, "#{key}:mean", values.mean
@@ -77,7 +77,7 @@ module Batsd
           end
         end
       end
-      puts "Flushed #{n} timers in #{t.real} seconds" if ENV["VERBOSE"]
+      Batsd.logger.info "Flushed #{n} timers in #{t.real} seconds" 
 
       # If it's time for the latter aggregation to be written to disk, queue
       # those up
@@ -87,7 +87,7 @@ module Batsd
         # Only if we're in need of a write to disk - if the next flush will be
         # past the threshold
         if (flush_start + @flush_interval) > @last_flushes[retention] + retention.to_i
-          puts "Starting disk writing for timers@#{retention}" if ENV["VERBOSE"]
+          Batsd.logger.info "Starting disk writing for timers@#{retention}" 
           t = Benchmark.measure do 
             ts = (flush_start - flush_start % retention.to_i)
             @timers.keys.each_slice(400) do |keys|
@@ -96,7 +96,7 @@ module Batsd
                   values = @redis.extract_values_from_string("#{key}:#{retention}")
                   if values
                     values = values.collect(&:to_f)
-                    puts "Writing the aggregates for #{values.count} values for #{key} at the #{retention} level to disk." if ENV["VVERBOSE"]
+                    Batsd.logger.debug "Writing the aggregates for #{values.count} values for #{key} at the #{retention} level to disk." 
                     count = values.count
                     ["mean", "count", "min", "max", ["upper_90", "percentile_90"], ["stddev", "standard_dev"]].each do |aggregation|
                       if aggregation.is_a? Array
@@ -114,17 +114,17 @@ module Batsd
             end
             @last_flushes[retention] = flush_start
           end
-          puts "#{Time.now}: Handled disk writing for timers@#{retention} in #{t.real}" if ENV["VERBOSE"]
+          Batsd.logger.info "Handled disk writing for timers@#{retention} in #{t.real}" 
 
           # If this is the last retention we're handling, flush the
           # times list to redis and reset it
           if retention == @retentions.last
-            puts "Clearing the timers list. Current state is: #{@timers}" if ENV["VVERBOSE"]
+            Batsd.logger.debug "Clearing the timers list. Current state is: #{@timers}" 
             t = Benchmark.measure do 
               @redis.add_datapoint @timers.keys
               @timers = {}
             end
-            puts "#{Time.now}: Flushed datapoints for timers in #{t.real}" if ENV["VERBOSE"]
+            Batsd.logger.info "Flushed datapoints for timers in #{t.real}" 
           end
 
         end

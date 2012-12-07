@@ -16,7 +16,7 @@ module Batsd
     # so they don't step on each other. Since redis commands
     # are happening in a deferrable, intentionally not using EM-redis
     def post_init
-      puts "batsd server ready and waiting on #{Batsd::Server.config[:port]} to ship data upon request\n"
+      Batsd.logger.warn "batsd server ready and waiting on #{Batsd::Server.config[:port]} to ship data upon request\n"
       @redis = Batsd::Redis.new(Batsd::Server.config)
       @diskstore = Batsd::Diskstore.new(Batsd::Server.config[:root])
     end
@@ -67,9 +67,9 @@ module Batsd
               send_data "#{JSON({error: "Unrecognized command #{command}"})}\n"
           end
         rescue Exception => e
-          puts e if ENV["VERBOSE"]
+          Batsd.logger.info e 
         rescue
-          puts "Uncaught Error"
+          Batsd.logger.warn "Uncaught Error"
         end
       end
     end
@@ -88,7 +88,7 @@ module Batsd
 
       # Run the server
       def run
-        puts "Starting server on #{@port}"
+        Batsd.logger.warn "Starting server on #{@port}"
         EventMachine.threadpool_size = 100
         EventMachine::run do
           EventMachine::start_server(@bind, @port, Batsd::Server)  

@@ -35,9 +35,9 @@ module Batsd
         file.close
       end
     rescue Exception => e
-      puts "Encountered an error trying to store to #{filename}: #{e} #{e.message} #{e.backtrace if ENV["VERBOSE"]}"
+      Batsd.logger.warn "Encountered an error trying to store to #{filename}: #{e} #{e.message} #{e.backtrace if ENV["VERBOSE"]}"
       if attempts < 2
-        puts "Retrying #{filename} for the #{attempts+1} time"
+        Batsd.logger.warn "Retrying #{filename} for the #{attempts+1} time"
         append_value_to_file(filename, value, attempts+1)
       end
     end
@@ -61,9 +61,9 @@ module Batsd
           file.close
         end
       rescue Errno::ENOENT => e
-        puts "Encountered an error trying to read #{filename}: #{e}" if ENV["VVERBOSE"] 
+        Batsd.logger.debug "Encountered an error trying to read #{filename}: #{e}" 
       rescue Exception => e
-        puts "Encountered an error trying to read #{filename}: #{e}"
+        Batsd.logger.warn "Encountered an error trying to read #{filename}: #{e}"
       end
       datapoints
     end
@@ -73,7 +73,7 @@ module Batsd
     # original.
     #
     def truncate(filename, since)
-      puts "Truncating #{filename} since #{since}" if ENV["VVERBOSE"]
+      Batsd.logger.debug "Truncating #{filename} since #{since}" 
       unless File.exists? "#{filename}tmp"  
         File.open("#{filename}tmp", "w") do |tmpfile|
           File.open(filename, 'r') do |file|
@@ -89,9 +89,9 @@ module Batsd
         FileUtils.cp("#{filename}tmp", filename) rescue nil
       end
     rescue Errno::ENOENT => e
-      puts "Encountered an ENOENT error trying to truncate #{filename}: #{e}" if ENV["VVERBOSE"] 
+      Batsd.logger.debug "Encountered an ENOENT error trying to truncate #{filename}: #{e}" 
     rescue Exception => e
-      puts "Encountered an error trying to truncate #{filename}: #{e.class}"
+      Batsd.logger.warn "Encountered an error trying to truncate #{filename}: #{e.class}"
     ensure 
       FileUtils.rm("#{filename}tmp") rescue nil
     end
@@ -112,18 +112,18 @@ module Batsd
             begin
               Dir.rmdir(p) 
             rescue Errno::ENOTEMPTY # only delete if dir is empty, else break
-              puts "#{p} is not empty, skipping" if ENV["VERBOSE"]
+              Batsd.logger.info "#{p} is not empty, skipping" 
               break 
             end
           end
         rescue => e
-          puts "Encountered an error trying to remove empty directory #{p}: #{e.class}"
+          Batsd.logger.warn "Encountered an error trying to remove empty directory #{p}: #{e.class}"
         end
       end
     rescue Errno::ENOENT => e
-      puts "Encountered an ENOENT error trying to delete #{filename}: #{e}" if ENV["VVERBOSE"] 
+      Batsd.logger.debug "Encountered an ENOENT error trying to delete #{filename}: #{e}" 
     rescue Exception => e
-      puts "Encountered an error trying to delete #{filename}: #{e.class}"
+      Batsd.logger.warn "Encountered an error trying to delete #{filename}: #{e.class}"
     end
   end
 end
