@@ -22,6 +22,7 @@ module Batsd
       @timers = {}
       now = Time.now.to_i
       @last_flushes = @retentions.inject({}){|l, r| l[r] = now; l }
+      @fast_threadpool = Threadpool.new((options[:threadpool_size] || 100)/2)
       super
     end
 
@@ -59,7 +60,7 @@ module Batsd
         timers = @active_timers.dup
         @active_timers = {}
         timers.each_slice(50) do |keys|
-          @threadpool.queue ts, keys do |timestamp, keys|
+          @fast_threadpool.queue ts, keys do |timestamp, keys|
             keys.each do |key, values|
               puts "Storing #{values.size} values to redis for #{key} at #{timestamp}" if ENV["VVERBOSE"]
               # Store all the aggregates for the flush interval level
