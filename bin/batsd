@@ -24,8 +24,17 @@ begin
     opts.on("-pPORT", "--port PORT", "Port") do |x|
       options[:manual_port] = x.to_i
     end
+    
+    opts.on("-vv", "--vverbose", "set very verbose mode") do
+      ENV["VVERBOSE"]="1"
+    end
+   
+    opts.on("-v", "--verbose", "set verbose mode") do
+      ENV["VERBOSE"]="1"
+    end
+    
 
-    opts.on("-v", "--version", "Print the version") do
+    opts.on("-V", "--version", "Print the version") do
       puts "batsd version #{Batsd::VERSION}"
       exit
     end
