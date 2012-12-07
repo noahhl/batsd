@@ -1,0 +1,14 @@
+#!/usr/bin/env ruby-local-exec
+libs = []
+libs << "irb/completion"
+libs << File.dirname(__FILE__) + '/../config/boot.rb'
+command_line = []
+command_line << "irb"
+command_line << libs.inject("") { |acc, lib| acc + %( -r "#{lib}") }
+command_line << "--simple-prompt"
+command_line << "--readline"
+command = command_line.join(" ")
+
+puts "Welcome to the Batsd console interface."
+exec command
+
