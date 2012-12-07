@@ -50,7 +50,8 @@ module Batsd
                      interval = retention[0]
 
                      if index.zero?
-                       datapoints = @redis.values_from_zset(metric.gsub('upper_', "percentile_"), begin_time, end_time)
+                       m = version >= 2 ? metric.gsub("upper_", "percentile_") : metric
+                       datapoints = @redis.values_from_zset(m, begin_time, end_time)
                        break
                      else
 
@@ -61,7 +62,8 @@ module Batsd
                          end 
                          datapoints, headers = @diskstore.read("#{metric}:#{retention[0]}:#{DATASTORE_VERSION}", begin_time, end_time)
                          if defined?(operation) && operation
-                           index = headers.index(operation.gsub('upper_', "percentile_")) || 0
+                           op = version >= 2 ? operation.gsub('upper_', "percentile_") : operation
+                           index = headers.index(op) || 0
                            datapoints = datapoints.collect{|v| {timestamp: v[:timestamp], value: v[:value][index]}}
                            metric = "#{metric}:#{operation}"
                          else
