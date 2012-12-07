@@ -61,11 +61,10 @@ module Batsd
                            operation = $1
                          end 
                          datapoints, headers = @diskstore.read("#{metric}:#{retention[0]}:#{DATASTORE_VERSION}", begin_time, end_time)
+                          metric = "#{metric}:#{operation}"
                          if defined?(operation) && operation && headers
-                           op = version >= 2 ? operation.gsub('upper_', "percentile_") : operation
-                           index = headers.index(op) || 0
+                           index = headers.index(operation.gsub('upper_', "percentile_")) || 0
                            datapoints = datapoints.collect{|v| {timestamp: v[:timestamp], value: v[:value][index]}}
-                           metric = "#{metric}:#{operation}"
                          else
                            {fields: headers, data: datapoints}
                          end
