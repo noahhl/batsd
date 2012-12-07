@@ -101,7 +101,7 @@ module Batsd
                   value = @redis.get_and_clear_key(key)
                   if value
                     value = "#{ts} #{value}"
-                    decode_key = "v#{DATASTORE_VERSION} #{key}:#{retention}"
+                    decode_key = "v#{DATASTORE_VERSION} #{key}"
                     @diskstore.append_value_to_file(@diskstore.build_filename(key), value, 0, decode_key)
                   end
                 end
