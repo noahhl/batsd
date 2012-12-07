@@ -53,8 +53,8 @@ module Batsd
     # Reads until it reaches end_ts or the end fo the file. Returns an array
     # of <code>{timestamp: ts, value: v}</code> hashes.
     #
-    def read(statistic, start_ts, end_ts)
-      if statistic.match(/^timer/)
+    def read(statistic, start_ts, end_ts, ignore_new_versions=false)
+      if statistic.match(/^timer/) && !ignore_new_versions
         return(send :"read_timer_v#{Batsd::TIMER_VERSION}", statistic, start_ts, end_ts)
       end
       datapoints = []

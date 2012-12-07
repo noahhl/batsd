@@ -40,11 +40,16 @@ class Array
   def standard_dev
     (mean_squared/(count-1))**0.5
   end
+  alias_method :stddev, standard_dev
 
   # Allow [1,2,3].percentile_90, [1,2,3].percentile(75), etc.
   def method_missing(method, *args, &block)
-     if method.to_s =~ /^percentile_(.+)$/
-       percentile($1.to_i)
+     if method.to_s =~ /^percentile_(.+)$|^upper_(.+)$/
+       v = $1.to_i
+       while v > 100 
+         v = v / 10.0
+       end
+       percentile(v)
      else
        super 
      end
