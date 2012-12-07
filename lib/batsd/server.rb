@@ -49,7 +49,7 @@ module Batsd
                      interval = retention[0]
 
                      if index.zero?
-                       datapoints = @redis.values_from_zset(metric, begin_time, end_time)
+                       datapoints = @redis.values_from_zset(metric.gsub('upper_', "percentile_"), begin_time, end_time)
                        break
                      else
 
