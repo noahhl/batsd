@@ -13,7 +13,7 @@ class Array
 
   # Calculates the median of values in the array
   def median
-   self.sort[self.length/2]
+   sort[count/2]
   end
 
   # Calculates the value of the upper percentile of values 

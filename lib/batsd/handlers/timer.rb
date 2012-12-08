@@ -1,5 +1,4 @@
 module Batsd
-  STANDARD_OPERATIONS = ["min", "max", "median", "mean", "stddev", "percentile_90", "percentile_95", "percentile_99"]
   #
   # Handles timer measurements ("|c")
   #

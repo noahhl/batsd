@@ -40,7 +40,7 @@ module Batsd
         end
       end
     rescue Exception => e
-      Batsd.logger.warn "Uncaught error #{e.message}"
+      Batsd.logger.warn "Uncaught error #{e.message} #{e.backtrace}"
     end
 
     #

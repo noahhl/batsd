@@ -12,11 +12,11 @@ def generate_random_array(size=10000)
   size.times.collect{|d| rand * 100.0}
 end
 
-puts "Starting array math benchmark...\n"
+print "Starting array math benchmark"
 
 NUM_ITERATIONS = 100
  rows = []
-Batsd::STANDARD_OPERATIONS.each do |op|
+(["count"] + Batsd::STANDARD_OPERATIONS).each do |op|
   times = []
   print '.'
   NUM_ITERATIONS.times do 
