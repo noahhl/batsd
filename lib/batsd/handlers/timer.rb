@@ -60,7 +60,7 @@ module Batsd
         timers = @active_timers.dup
         @active_timers = {}
         timers.each_slice(50) do |keys|
-          @fast_threadpool.queue ts, keys do |timestamp, keys|
+          @threadpool.queue ts, keys do |timestamp, keys|
             keys.each do |key, values|
               Batsd.logger.debug "Storing #{values.size} values to redis for #{key} at #{timestamp}" 
               # Store all the aggregates for the flush interval level

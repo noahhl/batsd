@@ -15,7 +15,6 @@ module Batsd
     #
     def initialize(options={})
       @threadpool = Threadpool.new(options[:threadpool_size] || 100)
-      @fast_threadpool = Threadpool.new((options[:threadpool_size] || 100) / 10)
       @statistics = {}
     end
   
@@ -41,8 +40,8 @@ module Batsd
     #
     def statistics
       {
-        threadpool_size: @threadpool.pool + @fast_threadpool.size,  
-        queue_depth: @threadpool.size + @fast_threadpool.size
+        threadpool_size: @threadpool.pool,  
+        queue_depth: @threadpool.size
       }.merge(@statistics)
     end
 
