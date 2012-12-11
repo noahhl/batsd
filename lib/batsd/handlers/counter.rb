@@ -14,8 +14,6 @@ module Batsd
     # * Initialize last flush timers to now
     #
     def initialize(options)
-      @redis = Batsd::Redis.new(options)
-      @diskstore = Batsd::Diskstore.new(options[:root])
       @retentions = options[:retentions].keys
       @slots = @retentions.collect{|r| (r.to_f / @retentions.first).floor}
       @counters =  @slots.collect{|s| s.times.collect{|f| {} } }
@@ -77,21 +75,21 @@ module Batsd
 
         if index.zero?
           counters.each_slice(50) do |keys|
-            @threadpool.queue ts, keys do |timestamp, keys|
+            threadpool.queue ts, keys do |timestamp, keys|
               keys.each do |key, value|
-                @redis.client.zadd key, timestamp, "#{timestamp}<X>#{value}"
+                redis.client.zadd key, timestamp, "#{timestamp}<X>#{value}"
               end
             end
           end
         else
           counters.each_slice(100) do |keys|
-            @threadpool.queue ts, keys, retention do |timestamp, keys, retention|
+            threadpool.queue ts, keys, retention do |timestamp, keys, retention|
               keys.each do |key, value|
                 key = "#{key}:#{retention}"
                 if value
                   value = "#{ts} #{value}"
                   decode_key = "v#{DATASTORE_VERSION} #{key}"
-                  @diskstore.append_value_to_file(@diskstore.build_filename(key), value, 0, decode_key)
+                  diskstore.append_value_to_file(diskstore.build_filename(key), value, 0, decode_key)
                 end
               end
             end
@@ -101,7 +99,7 @@ module Batsd
         # If this is the last retention we're handling, flush the
         # counters list to redis and reset it
         if retention == @retentions.last
-          @redis.add_datapoint counters.keys
+          redis.add_datapoint counters.keys
         end
 
       end

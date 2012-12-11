@@ -15,8 +15,6 @@ module Batsd
     # * Set up a diskstore client to write aggregates to disk
     #
     def initialize(options)
-      @redis = Batsd::Redis.new(options)
-      @diskstore = Batsd::Diskstore.new(options[:root])
       super
     end
 
@@ -27,7 +25,7 @@ module Batsd
     # * Store the name of the datapoint in Redis 
     #
     def handle(key, value, sample_rate)
-      @threadpool.queue Time.now.to_i, key, value, sample_rate do |timestamp, key, value, sample_rate|
+      threadpool.queue Time.now.to_i, key, value, sample_rate do |timestamp, key, value, sample_rate|
         Batsd.logger.debug "Received #{key} #{value} #{sample_rate}" 
         if sample_rate
           value = value.to_f / sample_rate.gsub("@", "").to_f
@@ -35,8 +33,8 @@ module Batsd
         value = "#{timestamp} #{value}"
         key   = "gauges:#{key}"
         decode_key = "v#{DATASTORE_VERSION} #{key}"
-        @diskstore.append_value_to_file(@diskstore.build_filename(key), value, 0, decode_key)
-        @redis.add_datapoint key
+        diskstore.append_value_to_file(diskstore.build_filename(key), value, 0, decode_key)
+        redis.add_datapoint key
       end
     end
 

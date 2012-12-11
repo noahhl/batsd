@@ -12,9 +12,12 @@ module Batsd
     # Creates a new handler object and spawns a threadpool. If
     # <code>options[:threadpool_size]</code> is specified, that will be used
     # (default 100 threads)
-    #
+    
+    attr_accessor :redis, :diskstore, :threadpool
     def initialize(options={})
-      @threadpool = Threadpool.new(options[:threadpool_size] || 100)
+      self.threadpool = Threadpool.new(options[:threadpool_size] || 100)
+      self.redis = Batsd::Redis.new(options)
+      self.diskstore = Batsd::Diskstore.new(options[:root])
       @statistics = {}
     end
   
@@ -23,15 +26,9 @@ module Batsd
     # do something useful
     #
     def handle(key, value, sample_rate)
-      @threadpool.queue do
+      threadpool.queue do
         Batsd.logger.debug "Received #{key} #{value} #{sample_rate}" 
       end
-    end
-
-    # Exposes the threadpool used by the handler
-    #
-    def threadpool
-      @threadpool
     end
 
     # Provide some basic statistics about the handler. The preferred
@@ -40,8 +37,8 @@ module Batsd
     #
     def statistics
       {
-        threadpool_size: @threadpool.pool,  
-        queue_depth: @threadpool.size
+        threadpool_size: threadpool.pool,  
+        queue_depth: threadpool.size
       }.merge(@statistics)
     end
 

@@ -14,8 +14,6 @@ module Batsd
     # * Initialize last flush timers to now
     #
     def initialize(options)
-      @redis = Batsd::Redis.new(options)
-      @diskstore = Batsd::Diskstore.new(options[:root])
       @retentions = options[:retentions].keys
       @operations = options[:operations] || STANDARD_OPERATIONS 
 
@@ -71,7 +69,7 @@ module Batsd
           timers = @active_timers.dup
           @active_timers = {}
           timers.each_slice(50) do |keys|
-            @threadpool.queue ts, keys do |timestamp, keys|
+            threadpool.queue ts, keys do |timestamp, keys|
               keys.each do |key, values|
                Batsd.logger.debug "Storing #{values.size} values to redis for #{key} at #{timestamp}" 
 
@@ -84,10 +82,10 @@ module Batsd
 
                 if count > 0 
                   combined_values = combined_values.join("/")
-                  @redis.store_timer timestamp, key, combined_values
+                  redis.store_timer timestamp, key, combined_values
                 end
 
-                @redis.store_raw_timers_for_aggregations key, values
+                redis.store_raw_timers_for_aggregations key, values
               end
             end
           end
@@ -95,9 +93,9 @@ module Batsd
           ts = (flush_start - flush_start % retention.to_i)
           timers = @timers[index][@current_slots[index]].dup
           timers.keys.each_slice(400) do |keys|
-            @threadpool.queue ts, keys, retention do |timestamp, keys, retention|
+            threadpool.queue ts, keys, retention do |timestamp, keys, retention|
               keys.each do |key|
-                values = @redis.extract_values_from_string("#{key}:#{retention}")
+                values = redis.extract_values_from_string("#{key}:#{retention}")
                 if values
                   values = values.collect(&:to_f)
                   count = values.count
@@ -110,7 +108,7 @@ module Batsd
                   if count > 0 
                     combined_values = combined_values.join("/")
                     decode_key = "v#{DATASTORE_VERSION} #{key}:#{retention}: #{(["count"] + @operations).join("/")}"
-                    @diskstore.append_value_to_file(@diskstore.build_filename("#{key}:#{retention}:#{DATASTORE_VERSION}"), "#{timestamp} #{combined_values}", 0, decode_key)
+                    diskstore.append_value_to_file(diskstore.build_filename("#{key}:#{retention}:#{DATASTORE_VERSION}"), "#{timestamp} #{combined_values}", 0, decode_key)
                   end
 
                 end
@@ -121,7 +119,7 @@ module Batsd
           # If this is the last retention we're handling, flush the
           # times list to redis and reset it
           if retention == @retentions.last
-            @redis.add_datapoint @timers.keys
+            redis.add_datapoint @timers.keys
           end
 
           @timers[index][@current_slots[index]] = {}
