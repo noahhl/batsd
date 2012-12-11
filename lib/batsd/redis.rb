@@ -38,7 +38,7 @@ module Batsd
           @redis.zadd key, timestamp, "#{timestamp}<X>#{value}"
         else
           @redis.incrby "#{key}:#{t}", value
-          @redis.expire "#{key}:#{t}", t.to_i * 2
+          @redis.expire "#{key}:#{t}", t.to_i * 3
         end
       end
     end

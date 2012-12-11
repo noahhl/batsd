@@ -3,6 +3,7 @@ require 'eventmachine'
 require 'redis'
 
 require 'core-ext/array'
+require 'core-ext/crc16'
 
 require 'batsd/constants'
 require 'batsd/logger'
