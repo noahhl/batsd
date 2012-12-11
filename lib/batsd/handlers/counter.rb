@@ -43,7 +43,7 @@ module Batsd
         if i.zero?
           @active_counters[key] = @active_counters[key].to_i + value.to_i
         else
-          slot = Digest::CRC16.hash(key) % @slots[i]
+          slot = key.hash % @slots[i]
           @counters[i][slot][key] = nil
         end
       end

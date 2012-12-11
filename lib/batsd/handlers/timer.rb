@@ -39,7 +39,7 @@ module Batsd
             @active_timers[key] ||= []
             @active_timers[key].push value.to_f
           else
-            slot = Digest::CRC16.hash(key) % @slots[i]
+            slot = key.hash % @slots[i]
             @timers[i][slot][key] = nil
           end
         end
