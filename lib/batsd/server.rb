@@ -54,15 +54,16 @@ module Batsd
                          if metric.match(/^timers:.*:(.*)$/) 
                            metric = metric.rpartition(":").first
                            operation = $1
-                         elsif metric.match(/^counters/)
-                           operation = "count"
-                         end 
                          datapoints = @redis.values_from_zset(metric, begin_time, end_time)
                          headers = ["count"] + STANDARD_OPERATIONS
-                         if defined?(operation) && operation
-                           metric = "#{metric}:#{operation}"
-                           index = headers.index(operation.gsub('upper_', "percentile_")) || 0
-                           datapoints = datapoints.collect{|v| {timestamp: v[:timestamp], value: v[:value][index]}}
+                         if (defined?(operation) && operation) || metric.match(/^counter/)
+                           if metric.match(/^counter/)
+                             datapoints = datapoints.collect{|v| {timestamp: v[:timestamp], value: v[:value][0]}}
+                           else
+                             metric = "#{metric}:#{operation}"
+                             index = headers.index(operation.gsub('upper_', "percentile_")) || 0
+                             datapoints = datapoints.collect{|v| {timestamp: v[:timestamp], value: v[:value][index]}}
+                           end
                          else
                            {fields: headers, data: datapoints}
                          end
