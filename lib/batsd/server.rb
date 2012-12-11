@@ -11,6 +11,15 @@ module Batsd
     def self.config=(config)
       @config=config
     end
+
+    def serialize(data)
+      @marshal ||= Batsd::Server.config[:serializer] == "marshal"
+      if @marshal
+        Marshal.dump(data)
+      else
+        JSON(data)
+      end
+    end
    
     # Set up a redis and diskstore instance per connection
     # so they don't step on each other. Since redis commands
@@ -32,7 +41,7 @@ module Batsd
           return unless command
           case
             when command.match(/available/i)
-              EM.defer { send_data "#{JSON(@redis.datapoints)}\n" }
+              EM.defer { send_data "#{serialize(@redis.datapoints)}\n" }
             when command.match(/values/i)
               EM.defer do
                  command, metric, begin_time, end_time, version = msg_split
@@ -96,7 +105,7 @@ module Batsd
                      end
                    end
                  end
-                 send_data "#{JSON({'interval' => interval, "#{metric}" => datapoints})}\n"
+                 send_data "#{serialize({'interval' => interval, "#{metric}" => datapoints})}\n"
               end
             when command.match(/ping/i)
               send_data "PONG\n"
@@ -104,7 +113,7 @@ module Batsd
               send_data "BYE\n"
               close_connection
             else
-              send_data "#{JSON({error: "Unrecognized command #{command}"})}\n"
+              send_data "#{serialize({error: "Unrecognized command #{command}"})}\n"
           end
         rescue Exception => e
           Batsd.logger.info e 
