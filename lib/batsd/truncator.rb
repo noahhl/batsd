@@ -37,7 +37,7 @@ module Batsd
         # TODO: can we do this in bulk with lua script?
         keys = keys.collect do |k|
           if (k.match(/^timer/) rescue false)
-            (["count"] + STANDARD_OPERATIONS).collect{|a| "#{k}:#{a}"}
+            [k] + (["count"] + STANDARD_OPERATIONS).collect{|a| "#{k}:#{a}"}
           else
             k
           end
