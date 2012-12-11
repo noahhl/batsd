@@ -54,6 +54,7 @@ module Batsd
                          if metric.match(/^timers:.*:(.*)$/) 
                            metric = metric.rpartition(":").first
                            operation = $1
+                         end
                          datapoints = @redis.values_from_zset(metric, begin_time, end_time)
                          headers = ["count"] + STANDARD_OPERATIONS
                          if (defined?(operation) && operation) || metric.match(/^counter/)
