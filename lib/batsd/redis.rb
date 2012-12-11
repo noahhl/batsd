@@ -119,7 +119,7 @@ module Batsd
     def values_from_zset(metric, begin_ts, end_ts)
       begin
         values = @redis.zrangebyscore(metric, begin_ts, end_ts)
-        values.collect{|val| ts, val = val.split("<X>"); {timestamp: ts, value: val } }
+        values.collect{|val| ts, val = val.split("<X>"); {timestamp: ts, value: val.split("/") } }
       rescue
         []
       end

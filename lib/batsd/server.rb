@@ -50,9 +50,27 @@ module Batsd
                      interval = retention[0]
 
                      if index.zero?
-                       m = version >= 2 ? metric.gsub("upper_", "percentile_") : metric
-                       datapoints = @redis.values_from_zset(m, begin_time, end_time)
-                       break
+                       if version >= 2 
+                         if metric.match(/^timers:.*:(.*)$/) 
+                           metric = metric.rpartition(":").first
+                           operation = $1
+                         elsif metric.match(/^counters/)
+                           operation = "count"
+                         end 
+                         datapoints = @redis.values_from_zset(metric, begin_time, end_time)
+                         headers = ["count"] + STANDARD_OPERATIONS
+                         if defined?(operation) && operation
+                           metric = "#{metric}:#{operation}"
+                           index = headers.index(operation.gsub('upper_', "percentile_")) || 0
+                           datapoints = datapoints.collect{|v| {timestamp: v[:timestamp], value: v[:value][index]}}
+                         else
+                           {fields: headers, data: datapoints}
+                         end
+                         break
+                       else
+                         datapoints = @redis.values_from_zset(metric, begin_time, end_time)
+                         break
+                       end
                      else
 
                        if version >= 2 && metric.match(/^timers:/)

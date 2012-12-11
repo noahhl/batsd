@@ -78,10 +78,15 @@ module Batsd
                 # Store all the aggregates for the flush interval level
                 count = values.count
 
-                (["count"] + @operations).each do |aggregation|
-                  aggregate_value = count > 1 ? values.send(aggregation.to_sym) : values.first
-                   @redis.store_timer timestamp, "#{key}:#{aggregation}", aggregate_value
+                combined_values = [count] + @operations.collect do |aggregation|
+                  count > 1 ? values.send(aggregation.to_sym) : values.first
                 end
+
+                if count > 0 
+                  combined_values = combined_values.join("/")
+                  @redis.store_timer timestamp, key, combined_values
+                end
+
                 @redis.store_raw_timers_for_aggregations key, values
               end
             end
