@@ -1,4 +1,5 @@
 require 'json'
+require 'base64'
 module Batsd
   # Makes data from statsd available over a TCP socket
   module Server
@@ -15,7 +16,7 @@ module Batsd
     def serialize(data)
       @marshal ||= Batsd::Server.config[:serializer] == "marshal"
       if @marshal
-        Marshal.dump(data)
+        Base64.encode64(Marshal.dump(data)).gsub("\n", "")
       else
         JSON(data)
       end
