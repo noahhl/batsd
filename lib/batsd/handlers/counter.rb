@@ -40,12 +40,8 @@ module Batsd
       end
       key   = "counters:#{key}"
       @retentions.size.times do |i|
-        if i.zero?
-          @active_counters[key] = @active_counters[key].to_i + value.to_i
-        else
-          slot = key.hash % @slots[i]
-          @counters[i][slot][key] = nil
-        end
+        slot = key.hash % @slots[i]
+        @counters[i][slot][key] = @counters[i][slot][key].to_i + value.to_i
       end
     end
 
@@ -76,24 +72,22 @@ module Batsd
         @current_slots[index] = 0 if @current_slots[index] ==  @slots[index] 
           
         ts = (flush_start - flush_start % retention.to_i)
+        counters = @counters[index][@current_slots[index]].dup
+        @counters[index][@current_slots[index]] = {}
 
         if index.zero?
-          counters = @active_counters.dup
-          @active_counters = {}
           counters.each_slice(50) do |keys|
             @threadpool.queue ts, keys do |timestamp, keys|
               keys.each do |key, value|
-                @redis.store_and_update_all_counters(timestamp, key, value)
+                @redis.client.zadd key, timestamp, "#{timestamp}<X>#{value}"
               end
             end
           end
         else
-          counters = @counters[index][@current_slots[index]].dup
-          counters.keys.each_slice(100) do |keys|
+          counters.each_slice(100) do |keys|
             @threadpool.queue ts, keys, retention do |timestamp, keys, retention|
-              keys.each do |key|
+              keys.each do |key, value|
                 key = "#{key}:#{retention}"
-                value = @redis.get_and_clear_key(key)
                 if value
                   value = "#{ts} #{value}"
                   decode_key = "v#{DATASTORE_VERSION} #{key}"
@@ -107,10 +101,9 @@ module Batsd
         # If this is the last retention we're handling, flush the
         # counters list to redis and reset it
         if retention == @retentions.last
-          @redis.add_datapoint @counters[index][@current_slots[index]].keys
+          @redis.add_datapoint counters.keys
         end
 
-        @counters[index][@current_slots[index]] = {}
       end
 
     end
