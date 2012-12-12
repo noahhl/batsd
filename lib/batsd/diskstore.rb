@@ -20,7 +20,7 @@ module Batsd
     def build_filename(statistic)
       return unless statistic
       file_hash = Digest::MD5.hexdigest(statistic)
-      File.join(@root, file_hash[0,2], file_hash[2,2], file_hash)
+      "#{@root}/#{file_hash[0,2]}/#{file_hash[2,2]}/#{file_hash}"
     end
 
     # Append a value to a file
@@ -30,7 +30,9 @@ module Batsd
     #
     def append_value_to_file(filename, value, attempts=0, header=nil)
       existed = File.exists? filename
-      FileUtils.mkdir_p filename.split("/")[0..-2].join("/") unless existed
+      unless existed
+        FileUtils.mkdir_p filename.split("/")[0..-2].join("/")
+      end
 
       File.open(filename, 'a+') do |file|
         unless existed || header.nil?
