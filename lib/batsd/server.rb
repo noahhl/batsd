@@ -29,6 +29,72 @@ module Batsd
       Batsd.logger.warn "batsd server ready and waiting on #{Batsd::Server.config[:port]} to ship data upon request\n"
       @redis = Batsd::Redis.new(Batsd::Server.config)
       @diskstore = Batsd::Diskstore.new(Batsd::Server.config[:root])
+      @retentions = Batsd::Server.config[:retentions]
+    end
+
+    def retrieve_datapoints(metric, begin_time, end_time, version)
+      version = (version || DATASTORE_VERSION).to_i
+      type = metric.partition(":").first
+      send :"retrieve_#{type}", metric, begin_time, end_time, version
+    end
+
+    def retrieve_gauges(metric, begin_time, end_time, version)
+     [@diskstore.read(metric, begin_time, end_time, version), 0]
+    end
+
+    def retrieve_counters(metric, begin_time, end_time, version)
+      output = nil
+      @retentions.each_with_index do |(interval, count), index|
+        next unless (interval == @retentions.keys.last) || (Time.now.to_i - (interval * count) < begin_time.to_i)
+        if index.zero?
+          datapoints = @redis.values_from_zset(metric, begin_time, end_time)
+          if version >= 2
+             datapoints = datapoints.collect{|v| {timestamp: v[:timestamp], value: v[:value][0]}}
+          end
+          output = [datapoints, interval]
+          break
+        else
+          datapoints = @diskstore.read("#{metric}:#{interval}", begin_time, end_time, version)
+          output = [datapoints, interval]
+          break
+        end
+      end
+      output 
+    end
+
+    def retrieve_timers(metric, begin_time, end_time, version)
+      if metric.match(/^timers:.*:(.*)$/) 
+        metric = metric.rpartition(":").first
+        operation = $1
+      end
+
+      datapoints = headers = []
+      output = nil
+      @retentions.each_with_index do |(interval, count), index|
+        next unless (interval == @retentions.keys.last) || (Time.now.to_i - (interval * count) < begin_time.to_i)
+        if index.zero?
+          datapoints = @redis.values_from_zset(metric, begin_time, end_time)
+          headers = ["count"] + STANDARD_OPERATIONS
+        else
+          if version >= 2
+            datapoints, headers = @diskstore.read("#{metric}:#{interval}:#{DATASTORE_VERSION}", begin_time, end_time, version)
+          else
+            datapoints = @diskstore.read("#{metric}:#{interval}", begin_time, end_time, version)
+          end
+        end
+
+        if defined?(operation) && operation && headers && Array(headers).any?
+          index = headers.index(operation.gsub('upper_', "percentile_")) || 0
+          datapoints = datapoints.collect{|v| {timestamp: v[:timestamp], value: v[:value][index]}}
+        elsif headers && Array(headers).any?
+          puts headers
+          datapoints = {fields: headers, data: datapoints}
+        end
+
+        output = [datapoints, interval]
+        break
+      end
+      output
     end
     
     # Handle a command received over the server port and return
@@ -46,66 +112,7 @@ module Batsd
             when command.match(/values/i)
               EM.defer do
                  command, metric, begin_time, end_time, version = msg_split
-                 version = (version || DATASTORE_VERSION).to_i
-                 datapoints, interval = [], 0
-
-                 if metric.match(/^gauge/)
-                   datapoints = @diskstore.read(metric, begin_time, end_time)
-                 else
-
-                   Batsd::Server.config[:retentions].each_with_index do |retention, index|
-                     if (index != Batsd::Server.config[:retentions].count - 1) && (Time.now.to_i - (retention[0] * retention[1]) > begin_time.to_i)
-                       next
-                     end
-                     interval = retention[0]
-
-                     if index.zero?
-                       if version >= 2 
-                         if metric.match(/^timers:.*:(.*)$/) 
-                           metric = metric.rpartition(":").first
-                           operation = $1
-                         end
-                         datapoints = @redis.values_from_zset(metric, begin_time, end_time)
-                         headers = ["count"] + STANDARD_OPERATIONS
-                         if (defined?(operation) && operation) || metric.match(/^counter/)
-                           if metric.match(/^counter/)
-                             datapoints = datapoints.collect{|v| {timestamp: v[:timestamp], value: v[:value][0]}}
-                           else
-                             metric = "#{metric}:#{operation}"
-                             index = headers.index(operation.gsub('upper_', "percentile_")) || 0
-                             datapoints = datapoints.collect{|v| {timestamp: v[:timestamp], value: v[:value][index]}}
-                           end
-                         else
-                           {fields: headers, data: datapoints}
-                         end
-                         break
-                       else
-                         datapoints = @redis.values_from_zset(metric, begin_time, end_time)
-                         break
-                       end
-                     else
-
-                       if version >= 2 && metric.match(/^timers:/)
-                         if metric.match(/^timers:.*:(.*)$/) 
-                           metric = metric.rpartition(":").first
-                           operation = $1
-                         end 
-                         datapoints, headers = @diskstore.read("#{metric}:#{retention[0]}:#{DATASTORE_VERSION}", begin_time, end_time)
-                          metric = "#{metric}:#{operation}"
-                         if defined?(operation) && operation && headers
-                           index = headers.index(operation.gsub('upper_', "percentile_")) || 0
-                           datapoints = datapoints.collect{|v| {timestamp: v[:timestamp], value: v[:value][index]}}
-                         else
-                           {fields: headers, data: datapoints}
-                         end
-                       else
-                         datapoints = @diskstore.read("#{metric}:#{retention[0]}", begin_time, end_time, version)
-                       end
-
-                       break
-                     end
-                   end
-                 end
+                 datapoints, interval = retrieve_datapoints(metric, begin_time, end_time, version)
                  send_data "#{serialize({'interval' => interval, "#{metric}" => datapoints})}\n"
               end
             when command.match(/ping/i)
