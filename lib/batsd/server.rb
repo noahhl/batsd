@@ -79,7 +79,7 @@ module Batsd
           if version >= 2
             datapoints, headers = @diskstore.read("#{metric}:#{interval}:#{DATASTORE_VERSION}", begin_time, end_time, version)
           else
-            datapoints = @diskstore.read("#{metric}:#{interval}", begin_time, end_time, version)
+            datapoints = @diskstore.read("#{metric}:#{operation}:#{interval}", begin_time, end_time, version)
           end
         end
 
