@@ -1,5 +1,6 @@
 bind: 0.0.0.0
 port: 8125
+health_port: 8126
 root: tmp/statsd
 redis:
   host: 127.0.0.1

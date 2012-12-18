@@ -76,14 +76,14 @@ module Batsd
             Thread.current.priority = 10
           end
           bind = @options[:bind] || '0.0.0.0'
-          port = @options[:port] || 8125
+          port = @options[:manual_port] || @options[:port] || 8125
           Batsd.logger.warn "Starting receiver on batsd://#{bind}:#{port}"
           EventMachine::open_datagram_socket(bind, port, Batsd::Receiver)
           EventMachine::start_server(bind, port, Batsd::Receiver)
           # Have to run the statistics service as part of this process so that
           # it has access to the handler objects, which contain their own
           # statistics
-          EventMachine::start_server(bind, port + 1, Batsd::Statistics)
+          EventMachine::start_server(bind, @options[:health_port] || (port + 1), Batsd::Statistics)
 
           @handlers.each do |type, handler|
             if handler.respond_to? :flush
