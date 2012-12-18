@@ -14,6 +14,7 @@ require 'batsd/threadpool'
 require 'batsd/receiver'
 require 'batsd/server'
 require 'batsd/statistics'
+require 'batsd/proxy'
 
 require 'batsd/truncator'
 require 'batsd/deleter'

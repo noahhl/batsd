@@ -12,7 +12,7 @@ begin
   options = { config: "config.yml" }
   
   parser = OptionParser.new do |opts|
-    opts.banner = "Usage: batsd [options] (*server|truncate|receiver|stats|datapoints) args"
+    opts.banner = "Usage: batsd [options] (*server|truncate|receiver|proxy|stats|datapoints) args"
 
     opts.separator ""
     opts.separator "options:"
@@ -103,6 +103,8 @@ begin
       puts "Need to specify a statistic."
       exit 1
     end
+  when :proxy
+    Batsd::Proxy::Daemon.new(config).run
   else
     puts "I don't know how to #{command}."
     exit 1

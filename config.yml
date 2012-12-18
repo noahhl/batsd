@@ -11,3 +11,9 @@ retentions:
   600: 52594 #1 year
 autotruncate: false
 serializer: marshal
+proxy:
+  strategy: passthrough
+  destinations:
+    backend1:
+      host: 127.0.0.1
+      port: 8225
