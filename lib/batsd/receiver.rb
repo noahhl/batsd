@@ -30,7 +30,11 @@ module Batsd
     #   registered handler for the type of data provided.
     #
     def receive_data(msg)    
-      msg.split("\n").each do |row|
+      msg.split(/\n|\r\n/).each do |row|
+        if row == "quit"
+          close_connection 
+          return 
+        end
         Batsd.logger.debug "received #{row}" 
         key, value, type, sample = row.split(/\||:/)
         if handler = Batsd::Receiver.handlers[type.strip.to_sym]
@@ -79,6 +83,7 @@ module Batsd
           port = @options[:port] || 8125
           Batsd.logger.warn "Starting receiver on batsd://#{bind}:#{port}"
           EventMachine::open_datagram_socket(bind, port, Batsd::Receiver)
+          EventMachine::start_server(bind, port, Batsd::Receiver)
           # Have to run the statistics service as part of this process so that
           # it has access to the handler objects, which contain their own
           # statistics
