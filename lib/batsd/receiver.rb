@@ -31,11 +31,7 @@ module Batsd
     #
     def receive_data(msg)    
       msg.split(/\n|\r\n/).each do |row|
-        if row == "quit"
-          close_connection 
-          return 
-        end
-        Batsd.logger.debug "received #{row}" 
+        #Batsd.logger.debug "received #{row}" 
         key, value, type, sample = row.split(/\||:/)
         if handler = Batsd::Receiver.handlers[type.strip.to_sym]
           handler.handle(key, value, sample)
