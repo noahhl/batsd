@@ -29,12 +29,12 @@ module Batsd
     # * Identify the appropriate handler, or log an error if there is no
     #   registered handler for the type of data provided.
     #
-    def receive_data(msg)    
-      msg.split(/\n|\r\n/).each do |row|
+    def receive_data(msg)
+      msg.split("\n").each do |row|
         #Batsd.logger.debug "received #{row}" 
         key, value, type, sample = row.split(/\||:/)
-        if handler = Batsd::Receiver.handlers[type.strip.to_sym]
-          handler.handle(key, value, sample)
+        if handler = Batsd::Receiver.handlers[type]
+          handler.handle(key, value, sample) 
         else
           Batsd.logger.debug "No handler for type #{type}"
         end
@@ -71,6 +71,7 @@ module Batsd
       #   level (typically 10 seconds)
       #
       def run
+
         EM.epoll
         EventMachine::run do
           if RUBY_PLATFORM == "java"
@@ -90,7 +91,7 @@ module Batsd
             if handler.respond_to? :flush
               Batsd.logger.warn "Adding flush timer to #{handler}"
               EventMachine.add_periodic_timer(@options[:retentions].keys[0].to_i) do
-                 Thread.new { handler.flush }
+                 Thread.new { handler.flush  }
               end
             end
           end

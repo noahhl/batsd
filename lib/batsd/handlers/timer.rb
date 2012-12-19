@@ -6,7 +6,6 @@ module Batsd
   # aggregation intervals
   #
   class Handler::Timer < Handler
-
     # Set up a new handler to handle timers
     #
     # * Set up a redis client
@@ -22,7 +21,6 @@ module Batsd
       @active_timers = {}
       @current_slots = @retentions.collect{|r| -1}
       @key_slot_map = {}
-
       super
     end
 
