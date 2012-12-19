@@ -16,6 +16,10 @@ module Batsd
     def self.handlers=(handlers)
       @handlers = handlers
     end
+
+    def threadpool
+      @threadpool ||= Threadpool.new(5)
+    end
     
     # Startup message after server is launched
     def post_init
@@ -30,13 +34,15 @@ module Batsd
     #   registered handler for the type of data provided.
     #
     def receive_data(msg)
-      msg.split("\n").each do |row|
-        #Batsd.logger.debug "received #{row}" 
-        key, value, type, sample = row.split(/\||:/)
-        if handler = Batsd::Receiver.handlers[type]
-          handler.handle(key, value, sample) 
-        else
-          Batsd.logger.debug "No handler for type #{type}"
+      threadpool.queue msg do |msg|
+        msg.split("\n").each do |row|
+          #Batsd.logger.debug "received #{row}" 
+          key, value, type, sample = row.split(/\||:/)
+          if handler = Batsd::Receiver.handlers[type]
+            handler.handle(key, value, sample) 
+          else
+            Batsd.logger.debug "No handler for type #{type}"
+          end
         end
       end
     rescue Exception => e
