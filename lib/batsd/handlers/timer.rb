@@ -33,13 +33,9 @@ module Batsd
       key = "timers:#{key}"
       if value
         @retentions.size.times do |i|
-          if i.zero?
-            @active_timers[key] ||= []
-            @active_timers[key].push value.to_f
-          else
-            slot = key.hash % @slots[i]
-            @timers[i][slot][key] = nil
-          end
+          slot = key.hash % @slots[i]
+          @timers[i][slot][key] ||= []
+          @timers[i][slot][key].push value.to_f 
         end
       end
     end
@@ -62,12 +58,14 @@ module Batsd
 
         @current_slots[index] += 1 
         @current_slots[index] = 0 if @current_slots[index] ==  @slots[index] 
+        
 
         ts = (flush_start - flush_start % retention)
+        timers = @timers[index][@current_slots[index]].dup
+        @timers[index][@current_slots[index]] = {}
+
 
         if index.zero?
-          timers = @active_timers.dup
-          @active_timers = {}
           timers.each_slice(50) do |keys|
             threadpool.queue ts, keys do |timestamp, keys|
               keys.each do |key, values|
@@ -85,19 +83,14 @@ module Batsd
                   redis.store_timer timestamp, key, combined_values
                 end
 
-                redis.store_raw_timers_for_aggregations key, values
               end
             end
           end
         else
-          ts = (flush_start - flush_start % retention.to_i)
-          timers = @timers[index][@current_slots[index]].dup
-          timers.keys.each_slice(400) do |keys|
+          timers.each_slice(400) do |keys|
             threadpool.queue ts, keys, retention do |timestamp, keys, retention|
-              keys.each do |key|
-                values = redis.extract_values_from_string("#{key}:#{retention}")
+              keys.each do |key, values|
                 if values
-                  values = values.collect(&:to_f)
                   count = values.count
 
                   Batsd.logger.debug "Writing the aggregates for #{values.count} values for #{key} at the #{retention} level to disk." 
@@ -119,10 +112,9 @@ module Batsd
           # If this is the last retention we're handling, flush the
           # times list to redis and reset it
           if retention == @retentions.last
-            redis.add_datapoint @timers.keys
+            redis.add_datapoint timers.keys
           end
 
-          @timers[index][@current_slots[index]] = {}
         end
 
       end

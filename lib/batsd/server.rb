@@ -87,7 +87,6 @@ module Batsd
           index = headers.index(operation.gsub('upper_', "percentile_")) || 0
           datapoints = datapoints.collect{|v| {timestamp: v[:timestamp], value: v[:value][index]}}
         elsif headers && Array(headers).any?
-          puts headers
           datapoints = {fields: headers, data: datapoints}
         end
 

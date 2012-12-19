@@ -17,7 +17,6 @@ module Batsd
       @retentions = options[:retentions].keys
       @slots = @retentions.collect{|r| (r.to_f / @retentions.first).floor}
       @counters =  @slots.collect{|s| s.times.collect{|f| {} } }
-      @active_counters = {}
       @current_slots = @retentions.collect{|r| -1}
       super
     end
