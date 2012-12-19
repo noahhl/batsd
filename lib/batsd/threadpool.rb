@@ -16,7 +16,7 @@ class Threadpool
           begin
             job.call(*args)
           rescue Exception => e
-            Batsd.logger.warn "Thread #{Thread.current} error: #{e} #{e.try(:message)} #{e.try(:backtrace).to_a.join("\n")}"
+            Batsd.logger.warn "Thread #{Thread.current} error: #{e} #{e.try(:message)} #{Array(e.backtrace).to_a.join("\n")}"
           end
         end
       end
