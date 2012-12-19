@@ -26,7 +26,6 @@ module Batsd
     #
     def handle(key, value, sample_rate)
       threadpool.queue Time.now.to_i, key, value, sample_rate do |timestamp, key, value, sample_rate|
-        Batsd.logger.debug "Received #{key} #{value} #{sample_rate}" 
         if sample_rate
           value = value.to_f / sample_rate.gsub("@", "").to_f
         end

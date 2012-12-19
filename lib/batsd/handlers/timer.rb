@@ -21,6 +21,7 @@ module Batsd
       @timers =  @slots.collect{|s| s.times.collect{|f| {} } }
       @active_timers = {}
       @current_slots = @retentions.collect{|r| -1}
+      @key_slot_map = {}
 
       super
     end
@@ -32,10 +33,11 @@ module Batsd
     def handle(key, value, sample_rate)
       key = "timers:#{key}"
       if value
+        value = value.to_f
         @retentions.size.times do |i|
-          slot = key.hash % @slots[i]
+          slot = @key_slot_map[key] ||= key.hash % @slots[i]
           @timers[i][slot][key] ||= []
-          @timers[i][slot][key].push value.to_f 
+          @timers[i][slot][key].push value
         end
       end
     end

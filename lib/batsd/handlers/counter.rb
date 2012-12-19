@@ -18,6 +18,7 @@ module Batsd
       @slots = @retentions.collect{|r| (r.to_f / @retentions.first).floor}
       @counters =  @slots.collect{|s| s.times.collect{|f| {} } }
       @current_slots = @retentions.collect{|r| -1}
+      @key_slot_map = {}
       super
     end
 
@@ -36,9 +37,10 @@ module Batsd
         value = value.to_f / sample_rate.gsub("@", "").to_f
       end
       key   = "counters:#{key}"
+      value = value.to_i
       @retentions.size.times do |i|
-        slot = key.hash % @slots[i]
-        @counters[i][slot][key] = @counters[i][slot][key].to_i + value.to_i
+        slot = @key_slot_map[key] ||= key.hash % @slots[i]
+        @counters[i][slot][key] = @counters[i][slot][key].to_i + value
       end
     end
 
