@@ -71,6 +71,7 @@ module Batsd
       #   level (typically 10 seconds)
       #
       def run
+        EM.epoll
         EventMachine::run do
           if RUBY_PLATFORM == "java"
             Thread.current.priority = 10

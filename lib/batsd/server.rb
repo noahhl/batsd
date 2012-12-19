@@ -147,6 +147,7 @@ module Batsd
       def run
         Batsd.logger.warn "Starting server on #{@port}"
         EventMachine.threadpool_size = 100
+        EM.epoll
         EventMachine::run do
           EventMachine::start_server(@bind, @port, Batsd::Server)  
         end
