@@ -38,8 +38,9 @@ module Batsd
       end
       key   = "counters:#{key}"
       value = value.to_i
+      hash = key.hash
       @retentions.size.times do |i|
-        slot = @key_slot_map[key] ||= key.hash % @slots[i]
+        slot = @key_slot_map[key] ||= hash % @slots[i]
         @counters[i][slot][key] = @counters[i][slot][key].to_i + value
       end
     end

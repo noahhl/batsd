@@ -32,8 +32,9 @@ module Batsd
       key = "timers:#{key}"
       if value
         value = value.to_f
+        hash = key.hash
         @retentions.size.times do |i|
-          slot = @key_slot_map[key] ||= key.hash % @slots[i]
+          slot = @key_slot_map[key] ||= hash % @slots[i]
           @timers[i][slot][key] ||= []
           @timers[i][slot][key].push value
         end
