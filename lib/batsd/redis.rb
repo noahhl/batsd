@@ -139,7 +139,13 @@ module Batsd
     # the 'datapoints' set
     #
     def add_datapoint(key)
-      @redis.sadd "datapoints", key
+      if key.is_a?(Array) 
+        if key.any?
+          @redis.sadd "datapoints", *key
+        end
+      elsif key
+        @redis.sadd "datapoints", key
+      end
     end
 
     # Stores a reference to the datapoint in 
