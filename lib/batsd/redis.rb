@@ -141,7 +141,7 @@ module Batsd
     def add_datapoint(key)
       if key.is_a?(Array) 
         if key.any?
-          @redis.sadd "datapoints", *key
+          @redis.sadd "datapoints", key
         end
       elsif key
         @redis.sadd "datapoints", key

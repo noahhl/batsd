@@ -16,7 +16,9 @@ class Threadpool
           begin
             job.call(*args)
           rescue Exception => e
-            Batsd.logger.warn "Thread #{Thread.current} error: #{e} #{e.try(:message)} #{Array(e.backtrace).to_a.join("\n")}"
+            if e
+              Batsd.logger.warn "Thread #{Thread.current} error: #{e} #{e.message} #{Array(e.backtrace).to_a.join("\n")}"
+            end
           end
         end
       end
@@ -45,7 +47,7 @@ class Threadpool
   # Returns the size of the pool of workers
   #
   def pool 
-    @pool.select(&:alive?).size
+    @pool.count(&:alive?)
   end
 
   def threads

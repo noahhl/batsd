@@ -18,7 +18,7 @@ module Batsd
     end
 
     def threadpool
-      @threadpool ||= Threadpool.new(5)
+      @threadpool ||= Threadpool.new(1)
     end
     
     # Startup message after server is launched
@@ -79,6 +79,7 @@ module Batsd
       def run
 
         EM.epoll
+        Thread.abort_on_exception = true
         EventMachine::run do
           if RUBY_PLATFORM == "java"
             Thread.current.priority = 10
@@ -92,6 +93,7 @@ module Batsd
           # it has access to the handler objects, which contain their own
           # statistics
           EventMachine::start_server(bind, @options[:health_port] || (port + 1), Batsd::Statistics)
+
 
           @handlers.each do |type, handler|
             if handler.respond_to? :flush
