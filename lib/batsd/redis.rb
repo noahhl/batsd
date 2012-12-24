@@ -12,8 +12,11 @@ module Batsd
     def initialize(options)
       @redis = ::Redis.new(options[:redis] || {host: "127.0.0.1", port: 6379} )
       @redis.ping
-      @lua_support = @redis.info['redis_version'].to_f >= 2.5
       @retentions = options[:retentions].keys
+    end
+
+    def lua_support
+      @lua_support ||= @redis.info['redis_version'].to_f >= 2.5
     end
     
     # Expose the redis client directly
@@ -67,7 +70,7 @@ module Batsd
     
     # Returns the value of a key and then deletes it.
     def get_and_clear_key(key)
-      if @lua_support
+      if lua_support
         cmd = <<-EOF
           local str = redis.call('get', KEYS[1])
           redis.call('del', KEYS[1])
@@ -89,7 +92,7 @@ module Batsd
     
     # Create an array out of a string of values delimited by <X>
     def extract_values_from_string(key)
-      if @lua_support
+      if lua_support
         cmd = <<-EOF
           local t={} ; local i=1
           local str = redis.call('get', KEYS[1])
