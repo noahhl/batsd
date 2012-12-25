@@ -10,18 +10,23 @@ module Batsd
     # in the configuration or localhost:6379
     #
     def initialize(options)
-      @redis = ::Redis.new(options[:redis] || {host: "127.0.0.1", port: 6379} )
-      @redis.ping
       @retentions = options[:retentions].keys
     end
 
+    def redis
+      @redis ||= begin
+                   r = ::Redis.new(options[:redis] || {host: "127.0.0.1", port: 6379} )
+                   r.ping
+                 end
+    end
+
     def lua_support
-      @lua_support ||= @redis.info['redis_version'].to_f >= 2.5
+      @lua_support ||= redis.info['redis_version'].to_f >= 2.5
     end
     
     # Expose the redis client directly
     def client
-      @redis
+      redis
     end
 
     # Store a counter measurement for each of the specified retentions
@@ -38,10 +43,10 @@ module Batsd
     def store_and_update_all_counters(timestamp, key, value)
       @retentions.each_with_index do |t, index|
         if index.zero?
-          @redis.zadd key, timestamp, "#{timestamp}<X>#{value}"
+          redis.zadd key, timestamp, "#{timestamp}<X>#{value}"
         else
-          @redis.incrby "#{key}:#{t}", value
-          @redis.expire "#{key}:#{t}", t.to_i * 3
+          redis.incrby "#{key}:#{t}", value
+          redis.expire "#{key}:#{t}", t.to_i * 3
         end
       end
     end
@@ -49,7 +54,7 @@ module Batsd
     # Store a timer to a zset
     #
     def store_timer(timestamp, key, value)
-      @redis.zadd key, timestamp, "#{timestamp}<X>#{value}"
+      redis.zadd key, timestamp, "#{timestamp}<X>#{value}"
     end
 
     # Store unaggregated, raw timer values in bucketed keys
@@ -63,8 +68,8 @@ module Batsd
     def store_raw_timers_for_aggregations(key, values)
       @retentions.each_with_index do |t, index|
         next if index.zero?
-        @redis.append "#{key}:#{t}", "<X>#{values.join("<X>")}"
-        @redis.expire "#{key}:#{t}", t.to_i * 2
+        redis.append "#{key}:#{t}", "<X>#{values.join("<X>")}"
+        redis.expire "#{key}:#{t}", t.to_i * 2
       end
     end
     
@@ -76,9 +81,9 @@ module Batsd
           redis.call('del', KEYS[1])
           return str
         EOF
-        @redis.eval(cmd, [key.to_sym])
+        redis.eval(cmd, [key.to_sym])
       else
-        @redis.multi do |multi|
+        redis.multi do |multi|
           multi.get(key)
           multi.del(key)
         end.first
@@ -87,7 +92,7 @@ module Batsd
 
     # Deletes the given key
     def clear_key(key)
-      @redis.del(key)
+      redis.del(key)
     end
     
     # Create an array out of a string of values delimited by <X>
@@ -105,7 +110,7 @@ module Batsd
           end
           return t
         EOF
-        @redis.eval(cmd, [key.to_sym])
+        redis.eval(cmd, [key.to_sym])
       else
         values = get_and_clear_key(key)
         values.split('<X>') if values
@@ -115,13 +120,13 @@ module Batsd
     # Truncate a zset since a treshold time
     #
     def truncate_zset(key, since)
-      @redis.zremrangebyscore key, 0, since
+      redis.zremrangebyscore key, 0, since
     end
 
     # Return properly formatted values from the zset
     def values_from_zset(metric, begin_ts, end_ts)
       begin
-        values = @redis.zrangebyscore(metric, begin_ts, end_ts)
+        values = redis.zrangebyscore(metric, begin_ts, end_ts)
         values.collect{|val| ts, val = val.split("<X>"); {timestamp: ts, value: val.split("/") } }
       rescue
         []
@@ -131,7 +136,7 @@ module Batsd
     # Convenience accessor to members of datapoints set
     #
     def datapoints(with_gauges=true)
-      datapoints = @redis.smembers "datapoints"
+      datapoints = redis.smembers "datapoints"
       unless with_gauges
         datapoints.reject!{|d| (d.match(/^gauge/) rescue false) }
       end
@@ -144,10 +149,10 @@ module Batsd
     def add_datapoint(key)
       if key.is_a?(Array) 
         if key.any?
-          @redis.sadd "datapoints", key
+          redis.sadd "datapoints", key
         end
       elsif key
-        @redis.sadd "datapoints", key
+        redis.sadd "datapoints", key
       end
     end
 
@@ -155,7 +160,7 @@ module Batsd
     # the 'datapoints' set
     #
     def remove_datapoint(key)
-      @redis.srem "datapoints", key
+      redis.srem "datapoints", key
     end
 
   end
