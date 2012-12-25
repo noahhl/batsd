@@ -10,13 +10,15 @@ module Batsd
     # in the configuration or localhost:6379
     #
     def initialize(options)
+      @options = options
       @retentions = options[:retentions].keys
     end
 
     def redis
       @redis ||= begin
-                   r = ::Redis.new(options[:redis] || {host: "127.0.0.1", port: 6379} )
+                   r = ::Redis.new(@options[:redis] || {host: "127.0.0.1", port: 6379} )
                    r.ping
+                   r
                  end
     end
 
