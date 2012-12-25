@@ -26,7 +26,7 @@ module Batsd
     # so they don't step on each other. Since redis commands
     # are happening in a deferrable, intentionally not using EM-redis
     def post_init
-      Batsd.logger.warn "batsd server ready and waiting on #{Batsd::Server.config[:port]} to ship data upon request\n"
+      Batsd.logger.debug "batsd server ready and waiting on #{Batsd::Server.config[:port]} to ship data upon request\n"
       @redis = Batsd::Redis.new(Batsd::Server.config)
       @diskstore = Batsd::Diskstore.new(Batsd::Server.config[:root])
       @retentions = Batsd::Server.config[:retentions]
@@ -128,6 +128,10 @@ module Batsd
           Batsd.logger.warn "Uncaught Error"
         end
       end
+    end
+
+    def unbind
+      @redis.client.quit
     end
     
     # Bind to port+2 and serve up data over TCP. Offers access to
