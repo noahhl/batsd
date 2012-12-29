@@ -35,13 +35,6 @@ module Batsd
       if retention == @retentions.first
         # First retention is stored in redis, so just need to truncate the zset
         # TODO: can we do this in bulk with lua script?
-        keys = keys.collect do |k|
-          if (k.match(/^timer/) rescue false)
-            [k] + (["count"] + STANDARD_OPERATIONS).collect{|a| "#{k}:#{a}"}
-          else
-            k
-          end
-        end.flatten
         keys.each { |key| @redis.truncate_zset(key, min_ts) }
       else
         # Stored on disk
