@@ -34,15 +34,13 @@ module Batsd
     #   registered handler for the type of data provided.
     #
     def receive_data(msg)
-      threadpool.queue msg do |msg|
-        msg.split("\n").each do |row|
-          #Batsd.logger.debug "received #{row}" 
-          key, value, type, sample = row.split(/\||:/)
-          if handler = Batsd::Receiver.handlers[type]
-            handler.handle(key, value, sample) 
-          else
-            Batsd.logger.debug "No handler for type #{type}"
-          end
+      msg.split("\n").each do |row|
+        #Batsd.logger.debug "received #{row}" 
+        key, value, type, sample = row.split(/\||:/)
+        if handler = Batsd::Receiver.handlers[type]
+          handler.handle(key, value, sample) 
+        else
+          Batsd.logger.debug "No handler for type #{type}"
         end
       end
     rescue Exception => e
