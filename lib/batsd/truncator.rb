@@ -41,7 +41,7 @@ module Batsd
         keys.each_slice(100) do |keys|
           @threadpool.queue @diskstore, keys, retention, min_ts do |diskstore, keys, retention, min_ts|
             keys.each do |key|
-              if key.match(/^timers/)
+              if key && key.match(/^timers/)
                 key = "#{key}:#{retention}:#{DATASTORE_VERSION}"
               else
                 key = "#{key}:#{retention}"

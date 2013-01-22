@@ -81,6 +81,7 @@ module Batsd
     end
 
     def read_v2(statistic, start_ts, end_ts)
+      return unless statistic
       datapoints = []
       fields = []
       filename = build_filename(statistic)
