@@ -40,7 +40,8 @@ parser.parse!
 datapoints = ARGV[0].to_i - 1
 per_second = ARGV[1].to_i
 @socket = UDPSocket.new
-@socket.connect options[:host], options[:port]
+#@socket.connect options[:host], options[:port]
+@socket.bind("0.0.0.0", 0)
 
 puts "Starting to send fake data to #{options[:host]}:#{options[:port]}. Sending #{datapoints} unique datapoints at a rate of #{per_second} per second split across #{options[:types].join(",")}"
 loop do
@@ -51,11 +52,11 @@ loop do
        type = options[:types][(rand*options[:types].size).floor]
        case type
        when :counters 
-         @socket.send "#{key}:1|c", 0 
+         @socket.send "#{key}:1|c", 0, options[:host], options[:port]
        when :timers 
-         @socket.send "#{key}:#{value}|ms", 0
+         @socket.send "#{key}:#{value}|ms", 0, options[:host], options[:port]
        when :gauges 
-         @socket.send "#{key}:#{value}|g", 0
+         @socket.send "#{key}:#{value}|g", 0, options[:host], options[:port]
        end
      end
    end
