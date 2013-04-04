@@ -20,7 +20,11 @@ module Batsd
       @redis = Batsd::Redis.new(Batsd::Server.config)
       @diskstore = Batsd::Diskstore.new(Batsd::Server.config[:root])
     end
-    
+ 
+    def unbind
+      @redis.client.quit
+    end   
+
     # Handle a command received over the server port and return
     # the datapoints, values, or a PONG as requested.
     def receive_data(msg)  
