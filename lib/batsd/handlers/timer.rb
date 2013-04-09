@@ -75,12 +75,12 @@ module Batsd
                 # Store all the aggregates for the flush interval level
                 count = values.count
 
-                combined_values = [count] + @operations.collect do |aggregation|
+                combined_values = @operations.collect do |aggregation|
                   count > 1 ? values.send(aggregation.to_sym) : values.first
                 end
 
                 if count > 0 
-                  combined_values = combined_values.join("/")
+                  combined_values = ([count] + combined_values).join("/")
                   redis.store_timer timestamp, key, combined_values
                 end
 
