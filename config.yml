@@ -4,6 +4,7 @@ root: tmp/statsd
 redis:
   host: 127.0.0.1
   port: 6379
+#  pass: yourpassword
 retentions:
   10:  360 #1 hour
   60:  10080  #1 week
