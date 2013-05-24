@@ -33,6 +33,7 @@ module Batsd
     # it as a redis script in Lua
     #
     def store_and_update_all_counters(timestamp, key, value)
+      @redis.publish key, value
       @retentions.each_with_index do |t, index|
         if index.zero?
           @redis.zadd key, timestamp, "#{timestamp}<X>#{value}"
@@ -46,6 +47,7 @@ module Batsd
     # Store a timer to a zset
     #
     def store_timer(timestamp, key, value)
+      @redis.publish key, value
       @redis.zadd key, timestamp, "#{timestamp}<X>#{value}"
     end
 
