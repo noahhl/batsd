@@ -10,17 +10,18 @@ module Batsd
     # Set up a new handler to handle counters
     #
     # * Set up a redis client
-    # * Set up a diskstore client to write aggregates to disk
+    # * Set up a filestore client to write aggregates to disk
     # * Initialize last flush timers to now
     #
     def initialize(options)
-      @redis = Batsd::Redis.new(options)
-      @diskstore = Batsd::Diskstore.new(options[:root])
-      @counters = @active_counters = {}
-      @retentions = options[:retentions].keys
-      @flush_interval = @retentions.first
       now = Time.now.to_i
-      @last_flushes = @retentions.inject({}){|l, r| l[r] = now; l }
+
+      @redis          = Batsd::Redis.new(options)
+      @filestore      = Batsd::Filestore.init(options)
+      @counters       = @active_counters = {}
+      @retentions     = options[:retentions].keys
+      @flush_interval = @retentions.first
+      @last_flushes   = @retentions.inject({}){|l, r| l[r] = now; l }
       super
     end
 
@@ -101,7 +102,7 @@ module Batsd
                   value = @redis.get_and_clear_key(key)
                   if value
                     value = "#{ts} #{value}"
-                    @diskstore.append_value_to_file(@diskstore.build_filename(key), value)
+                    @filestore.append_value_to_file(@filestore.build_filename(key), value)
                   end
                 end
               end

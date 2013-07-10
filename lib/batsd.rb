@@ -1,10 +1,13 @@
 require 'benchmark'
 require 'eventmachine'
 require 'redis'
+require 'aws/s3'
 
 require 'core-ext/array'
 
-require 'batsd/diskstore'
+require 'batsd/filestore'
+require 'batsd/filestore/diskstore'
+require 'batsd/filestore/s3'
 require 'batsd/redis'
 require 'batsd/threadpool'
 require 'batsd/receiver'

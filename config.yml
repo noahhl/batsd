@@ -1,11 +1,23 @@
 bind: 0.0.0.0
 port: 8125
-root: tmp/statsd
+
+filestore: 'diskstore'
+
+s3:
+  :access_key: 'access key goes here'
+  :secret_access_key: 'secret key goes here'
+  :bucket: 'bucket name goes here'
+
+diskstore:
+  :root: tmp/statsd
+
 redis:
   host: 127.0.0.1
   port: 6379
+
 retentions:
   10:  360 #1 hour
   60:  10080  #1 week
   600: 52594 #1 year
+
 autotruncate: false

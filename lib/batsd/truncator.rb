@@ -6,14 +6,14 @@ module Batsd
 
     # Create a new truncator
     #
-    # * Establish the diskstore that will be used
+    # * Establish the filestore that will be used
     # * Establish the redis connection that will be needed
     #
     def initialize(options={})
-      @options = options
+      @options    = options
       @retentions = options[:retentions].keys
-      @redis = Batsd::Redis.new(options )
-      @diskstore = Batsd::Diskstore.new(options[:root])
+      @redis      = Batsd::Redis.new(options)
+      @filestore  = Batsd::Filestore.init(options)
       @threadpool = Threadpool.new(options[:truncate_threadpool_size] || 10)
     end
 
@@ -46,10 +46,10 @@ module Batsd
       else
         # Stored on disk
         keys.each_slice(100) do |keys|
-          @threadpool.queue @diskstore, keys, retention, min_ts do |diskstore, keys, retention, min_ts|
+          @threadpool.queue @filestore, keys, retention, min_ts do |filestore, keys, retention, min_ts|
             keys.each do |key|
               key = "#{key}:#{retention}"
-              diskstore.truncate(diskstore.build_filename(key), min_ts.to_s)
+              filestore.truncate(filestore.build_filename(key), min_ts.to_s)
             end
           end
         end
