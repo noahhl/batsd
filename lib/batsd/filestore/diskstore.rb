@@ -1,5 +1,4 @@
 require 'fileutils'
-
 module Batsd 
   # Handles disk operations -- writing, truncating, and reading
   class Diskstore < Filestore

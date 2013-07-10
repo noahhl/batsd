@@ -4,12 +4,12 @@ port: 8125
 filestore: 'diskstore'
 
 s3:
-  access_key: 'access key goes here'
-  secret_access_key: 'secret acecss key goes here'
-  bucket: 'bucket name goes here'
+  :access_key: 'access key goes here'
+  :secret_access_key: 'secret key goes here'
+  :bucket: 'bucket name goes here'
 
 diskstore:
-  root: tmp/statsd
+  :root: tmp/statsd
 
 redis:
   host: 127.0.0.1

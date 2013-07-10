@@ -11,6 +11,7 @@ module Batsd
 
     # Fetch a file from AWS S3
     def fetch_file(filename)
+      establish_connection
       data = AWS::S3::S3Object.value(filename, @bucket) if AWS::S3::S3Object.exists?(filename, @bucket) 
 
       data || ''
@@ -21,6 +22,8 @@ module Batsd
     # folders and file types are handled by the gem
 
     def store_file(filename, file_data)
+      establish_connection
+
       AWS::S3::S3Object.store filename, StringIO.new(file_data), @bucket, access: :authenticated_read
     end
 
@@ -30,8 +33,6 @@ module Batsd
     # the way), write the value and a newline, and close the file again.
     #
     def append_value_to_file(filename, value, attempts=0)
-      establish_connection
-
       file_data  = fetch_file(filename) + "#{value}\n"
 
       store_file filename, file_data
@@ -49,8 +50,6 @@ module Batsd
     # of <code>{timestamp: ts, value: v}</code> hashes.
     #
     def read(statistic, start_ts, end_ts)
-      establish_connection
-
       datapoints = []
       filename = build_filename statistic
 
@@ -74,8 +73,6 @@ module Batsd
     # original.
     #
     def truncate(filename, since)
-      establish_connection
-
       puts "Truncating #{filename} since #{since}" if ENV["VVERBOSE"]
 
       truncated_file_data = ''

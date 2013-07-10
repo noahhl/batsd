@@ -6,11 +6,16 @@ module Batsd
 
     # Creates an instance of the right child depending on configuration
     def self.init(options)
-      case options[:filestore].downcase
-      when 'diskstore' then
-        Batsd::Diskstore.new(options)
-      when 's3' then
-        Batsd::S3.new(options)
+
+      unless options[:filestore]
+        Batsd::Diskstore.new diskstore: { root: (options[:root] || options[:diskstore][:root]) }
+      else
+        case options[:filestore].downcase
+        when 'diskstore' then
+          Batsd::Diskstore.new(options)
+        when 's3' then
+          Batsd::S3.new(options)
+        end
       end
     end
 
