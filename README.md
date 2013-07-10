@@ -7,13 +7,10 @@ implementation](https://github.com/etsy/statsd), which they described in
 a [blog post](http://codeascraft.etsy.com/2011/02/15/measure-anything-measure-everything/).
 
 Batsd differs from etsy's statsd implementation primarily in how it stores data
--- data is stored to a combination of Redis and flat files on disk. You can
-read more about persistence in [About:
-Persistence](http://noahhl.github.com/batsd/doc/file.persistence.html).
+-- data is stored to a combination of Redis and flat files on disk (or AWS S3). You can
+read more about persistence in [About: Persistence](http://noahhl.github.com/batsd/doc/file.persistence.html).
 
-Batsd grew out of usage at [37signals](http://37signals.com), where it has been
-used for the last year. An [earlier form](https://github.com/noahhl/statsd-server) was
-inspired by [quasor](https://github.com/quasor/statsd). 
+Batsd grew out of usage at [37signals](http://37signals.com), where it has been used for the last year. An [earlier form](https://github.com/noahhl/statsd-server) was inspired by [quasor](https://github.com/quasor/statsd). 
 
 ### Documentation:
 
@@ -50,11 +47,26 @@ Example config.yml
     # Where to store data. Data at the first retention level is stored
     # in redis; further data retentions are stored on disk
     
-    # Root path to store disk aggregations
-    root: /statsd 
     redis:
       :host: 127.0.0.1
       :port: 6379
+
+    # Which file store to use. Available are: diskstore and s3
+    filestore: 'diskstore'
+
+
+    # Diskstore configuration. 
+    #This is only if you have filestore set to diskstore
+    diskstore:
+      # Root path to store disk aggregations
+      :root: tmp/statsd 
+
+    # S3 authentication and storage information
+    # This is only if you have filestore set to s3
+    s3:
+      :access_key: 'access key goes here'
+      :secret_access_key: 'secret key goes here'
+      :bucket: 'bucket name goes here'
     
     # Configure how much data to retain at what intervals
     # Key is seconds, value is number of measurements at that
