@@ -12,11 +12,11 @@ module Batsd
     # Set up a new handler to handle gauges
     #
     # * Set up a redis client
-    # * Set up a diskstore client to write aggregates to disk
+    # * Set up a filestore client to write aggregates to disk
     #
     def initialize(options)
-      @redis = Batsd::Redis.new(options)
-      @diskstore = Batsd::Diskstore.new(options[:root])
+      @redis     = Batsd::Redis.new(options)
+      @filestore = Batsd::Fielstore.init(options)
       super
     end
 
@@ -34,7 +34,7 @@ module Batsd
         end
         value = "#{timestamp} #{value}"
         key   = "gauges:#{key}"
-        @diskstore.append_value_to_file(@diskstore.build_filename(key), value)
+        @filestore.append_value_to_file(@filestore.build_filename(key), value)
         @redis.add_datapoint key
       end
     end

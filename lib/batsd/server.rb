@@ -11,19 +11,19 @@ module Batsd
     def self.config=(config)
       @config=config
     end
-   
-    # Set up a redis and diskstore instance per connection
+
+    # Set up a redis and filestore instance per connection
     # so they don't step on each other. Since redis commands
     # are happening in a deferrable, intentionally not using EM-redis
     def post_init
       puts "batsd server ready and waiting on #{Batsd::Server.config[:port]} to ship data upon request\n"
       @redis = Batsd::Redis.new(Batsd::Server.config)
-      @diskstore = Batsd::Diskstore.new(Batsd::Server.config[:root])
+      @filestore = Batsd::Filestore.init(Batsd::Server.config)
     end
- 
+
     def unbind
       @redis.client.quit
-    end   
+    end
 
     # Handle a command received over the server port and return
     # the datapoints, values, or a PONG as requested.
@@ -43,7 +43,7 @@ module Batsd
                  datapoints, interval = [], 0
 
                  if metric.match(/^gauge/)
-                   datapoints = @diskstore.read(metric, begin_time, end_time)
+                   datapoints = @filestore.read(metric, begin_time, end_time)
                  else
                    Batsd::Server.config[:retentions].each_with_index do |retention, index|
                      if (index != Batsd::Server.config[:retentions].count - 1) && (Time.now.to_i - (retention[0] * retention[1]) > begin_time.to_i)
@@ -55,7 +55,7 @@ module Batsd
                        datapoints = @redis.values_from_zset(metric, begin_time, end_time)
                        break
                      else
-                       datapoints = @diskstore.read("#{metric}:#{retention[0]}", begin_time, end_time)
+                       datapoints = @filestore.read("#{metric}:#{retention[0]}", begin_time, end_time)
                        break
                      end
                    end
@@ -77,7 +77,7 @@ module Batsd
         end
       end
     end
-    
+
     # Bind to port+2 and serve up data over TCP. Offers access to
     # both the set of datapoints and the values as JSON arrays.
     class Daemon

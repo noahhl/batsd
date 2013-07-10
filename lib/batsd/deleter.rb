@@ -6,13 +6,13 @@ module Batsd
 
     # Create a new deleter
     #
-    # * Establish the diskstore that will be used
+    # * Establish the filestore that will be used
     # * Establish the redis connection that will be needed
     #
     def initialize(options={})
       @options = options
-      @redis = Batsd::Redis.new(options )
-      @diskstore = Batsd::Diskstore.new(options[:root])
+      @redis = Batsd::Redis.new(options)
+      @filestore = Batsd::Filestore.init(options)
     end
 
     def delete(statistic)
@@ -37,7 +37,7 @@ module Batsd
         # other retentions
         retentions.each do |retention|
           key = "#{statistic}:#{retention}"
-          @diskstore.delete(@diskstore.build_filename(key), :delete_empty_dirs => true)
+          @filestore.delete(@filestore.build_filename(key), delete_empty_dirs: true)
         end
       end
       deletions

@@ -1,26 +1,12 @@
-require 'digest'
 require 'fileutils'
 
 module Batsd 
   # Handles disk operations -- writing, truncating, and reading
-  class Diskstore
+  class Diskstore < Filestore
     
     # Create a new diskstore object
-    def initialize(root)
-      @root = root
-    end
-
-    # Calculate the filename that will be used to store the
-    # metric to disk.
-    #
-    # Filenames are MD5 hashes of the statistic name, including any
-    # aggregation-based suffix, and are stored in two levels of nested
-    # directories (e.g., <code>/00/01/0001s0d03dd0s030d03d</code>)
-    #
-    def build_filename(statistic)
-      return unless statistic
-      file_hash = Digest::MD5.hexdigest(statistic)
-      File.join(@root, file_hash[0,2], file_hash[2,2], file_hash)
+    def initialize(options)
+      @root = options[:diskstore][:root]
     end
 
     # Append a value to a file
@@ -49,7 +35,7 @@ module Batsd
     #
     def read(statistic, start_ts, end_ts)
       datapoints = []
-      filename = build_filename(statistic)
+      filename = build_filename(statistic, @root)
       begin
         File.open(filename, 'r') do |file| 
           while (line = file.gets)
