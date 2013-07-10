@@ -56,7 +56,7 @@ Example config.yml
 
 
     # Diskstore configuration. 
-    #This is only if you have filestore set to diskstore
+    # This is only if you have filestore set to diskstore
     diskstore:
       # Root path to store disk aggregations
       :root: tmp/statsd 
