@@ -18,7 +18,7 @@ module Batsd
     def post_init
       puts "batsd server ready and waiting on #{Batsd::Server.config[:port]} to ship data upon request\n"
       @redis = Batsd::Redis.new(Batsd::Server.config)
-      @filestore = Batsd::Filestore.init(Batsd::Server.config)
+      @filestore = Batsd::Filestore.init(options)
     end
 
     def unbind

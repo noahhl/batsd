@@ -12,7 +12,7 @@ module Batsd
     def initialize(options={})
       @options    = options
       @retentions = options[:retentions].keys
-      @redis      = Batsd::Redis.new(options )
+      @redis      = Batsd::Redis.new(options)
       @filestore  = Batsd::Filestore.init(options)
       @threadpool = Threadpool.new(options[:truncate_threadpool_size] || 10)
     end

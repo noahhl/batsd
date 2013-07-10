@@ -2,7 +2,7 @@ require 'test_helper'
 class DiskstoreTest < Test::Unit::TestCase
 
   def setup
-    @diskstore = Batsd::Diskstore.new("test/data")
+    @diskstore = Batsd::Diskstore.new({diskstore: {root: "test/data"} })
     @statistic = "counters:test_counter:60"
   end
   

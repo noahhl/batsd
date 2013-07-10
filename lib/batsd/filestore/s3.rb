@@ -9,7 +9,7 @@ module Batsd
       @bucket      = options[:s3][:bucket]
     end
 
-    # Fetch a file from our AWS S3
+    # Fetch a file from AWS S3
     def fetch_file(filename)
       data = AWS::S3::S3Object.value(filename, @bucket) if AWS::S3::S3Object.exists?(filename, @bucket) 
 
@@ -55,7 +55,7 @@ module Batsd
       filename = build_filename statistic
 
       begin
-        file_data = fetch_file
+        file_data = fetch_file(filename)
         file_data.split("\n").each do |line|
           ts, value = line.split
           if ts >= start_ts && ts <= end_ts
@@ -82,10 +82,12 @@ module Batsd
       old_file_data       = fetch_file(filename)
 
       old_file_data.split("\n").each do |line|
-        truncated_file_data += line if(line.split[0] >= since rescue true)
+        truncated_file_data += "#{line}\n" if(line.split[0] >= since rescue true)
       end
 
       store_file filename, truncated_file_data
+
+      truncated_file_data
     rescue Exception => e
       puts "Encountered an error trying to truncate #{filename}: #{e} #{e.message} #{e.backtrace if ENV["VERBOSE"]}"
     end

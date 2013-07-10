@@ -5,9 +5,9 @@ require 'aws/s3'
 
 require 'core-ext/array'
 
-require 'batsd/file_store'
-require 'batsd/file_store/diskstore'
-require 'batsd/file_store/s3store'
+require 'batsd/filestore'
+require 'batsd/filestore/diskstore'
+require 'batsd/filestore/s3'
 require 'batsd/redis'
 require 'batsd/threadpool'
 require 'batsd/receiver'

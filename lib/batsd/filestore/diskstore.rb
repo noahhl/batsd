@@ -35,7 +35,7 @@ module Batsd
     #
     def read(statistic, start_ts, end_ts)
       datapoints = []
-      filename = build_filename(statistic, @root)
+      filename = build_filename(statistic)
       begin
         File.open(filename, 'r') do |file| 
           while (line = file.gets)

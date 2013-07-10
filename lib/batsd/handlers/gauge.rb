@@ -16,7 +16,7 @@ module Batsd
     #
     def initialize(options)
       @redis     = Batsd::Redis.new(options)
-      @filestore = Batsd::Fielstore.init(options)
+      @filestore = Batsd::Filestore.init(options)
       super
     end
 
