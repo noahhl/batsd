@@ -1,4 +1,4 @@
-source :rubygems
+source "https://rubygems.org"
 
 gem 'eventmachine', '~>1.0.0.rc.4'
 gem 'redis', "~> 3.0.2"
